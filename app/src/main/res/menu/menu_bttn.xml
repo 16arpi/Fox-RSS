@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/itemArticles" android:title="@string/item_swip" android:icon="@drawable/ic_swip" android:enabled="true"/>
+    <item android:id="@+id/itemSelections" android:title="@string/item_inbox" android:icon="@drawable/ic_inbox"/>
+    <item android:id="@+id/itemFavs" android:visible="false" android:title="@string/item_favs" android:icon="@drawable/ic_star_on"/>
+    <item android:id="@+id/itemFeeds" android:title="@string/item_feeds" android:icon="@drawable/ic_feeds"/>
+</menu>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+              android:layout_height="wrap_content" xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:background="@color/bgWhite"
+>
+
+    <LinearLayout
+            android:background="?android:selectableItemBackground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/cardItem"
+            android:padding="8dp">
+        <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_link"
+                android:id="@+id/feedFavicon"
+                android:padding="8dp"
+                android:layout_marginEnd="16dp" android:background="@drawable/round_grey_bg"
+                android:layout_margin="8dp"/>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:padding="8dp">
+            <TextView
+                    android:singleLine="true"
+                    android:text="@string/label_no_source"
+                    android:ellipsize="end"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/txtSource"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+                    android:layout_marginBottom="4dp"/>
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/txtTitle"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:textSize="16sp"
+                    android:ellipsize="end"
+                    android:maxLines="3"/>
+            <TextView
+                    android:text="@string/label_no_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/txtMeta"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    android:layout_marginTop="4dp"/>
+        </LinearLayout>
+    </LinearLayout>
+    <View
+            android:id="@+id/divider"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+    />
+
+</LinearLayout>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   android:background="@color/bgLight"
+                                                   android:orientation="vertical">
+
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/bttnReverse" android:gravity="center_horizontal"
+            android:id="@+id/layooutErrorArticle" android:visibility="gone">
+
+        <TextView
+                android:text="@string/label_error_feeds"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content" android:id="@+id/txtErrorArticles"
+                android:gravity="center_horizontal"
+                android:alpha="0.7" android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                android:layout_margin="16dp" style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textSize="20sp"/>
+        <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:icon="@drawable/ic_add"
+                android:text="@string/label_error_feeds_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/btnErrorArticle"/>
+    </LinearLayout>
+    <TextView
+            android:text="@string/label_hello"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/textView" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="16dp"
+            android:textSize="40dp"
+            android:textColor="@color/textSemiColorBlack"/>
+    <com.yuyakaido.android.cardstackview.CardStackView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/cardStackView" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+    </com.yuyakaido.android.cardstackview.CardStackView>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/bttnReverse"
+            app:backgroundTint="@color/colorAccent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_margin="16dp"
+            app:srcCompat="@drawable/ic_reverse"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"/>
+    <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:srcCompat="@drawable/ic_more"
+            android:background="?android:selectableItemBackgroundBorderless"
+            android:id="@+id/bttnOptions"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="30dp" android:layout_marginEnd="16dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

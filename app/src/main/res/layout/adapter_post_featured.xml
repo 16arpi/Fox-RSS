@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+              android:layout_height="wrap_content" android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardItem"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:checkable="true"
+            android:layout_margin="8dp">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:orientation="vertical">
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:backgroundTint="@color/bgLight"
+                    android:id="@+id/imgCover" android:scaleType="centerCrop" android:layout_height="194dp"/>
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:padding="16dp">
+                <TextView
+                        android:text="TextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:id="@+id/txtTitle"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                        android:textSize="16sp"
+                        android:ellipsize="end"
+                        android:maxLines="3"/>
+                <TextView
+                        android:text="TextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:id="@+id/txtMeta"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                        android:layout_marginTop="8dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

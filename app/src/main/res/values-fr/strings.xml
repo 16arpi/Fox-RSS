@@ -1,0 +1,77 @@
+<resources>
+    <string name="app_name">Fox RSS</string>
+    <string name="title_selection">Sélection</string>
+    <string name="title_feeds">Flux</string>
+
+    <string name="item_swip">Articles</string>
+    <string name="item_inbox">Sélection</string>
+    <string name="item_feeds">Souscriptions</string>
+    <string name="item_favs">Favoris</string>
+    <string name="item_add">Ajouter</string>
+    <string name="item_libraries">Bibliothèques</string>
+    <string name="item_delete">Supprimer</string>
+    <string name="item_unread">Non lu</string>
+
+    <string name="menu_home_settings">Paramètres</string>
+    <string name="menu_home_check">Refraîchir les nouveaux articles</string>
+    <string name="menu_home_reset">Recharger tous les articles ignorés</string>
+
+    <string name="dialog_reset_title">Êtes vous certain·e ?</string>
+    <string name="dialog_reset_message">Votre sélection d\'articles sera vide ensuite.</string>
+    <string name="dialog_reset_cancel">@string/dialog_feed_cancel</string>
+    <string name="dialog_reset_ok">@string/dialog_feed_ok</string>
+
+    <string name="label_no_source">Aucun source indiquée</string>
+    <string name="label_no_date">Aucune date indiquée</string>
+    <string name="label_hello">Bonjour ☀️</string>
+    <string name="label_error_feeds" >Merci d\'ajouter un flux RSS pour voir et sélectionner des articles.</string>
+    <string name="label_error_feeds_btn" >Ajouter un flux RSS</string>
+    <string name="label_error_article" >Il n\'y a aucun article à afficher</string>
+
+    <string name="edit_title">Ajouter un flux RSS</string>
+    <string name="edit_url">URL du flux RSS</string>
+    <string name="edit_error">Erreur. Ça ne marche pas...</string>
+    <string name="edit_bttn">Ajouter un flux RSS</string>
+
+    <string name="dialog_add_title">Choisissez un flux RSS</string>
+
+    <string name="dialog_feed_title">Supprimer un flux RSS</string>
+    <string name="dialog_feed_message">Êtes-vous certain·e de vouloir supprimer ce flux ?</string>
+    <string name="dialog_feed_cancel">Annuler</string>
+    <string name="dialog_feed_ok">Confirmer</string>
+
+    <string name="dialog_article_title">Supprimer un article</string>
+    <string name="dialog_article_message">Êtes-vous certain·e de vouloir supprimer ces articles ?</string>
+    <string name="dialog_article_cancel">Annuler</string>
+    <string name="dialog_article_ok">Confirmer</string>
+
+    <string name="settings_title">Paramètres</string>
+    <string name="settings_subtitle1">Flux RSS</string>
+    <string name="settings_read_days_label">Date d\'expiration des articles lus</string>
+    <string name="settings_read_days_message">Nombre de jours après lesquels sont enlevés les articles lus de la sélection d\'articles.
+    </string>
+    <string name="settings_subtitle2">Informations</string>
+    <string name="settings_about_label">À propos du développeur</string>
+    <string name="settings_libraries_label">Bibliothèques utilisées dans cette application</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <string name="key_expiration_read_article">expirationdatereadarticle</string>
+    <string name="key_app_pref">apppref</string>
+    <string name="key_first_launch">firstlaunch</string>
+
+    <string name="dialog_intro_next">Next</string>
+    <string name="dialog_intro_close">Close</string>
+
+</resources>

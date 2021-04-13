@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/menu_home_settings" android:id="@+id/itemSettings"/>
+    <item android:title="@string/menu_home_check" android:id="@+id/itemReload"/>
+    <item android:title="@string/menu_home_reset" android:id="@+id/itemReset"/>
+</menu>

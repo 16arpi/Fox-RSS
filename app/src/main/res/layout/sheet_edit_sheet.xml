@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+              android:layout_height="match_parent" android:orientation="vertical">
+
+    <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/colorAccent"
+            android:visibility="gone"
+            android:layout_marginTop="-7dp"
+            android:layout_marginBottom="-7dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editProgress"/>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_gravity="center_vertical"
+            android:padding="16dp">
+        <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:id="@+id/editLayout"
+                android:layout_width="match_parent"
+                app:errorEnabled="true"
+                android:layout_height="wrap_content"
+        >
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editFeed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/edit_url"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <Button
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:text="@string/item_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="-8dp"
+                android:id="@+id/okBtn"
+                android:layout_gravity="right"/>
+    </LinearLayout>
+</LinearLayout>

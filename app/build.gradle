@@ -1,0 +1,69 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "com.pigeoff.rss"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 2
+        versionName "1.1"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    implementation 'androidx.preference:preference:1.1.1'
+    def room_version = "2.2.6"
+    def rss_version = "3.1.3"
+    def stackview_version = "2.3.4"
+    def touchicon_version = "0.9.1"
+
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.32.3.3'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    implementation 'androidx.fragment:fragment-ktx:1.2.5'
+    implementation "androidx.browser:browser:1.3.0"
+
+    //Bibliothèque de developpeur-euse-s indépendant-e-s
+    implementation "com.prof18.rssparser:rssparser:$rss_version"
+    implementation "com.yuyakaido.android:card-stack-view:$stackview_version"
+    implementation 'org.jsoup:jsoup:1.13.1'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'de.psdev.licensesdialog:licensesdialog:2.1.0'
+
+
+}

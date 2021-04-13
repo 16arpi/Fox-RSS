@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content" android:orientation="vertical"
+                android:background="@color/bgLight"
+                android:padding="16dp">
+
+    <androidx.viewpager.widget.ViewPager
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/viewPagerIntro">
+    </androidx.viewpager.widget.ViewPager>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/linearContainer">
+        <Button
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:text="@string/dialog_intro_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnIntroNext"/>
+        <Button
+                android:alpha="0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/button3" android:layout_weight="1"/>
+        <Button
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:text="@string/dialog_intro_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnIntroClose"
+                android:layout_gravity="end"
+        />
+    </LinearLayout>
+</LinearLayout>
