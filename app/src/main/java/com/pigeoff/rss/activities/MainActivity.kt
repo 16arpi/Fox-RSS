@@ -47,35 +47,23 @@ class MainActivity : AppCompatActivity() {
         toolBar = findViewById(R.id.mainToolbar)
 
         //Toolbar
-        toolBar.visibility = View.GONE
-        setSupportActionBar(toolBar)
+        setupToolbar()
 
         //Init app et services
         val app = applicationContext as RSSApp
         feedService = app.getClient()
 
-        //Init intro
-        /*if (isFirstLaunch()) {
-            firstLaunch()
-        }*/
-
         bttmNav.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.itemArticles -> {
-                    if (it.itemId != actualTab) {
+                R.id.itemArticles ->
+                    if (it.itemId != actualTab)
                         updateFragment(SwipeFragment(this, feedService))
-                    }
-                }
-                R.id.itemSelections -> {
-                    if (it.itemId != actualTab) {
+                R.id.itemSelections ->
+                    if (it.itemId != actualTab)
                         updateFragment(SelectionFragment(this, feedService))
-                    }
-                }
-                R.id.itemFeeds -> {
-                    if (it.itemId != actualTab) {
+                R.id.itemFeeds ->
+                    if (it.itemId != actualTab)
                         updateFragment(FeedsFragment(this, feedService, null))
-                    }
-                }
             }
             actualTab = it.itemId
             true
@@ -90,23 +78,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        //Update Fragment
-        val action = intent?.action
-        val content = intent?.getStringExtra(Intent.EXTRA_TEXT)
 
-        CoroutineScope(Dispatchers.IO).launch {
-            if (action == Intent.ACTION_SEND && !content.isNullOrEmpty()) {
-                if (content != extraIntent) {
-                    extraIntent = content
-                    updateFragment(FeedsFragment(this@MainActivity, feedService, extraIntent))
-                    actualTab = R.id.itemFeeds
-
-                    withContext(Dispatchers.Main) {
-                        bttmNav.menu.findItem(R.id.itemFeeds).isChecked = true
-                    }
-                }
-            }
-        }
+        setupShareIntent()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -136,7 +109,33 @@ class MainActivity : AppCompatActivity() {
     fun setFragmentFromExterior(tab: Int, fragment: Fragment) {
         bttmNav.menu.findItem(tab).isChecked = true
         CoroutineScope(Dispatchers.IO).launch {
+            actualTab = R.id.itemFeeds
             updateFragment(fragment)
+        }
+    }
+
+    fun setupToolbar() {
+        toolBar.visibility = View.GONE
+        setSupportActionBar(toolBar)
+    }
+
+    fun setupShareIntent() {
+        //Update Fragment
+        val action = intent?.action
+        val content = intent?.getStringExtra(Intent.EXTRA_TEXT)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            if (action == Intent.ACTION_SEND && !content.isNullOrEmpty()) {
+                if (content != extraIntent) {
+                    extraIntent = content
+                    updateFragment(FeedsFragment(this@MainActivity, feedService, extraIntent))
+                    actualTab = R.id.itemFeeds
+
+                    withContext(Dispatchers.Main) {
+                        bttmNav.menu.findItem(R.id.itemFeeds).isChecked = true
+                    }
+                }
+            }
         }
     }
 }

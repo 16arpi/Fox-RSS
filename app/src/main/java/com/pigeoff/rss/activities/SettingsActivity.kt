@@ -9,7 +9,7 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setToolbar()
 
         supportFragmentManager
             .beginTransaction()
@@ -19,11 +19,14 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> {
+            android.R.id.home ->
                 this.finish()
-            }
         }
         return true
+    }
+
+    fun setToolbar() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
 }

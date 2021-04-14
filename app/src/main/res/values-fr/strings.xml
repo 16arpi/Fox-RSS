@@ -5,7 +5,7 @@
 
     <string name="item_swip">Articles</string>
     <string name="item_inbox">Sélection</string>
-    <string name="item_feeds">Souscriptions</string>
+    <string name="item_feeds">Flux RSS</string>
     <string name="item_favs">Favoris</string>
     <string name="item_add">Ajouter</string>
     <string name="item_libraries">Bibliothèques</string>

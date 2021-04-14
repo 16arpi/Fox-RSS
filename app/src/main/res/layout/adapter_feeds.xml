@@ -3,7 +3,7 @@
               xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@android:color/white"
+              android:background="?android:selectableItemBackground"
               android:id="@+id/feedLinear">
     <LinearLayout
             android:orientation="horizontal"
@@ -35,8 +35,5 @@
                     style="@style/TextAppearance.AppCompat.Body1"/>
         </LinearLayout>
 
-        <CheckBox
-                android:layout_width="40dp"
-                android:layout_height="40dp" android:id="@+id/feedCheckbox" android:layout_marginStart="16dp"/>
     </LinearLayout>
 </LinearLayout>

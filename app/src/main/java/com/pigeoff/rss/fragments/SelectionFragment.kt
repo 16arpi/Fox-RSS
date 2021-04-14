@@ -1,36 +1,18 @@
 package com.pigeoff.rss.fragments
 
 import android.content.Context
-import android.content.DialogInterface
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pigeoff.rss.R
 import com.pigeoff.rss.adapters.ArticlesAdapter
-import com.pigeoff.rss.adapters.FeedsAdapter
-import com.pigeoff.rss.adapters.SwipeAdapter
-import com.pigeoff.rss.db.RSSDbFeed
+import com.pigeoff.rss.callbacks.CustomActionMode
 import com.pigeoff.rss.db.RSSDbItem
 import com.pigeoff.rss.services.FeedsService
-import com.pigeoff.rss.util.Util
-import com.pigeoff.rss.util.UtilItem
-import com.prof.rssparser.Article
-import com.yuyakaido.android.cardstackview.CardStackLayoutManager
-import com.yuyakaido.android.cardstackview.CardStackListener
-import com.yuyakaido.android.cardstackview.CardStackView
-import com.yuyakaido.android.cardstackview.Direction
-import kotlinx.android.synthetic.main.layout_fragment_feeds.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,9 +26,7 @@ class SelectionFragment(private val c: Context, private val service: FeedsServic
     lateinit var adapter: ArticlesAdapter
     lateinit var bttmFragment: EditBottomSheetFragment
 
-    var selectedItems = mutableListOf<RSSDbFeed>()
-
-
+    var actionMode: ActionMode? = null
     var articles = mutableListOf<RSSDbItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,15 +60,9 @@ class SelectionFragment(private val c: Context, private val service: FeedsServic
             updateDatas()
         }
 
-
         adapter.setOnCheckBoxClickListener(object : ArticlesAdapter.OnCheckBoxClickListener {
             override fun onCheckBoxClickListener(selectedFeeds: MutableList<RSSDbItem>) {
-               if (selectedFeeds.count() > 0) {
-                    showContextualBar(true)
-               }
-                else {
-                    showContextualBar(false)
-               }
+               showContextualBar(selectedFeeds)
             }
         })
 
@@ -101,16 +75,7 @@ class SelectionFragment(private val c: Context, private val service: FeedsServic
                 }
                 R.id.itemDelete -> {
                     if (adapter.selectedItems.count() > 0) {
-                        MaterialAlertDialogBuilder(context)
-                            .setTitle(R.string.dialog_article_title)
-                            .setMessage(R.string.dialog_article_message)
-                            .setNegativeButton(R.string.dialog_article_cancel, DialogInterface.OnClickListener { _, _ ->
-
-                            })
-                            .setPositiveButton(R.string.dialog_article_ok, DialogInterface.OnClickListener { _, _ ->
-                                removeArticles()
-                            })
-                            .show()
+                        showDeleteDialog()
                     }
                 }
             }
@@ -119,22 +84,7 @@ class SelectionFragment(private val c: Context, private val service: FeedsServic
 
     }
 
-
-    fun showContextualBar(show: Boolean) {
-        if (show) {
-            toolbar.title = ""
-            toolbar.menu.findItem(R.id.itemUnread).isVisible = true
-            toolbar.menu.findItem(R.id.itemDelete).isVisible = true
-            toolbar.background = ColorDrawable(context!!.getColor(R.color.colorAccent))
-        } else {
-            toolbar.title = context?.getString(R.string.item_inbox)
-            toolbar.menu.findItem(R.id.itemUnread).isVisible = false
-            toolbar.menu.findItem(R.id.itemDelete).isVisible = false
-            toolbar.background = ColorDrawable(context!!.getColor(R.color.bgLight))
-        }
-    }
-
-    suspend fun updateDatas() {
+    private suspend fun updateDatas() {
         articles = fetchArticles()
         withContext(Dispatchers.Main) {
             adapter.posts = articles
@@ -142,15 +92,14 @@ class SelectionFragment(private val c: Context, private val service: FeedsServic
         }
     }
 
-    fun fetchArticles() : MutableList<RSSDbItem> {
+    private fun fetchArticles() : MutableList<RSSDbItem> {
         val articles = mutableListOf<RSSDbItem>()
 
         val allFeeds = service.db.itemDao().getAllItems()
 
         for (i in allFeeds) {
-            //Plus tard : ajouter ici la condition que les articles soit PAS LU depuis X JOURS
             if (i.interesting) {
-                if (i.consultedTime + service.timeLimitConsultedItem.toLong() <= Calendar.getInstance().timeInMillis) {
+                if (i.consultedTime + service.timeLimitConsultedItem <= Calendar.getInstance().timeInMillis) {
                     if (!i.consulted) {
                         articles.add(i)
                     }
@@ -163,24 +112,61 @@ class SelectionFragment(private val c: Context, private val service: FeedsServic
         return articles
     }
 
-    fun removeArticles() {
+    fun showContextualBar(articles: MutableList<RSSDbItem>?) {
+        val callback = CustomActionMode(requireContext(), R.menu.menu_selection)
+
+        if (actionMode == null) {
+            actionMode = toolbar.startActionMode(callback)
+        }
+
+        if (articles == null || articles.count() == 0) {
+            actionMode?.finish()
+        }
+
+        callback.setOnItemSelectedListener(object : CustomActionMode.OnItemSelectedListener {
+            override fun onItemSelectedListener(itemId: Int?) {
+                if (itemId != null) {
+                    when (itemId) {
+                        R.id.itemUnread -> {
+                            unMarkAsRead()
+                        }
+                        R.id.itemDelete -> {
+                            removeArticles()
+                        }
+                        else -> {
+
+                        }
+                    }
+                }
+                actionMode?.finish()
+            }
+        })
+
+        callback.setOnActionModeFinishListener(object: CustomActionMode.OnActionModeFinishedListener {
+            override fun onActionModeFinishedListener() {
+                unCheckAllViews()
+                actionMode = null
+            }
+        })
+    }
+
+    private fun removeArticles() {
         val selectedFeeds = adapter.selectedItems
         val toBeDeleted = mutableListOf<RSSDbItem>()
 
         for (i in selectedFeeds) {
             toBeDeleted.add(i)
         }
-        adapter.removeItems(toBeDeleted)
 
         for (s in toBeDeleted) {
             s.interesting = false
             service.db.itemDao().updateItem(s)
         }
 
-        showContextualBar(false)
+        adapter.removeItems(toBeDeleted)
     }
 
-    fun unMarkAsRead() {
+    private fun unMarkAsRead() {
         val selectedFeeds = adapter.selectedItems
 
         for (i in selectedFeeds) {
@@ -188,8 +174,24 @@ class SelectionFragment(private val c: Context, private val service: FeedsServic
             service.db.itemDao().updateItem(i)
         }
         adapter.updateItems(fetchArticles(), selectedFeeds)
-
-        showContextualBar(false)
     }
+
+    private fun unCheckAllViews() {
+        adapter.uncheckAllViews()
+    }
+
+    private fun showDeleteDialog() {
+        MaterialAlertDialogBuilder(context)
+            .setTitle(R.string.dialog_article_title)
+            .setMessage(R.string.dialog_article_message)
+            .setNegativeButton(R.string.dialog_article_cancel) { _, _ ->
+
+            }
+            .setPositiveButton(R.string.dialog_article_ok) { _, _ ->
+                removeArticles()
+            }
+            .show()
+    }
+
 
 }

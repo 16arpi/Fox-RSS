@@ -5,10 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
@@ -35,6 +32,7 @@ class SwipeFragment(val c: Context, val service: FeedsService) : Fragment() {
     lateinit var cardStackView: CardStackView
     lateinit var btnReverse: FloatingActionButton
     lateinit var btnOptions: ImageButton
+    lateinit var progressBarSwipe: ProgressBar
 
     //Error
     lateinit var txtErrorArticles: TextView
@@ -43,11 +41,6 @@ class SwipeFragment(val c: Context, val service: FeedsService) : Fragment() {
 
 
     var articles = mutableListOf<ArticleExtended>()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.layout_fragment_swipe, null)
@@ -59,6 +52,7 @@ class SwipeFragment(val c: Context, val service: FeedsService) : Fragment() {
         cardStackView = view.findViewById(R.id.cardStackView)
         btnReverse = view.findViewById(R.id.bttnReverse)
         btnOptions = view.findViewById(R.id.bttnOptions)
+        progressBarSwipe = view.findViewById(R.id.progressBarSwipe)
         txtErrorArticles = view.findViewById(R.id.txtErrorArticles)
         btnErrorArticles = view.findViewById(R.id.btnErrorArticle)
         layoutErrorArticles = view.findViewById(R.id.layooutErrorArticle)
@@ -68,7 +62,7 @@ class SwipeFragment(val c: Context, val service: FeedsService) : Fragment() {
 
         btnErrorArticles.setOnClickListener {
             val a = requireActivity() as MainActivity
-            a.setFragmentFromExterior(R.id.itemFeeds, FeedsFragment(requireActivity(), service, "  "))
+            a.setFragmentFromExterior(R.id.itemFeeds, FeedsFragment(requireActivity(), service, null))
         }
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -117,6 +111,7 @@ class SwipeFragment(val c: Context, val service: FeedsService) : Fragment() {
             cardStackView.visibility = View.GONE
         }
         else {
+            showProgress(true)
             articles = service.fetchFeeds(flush)
             val toRemove = mutableListOf<ArticleExtended>()
             val savedArticles = service.db.itemDao().getAllItems()
@@ -133,12 +128,11 @@ class SwipeFragment(val c: Context, val service: FeedsService) : Fragment() {
 
             withContext(Dispatchers.Main) {
                 val layoutManager = CardStackLayoutManager(context)
+                val listener = mOnDragListener(cardStackView, articles, service)
+                showProgress(false)
                 cardStackView.layoutManager = layoutManager
                 cardStackView.adapter = SwipeAdapter(c, articles)
-                val listener = mOnDragListener(cardStackView, articles, service)
                 cardStackView.layoutManager = CardStackLayoutManager(context, listener)
-
-
             }
         }
     }
@@ -201,6 +195,7 @@ class SwipeFragment(val c: Context, val service: FeedsService) : Fragment() {
     }
 
     fun resetItems() {
+        
         CoroutineScope(Dispatchers.IO).launch {
             val items = service.db.itemDao().getAllItems()
 
@@ -217,6 +212,17 @@ class SwipeFragment(val c: Context, val service: FeedsService) : Fragment() {
                 }
             }
             initRSSArticles(true)
+        }
+    }
+
+    suspend fun showProgress(show: Boolean) {
+        withContext(Dispatchers.Main) {
+            if (show) {
+                progressBarSwipe.visibility = View.VISIBLE
+            }
+            else {
+                progressBarSwipe.visibility = View.GONE
+            }
         }
     }
 }
