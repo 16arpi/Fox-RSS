@@ -100,9 +100,6 @@ class SwipeFragment(val c: Context, val service: FeedsService) : Fragment() {
                 }
                 true
             }
-            popup.setOnDismissListener {
-                // Respond to popup being dismissed.
-            }
             // Show the popup menu.
             popup.show()
         }

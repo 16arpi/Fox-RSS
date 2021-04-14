@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.pigeoff.rss.R
 import com.pigeoff.rss.activities.MainActivity
 import com.pigeoff.rss.adapters.FeedsAdapter
@@ -78,6 +79,7 @@ class FeedsFragment(private val c: Context,
 
         if (!intentExtra.isNullOrEmpty()) {
             progressToolbar.visibility = View.VISIBLE
+
             CoroutineScope(Dispatchers.IO).launch {
                 val urls = Util.getRssFromUrl(intentExtra!!)
                 withContext(Dispatchers.Main) {
@@ -94,6 +96,9 @@ class FeedsFragment(private val c: Context,
                                 bttmFragment.show(parentFragmentManager, "editbottomsheetfragment")
                             }
                             .show()
+                    }
+                    else {
+                        Snackbar.make(view, R.string.label_error_rss_add, Snackbar.LENGTH_SHORT).show()
                     }
                 }
             }

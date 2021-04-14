@@ -27,6 +27,8 @@
     <string name="label_error_feeds" >Merci d\'ajouter un flux RSS pour voir et sélectionner des articles.</string>
     <string name="label_error_feeds_btn" >Ajouter un flux RSS</string>
     <string name="label_error_article" >Il n\'y a aucun article à afficher</string>
+    <string name="label_error_rss_add" >Aucun flux RSS trouvé.</string>
+
 
     <string name="edit_title">Ajouter un flux RSS</string>
     <string name="edit_url">URL du flux RSS</string>
