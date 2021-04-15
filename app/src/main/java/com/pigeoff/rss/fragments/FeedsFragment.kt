@@ -6,10 +6,7 @@ import android.content.DialogInterface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ProgressBar
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -18,10 +15,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.pigeoff.rss.R
 import com.pigeoff.rss.activities.MainActivity
 import com.pigeoff.rss.adapters.FeedsAdapter
 import com.pigeoff.rss.adapters.SwipeAdapter
+import com.pigeoff.rss.callbacks.CustomActionMode
 import com.pigeoff.rss.db.RSSDbFeed
 import com.pigeoff.rss.db.RSSDbItem
 import com.pigeoff.rss.services.FeedsService
@@ -49,16 +48,7 @@ class FeedsFragment(private val c: Context,
     lateinit var bttmFragment: EditBottomSheetFragment
     lateinit var progressToolbar: ProgressBar
 
-    var selectedItems = mutableListOf<RSSDbFeed>()
-
-    val timeLimitConsultedItem: Long = 1000*3600*48 //24h
-
-    var articles = mutableListOf<RSSDbFeed>()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    var actionMode: ActionMode? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.layout_fragment_feeds, null)
@@ -78,6 +68,7 @@ class FeedsFragment(private val c: Context,
 
         if (!intentExtra.isNullOrEmpty()) {
             progressToolbar.visibility = View.VISIBLE
+
             CoroutineScope(Dispatchers.IO).launch {
                 val urls = Util.getRssFromUrl(intentExtra!!)
                 withContext(Dispatchers.Main) {
@@ -94,6 +85,9 @@ class FeedsFragment(private val c: Context,
                                 bttmFragment.show(parentFragmentManager, "editbottomsheetfragment")
                             }
                             .show()
+                    }
+                    else {
+                        Snackbar.make(view, R.string.label_error_rss_add, Snackbar.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -131,16 +125,16 @@ class FeedsFragment(private val c: Context,
         adapter.setOnCheckBoxClickListener(object : FeedsAdapter.OnCheckBoxClickListener {
             override fun onCheckBoxClickListener(selectedFeeds: MutableList<RSSDbFeed>) {
                 val toBeDeleted = mutableListOf<RSSDbFeed>()
-                val feeds = adapter.getAllItem()
+
                 for (i in selectedFeeds) {
                     toBeDeleted.add(i)
                 }
-                if (adapter.getSelectedItem().count() > 0) {
-                    showContextualBar(true)
+                if (selectedFeeds.count() > 0) {
+                    showContextualBar(selectedFeeds)
                 }
 
                 else {
-                    showContextualBar(false)
+                    showContextualBar(selectedFeeds)
                 }
             }
         })
@@ -149,30 +143,7 @@ class FeedsFragment(private val c: Context,
             when (it.itemId) {
 
                 R.id.itemDelete -> {
-                    if (adapter.selectedItems.count() > 0) {
-                        MaterialAlertDialogBuilder(context)
-                            .setTitle(R.string.dialog_feed_title)
-                            .setMessage(R.string.dialog_feed_message)
-                            .setNegativeButton(R.string.dialog_feed_cancel, DialogInterface.OnClickListener { _, _ ->
 
-                            })
-                            .setPositiveButton(R.string.dialog_feed_ok, DialogInterface.OnClickListener { _, _ ->
-                                val selectedFeeds = adapter.getSelectedItem()
-                                val toBeDeleted = mutableListOf<RSSDbFeed>()
-
-                                for (i in selectedFeeds) {
-                                    toBeDeleted.add(i)
-                                }
-                                adapter.removeFeeds(toBeDeleted)
-                                for (s in toBeDeleted) {
-                                    service.db.feedDao().deleteFeeds(s)
-                                    service.db.itemDao().deleteItemsFromChannelId(s.id)
-                                }
-
-                                showContextualBar(false)
-                            })
-                            .show()
-                    }
                 }
             }
             true
@@ -181,7 +152,7 @@ class FeedsFragment(private val c: Context,
     }
 
 
-    fun showContextualBar(show: Boolean) {
+    /*fun showContextualBar(show: Boolean) {
         if (show) {
             toolbar.title = ""
             toolbar.menu.findItem(R.id.itemDelete).isVisible = true
@@ -191,6 +162,70 @@ class FeedsFragment(private val c: Context,
             toolbar.title = context?.getString(R.string.item_feeds)
             toolbar.menu.findItem(R.id.itemDelete).isVisible = false
             toolbar.background = ColorDrawable(context!!.getColor(R.color.bgLight))
+        }
+    }*/
+
+    fun showContextualBar(articles: MutableList<RSSDbFeed>?) {
+        val adapter = recyclerView.adapter as FeedsAdapter
+        val callback = CustomActionMode(requireContext(), R.menu.menu_feeds)
+
+        if (actionMode == null) {
+            actionMode = toolbar.startActionMode(callback)
+        }
+
+        if (articles == null || articles.count() == 0) {
+            actionMode?.finish()
+        }
+
+        callback.setOnItemSelectedListener(object : CustomActionMode.OnItemSelectedListener {
+            override fun onItemSelectedListener(itemId: Int?) {
+                if (itemId != null) {
+                    when (itemId) {
+                        R.id.itemDelete -> {
+                            removeFeeds()
+                        }
+                        else -> {
+
+                        }
+                    }
+                }
+            }
+        })
+
+        callback.setOnActionModeFinishListener(object: CustomActionMode.OnActionModeFinishedListener {
+            override fun onActionModeFinishedListener() {
+                adapter.uncheckAllViews()
+                actionMode = null
+            }
+        })
+    }
+
+    fun removeFeeds() {
+        val adapter = recyclerView.adapter as FeedsAdapter
+        if (adapter.selectedItems.count() > 0) {
+            MaterialAlertDialogBuilder(context)
+                .setTitle(R.string.dialog_feed_title)
+                .setMessage(R.string.dialog_feed_message)
+                .setNegativeButton(R.string.dialog_feed_cancel, DialogInterface.OnClickListener { _, _ ->
+
+                })
+                .setPositiveButton(R.string.dialog_feed_ok, DialogInterface.OnClickListener { _, _ ->
+                    val selectedFeeds = adapter.getSelectedItem()
+                    val toBeDeleted = mutableListOf<RSSDbFeed>()
+
+                    for (i in selectedFeeds) {
+                        toBeDeleted.add(i)
+                    }
+
+                    adapter.removeFeeds(toBeDeleted)
+
+                    for (s in toBeDeleted) {
+                        service.db.feedDao().deleteFeeds(s)
+                        service.db.itemDao().deleteItemsFromChannelId(s.id)
+                    }
+                    actionMode?.finish()
+                })
+                .show()
         }
     }
 

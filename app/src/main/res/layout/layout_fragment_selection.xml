@@ -17,8 +17,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/bgLight"
                 android:minHeight="?attr/actionBarSize"
-                android:id="@+id/toolbarFeeds"
-                app:menu="@menu/menu_feeds" />
+                android:id="@+id/toolbarFeeds"/>
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.recyclerview.widget.RecyclerView
             app:layout_behavior="@string/appbar_scrolling_view_behavior"

@@ -1,10 +1,14 @@
 package com.pigeoff.rss.util
 
+import android.content.Context
 import android.graphics.drawable.Drawable
+import android.util.TypedValue
 import org.jsoup.Jsoup
-import java.net.URL
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+import kotlin.collections.ArrayList
 
 class Util {
     companion object {
@@ -20,11 +24,10 @@ class Util {
 
                 }
                 if (str.isEmpty()) {
-                    try {
-                        str = doc.getElementsByAttributeValueContaining("rel", "shortcut icon").first().attr("abs:href")
-                    }
-                    catch (e: Exception) {
-                        str = ""
+                    str = try {
+                        doc.getElementsByAttributeValueContaining("rel", "shortcut icon").first().attr("abs:href")
+                    } catch (e: Exception) {
+                        ""
                     }
                 }
             }
@@ -36,12 +39,9 @@ class Util {
         }
 
         fun getURLFromString(text: String): List<String>? {
-            val containedUrls: MutableList<String> =
-                ArrayList()
-            val urlRegex =
-                "((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)"
-            val pattern =
-                Pattern.compile(urlRegex, Pattern.CASE_INSENSITIVE)
+            val containedUrls: MutableList<String> = ArrayList()
+            val urlRegex = "((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)"
+            val pattern = Pattern.compile(urlRegex, Pattern.CASE_INSENSITIVE)
             val urlMatcher: Matcher = pattern.matcher(text)
             while (urlMatcher.find()) {
                 containedUrls.add(
@@ -83,11 +83,21 @@ class Util {
             }
             return str.toArray(arrayOf())
         }
+
+        fun getAttrValue(context: Context) : Int {
+            val outValue = TypedValue()
+            context.theme.resolveAttribute(android.R.attr.selectableItemBackground, outValue, true)
+            return outValue.resourceId
+        }
+
+        fun dateToHumanDate(date: String) : String {
+            val formatIn = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH)
+            val formatOut = SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH)
+            return formatOut.format(formatIn.parse(date))
+        }
     }
 
-    class IntroObject(title: String?, description: String?, image: Drawable?) {
-        val title = title
-        val description = description
-        val image = image
-    }
+    data class IntroObject(var title: String?,
+                           var description: String?,
+                           var image: Drawable?)
 }

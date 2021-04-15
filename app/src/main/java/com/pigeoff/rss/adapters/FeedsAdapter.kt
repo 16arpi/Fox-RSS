@@ -9,6 +9,8 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.pigeoff.rss.R
 import com.pigeoff.rss.db.RSSDbFeed
+import com.pigeoff.rss.db.RSSDbItem
+import com.pigeoff.rss.util.Util
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -52,7 +54,7 @@ class FeedsAdapter(val context: Context,
         }
         /* ADD PICASSO HERE */
 
-        holder.checkBox.isChecked = false
+        /*holder.checkBox.isChecked = false
 
         holder.checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
@@ -63,10 +65,29 @@ class FeedsAdapter(val context: Context,
                 selectedItems.remove(art)
                 mOnCheckBoxClickListener?.onCheckBoxClickListener(selectedItems)
             }
+        }*/
+
+        if (selectedItems.contains(art)) {
+            selectCard(holder.linear, null, true)
+        }
+        else {
+            selectCard(holder.linear, null, false)
         }
 
         holder.linear.setOnClickListener {
+            if (it.isSelected) {
+                selectCard(it, art, false)
+            }
+            else {
+                selectCard(it, art, true)
+            }
+        }
 
+        holder.linear.setOnLongClickListener {
+            if (!it.isSelected) {
+                selectCard(it, art, true)
+            }
+            true
         }
     }
 
@@ -79,7 +100,25 @@ class FeedsAdapter(val context: Context,
         val title = v.findViewById<TextView>(R.id.feedTitle)
         val url = v.findViewById<TextView>(R.id.feedUrl)
         val favicon = v.findViewById<ImageView>(R.id.feedFavicon)
-        val checkBox = v.findViewById<CheckBox>(R.id.feedCheckbox)
+    }
+
+    private fun selectCard(v: View, post: RSSDbFeed?, select: Boolean) {
+        if (select) {
+            v.isSelected = true
+            v.background = context.getDrawable(R.color.bgLightDark)
+            if (post != null) {
+                selectedItems.add(post)
+                mOnCheckBoxClickListener?.onCheckBoxClickListener(selectedItems)
+            }
+        }
+        else {
+            v.isSelected = false
+            v.background = context.getDrawable(Util.getAttrValue(context))
+            if (post != null) {
+                selectedItems.remove(post)
+                mOnCheckBoxClickListener?.onCheckBoxClickListener(selectedItems)
+            }
+        }
     }
 
     fun addOneFeed(newFeed: RSSDbFeed) {
@@ -88,12 +127,19 @@ class FeedsAdapter(val context: Context,
         newFeeds.addAll(feeds)
         feeds = newFeeds
 
-        val ia = mutableListOf<RSSDbFeed>()
-        for (i in selectedItems) {
-                ia.add(i)
-        }
-        selectedItems = ia
         notifyItemInserted(0)
+    }
+
+    //Public functions
+    fun uncheckAllViews() {
+        val oldSelectedItems = selectedItems
+        selectedItems = mutableListOf()
+
+        for (o in oldSelectedItems) {
+            val pos = feeds.indexOf(o)
+            notifyItemChanged(pos)
+        }
+
     }
 
     fun removeFeeds(toBeRemoved: MutableList<RSSDbFeed>) {
@@ -102,8 +148,16 @@ class FeedsAdapter(val context: Context,
             feeds.removeAt(pos)
             notifyItemRemoved(pos)
         }
-        selectedItems = mutableListOf()
     }
+
+    /*fun removeFeeds(toBeRemoved: MutableList<RSSDbFeed>) {
+        for (elmnt in toBeRemoved) {
+            val pos = feeds.indexOf(elmnt)
+            feeds.removeAt(pos)
+            notifyItemRemoved(pos)
+        }
+        //selectedItems = mutableListOf()
+    }*/
 
 
     interface OnCheckBoxClickListener {

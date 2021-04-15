@@ -5,7 +5,7 @@
 
     <string name="item_swip">Articles</string>
     <string name="item_inbox">Selection</string>
-    <string name="item_feeds">Subscriptions</string>
+    <string name="item_feeds">RSS feeds</string>
     <string name="item_favs">Favoris</string>
     <string name="item_add">Add</string>
     <string name="item_libraries">Libraries</string>
@@ -27,6 +27,7 @@
     <string name="label_error_feeds" >Please add an RSS Feed to see and select articles</string>
     <string name="label_error_feeds_btn" >Add RSS Feed</string>
     <string name="label_error_article" >There is no article to show</string>
+    <string name="label_error_rss_add" >No RSS feed found.</string>
 
     <string name="edit_title">Add a RSS feed</string>
     <string name="edit_url">URL of the RSS feed</string>
