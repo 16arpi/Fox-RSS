@@ -38,6 +38,7 @@ class SwipeAdapter(context: Context, articles: MutableList<ArticleExtended>) : R
         Log.i("IMG Cover", art.article.image.toString())
 
         holder.imgCover.setImageDrawable(context.getDrawable(R.drawable.bg))
+
         CoroutineScope(Dispatchers.IO).launch {
             if (!art.article.image.isNullOrEmpty()) {
                 try {
@@ -52,6 +53,7 @@ class SwipeAdapter(context: Context, articles: MutableList<ArticleExtended>) : R
         }
 
         holder.favicon.setImageDrawable(context.getDrawable(R.drawable.ic_feeds_white))
+
         CoroutineScope(Dispatchers.IO).launch {
             if (!art.article.link.isNullOrEmpty()) {
                 try {
@@ -66,9 +68,23 @@ class SwipeAdapter(context: Context, articles: MutableList<ArticleExtended>) : R
             }
         }
 
-        holder.title.text = art.article.title
-        holder.source.text = art.channel.title
-        holder.description.text = Html.fromHtml(art.article.description, Html.FROM_HTML_MODE_LEGACY)
+        try {
+            holder.title.text = art.article.title
+        } catch (e: Exception) {
+            holder.title.visibility = View.GONE
+        }
+
+        try {
+            holder.source.text = art.channel.title
+        } catch (e: Exception) {
+            holder.source.visibility = View.GONE
+        }
+
+        try {
+            holder.description.text = Html.fromHtml(art.article.description, Html.FROM_HTML_MODE_LEGACY)
+        } catch (e: Exception) {
+            holder.description.visibility = View.GONE
+        }
     }
 
     override fun getItemCount(): Int {
