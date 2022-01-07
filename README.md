@@ -21,3 +21,11 @@ When you click on an article (in the swipe view or the selection view), a reader
 ### See all the articles of a rss feed
 
 If you want, you can have access to all the articles of a specific rss feed by clicking on it in the « RSS Feeds » tab.
+
+## Bibliotèques de codes utilisées
+
+* [Google Material Components](https://github.com/material-components/material-components-android)
+* [JSoup](https://github.com/jhy/jsoup/)
+* [Picasso](https://github.com/square/picasso)
+* [Licences Dialog](https://github.com/PSDev/LicensesDialog)
+* [Readability4J](https://github.com/dankito/Readability4J)
