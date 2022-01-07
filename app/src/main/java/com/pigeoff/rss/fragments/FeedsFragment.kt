@@ -4,10 +4,12 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ProgressBar
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,10 +29,10 @@ import com.pigeoff.rss.services.FeedsService
 import com.pigeoff.rss.util.Util
 import com.pigeoff.rss.util.UtilItem
 import com.prof.rssparser.Article
-import com.yuyakaido.android.cardstackview.CardStackLayoutManager
-import com.yuyakaido.android.cardstackview.CardStackListener
-import com.yuyakaido.android.cardstackview.CardStackView
-import com.yuyakaido.android.cardstackview.Direction
+import com.pigeoff.rss.cardstackview.CardStackLayoutManager
+import com.pigeoff.rss.cardstackview.CardStackListener
+import com.pigeoff.rss.cardstackview.CardStackView
+import com.pigeoff.rss.cardstackview.Direction
 import kotlinx.android.synthetic.main.layout_fragment_feeds.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,9 +40,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 
-class FeedsFragment(private val c: Context,
-                    private val service: FeedsService,
-                    private var intentExtra: String?) : Fragment() {
+class FeedsFragment() : Fragment() {
+
+    lateinit var c: Context
+    lateinit var service: FeedsService
 
     lateinit var recyclerView: RecyclerView
     lateinit var toolbar: Toolbar
@@ -48,7 +51,16 @@ class FeedsFragment(private val c: Context,
     lateinit var bttmFragment: EditBottomSheetFragment
     lateinit var progressToolbar: ProgressBar
 
+    var intentExtra: String? = null
+
     var actionMode: ActionMode? = null
+
+    fun newInstance(c: Context, service: FeedsService, intentExtra: String?) : FeedsFragment {
+        this.c = c
+        this.service = service
+        this.intentExtra = intentExtra
+        return this
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.layout_fragment_feeds, null)
@@ -62,7 +74,7 @@ class FeedsFragment(private val c: Context,
         bttnAdd = view.findViewById(R.id.addBttn)
         progressToolbar = view.findViewById(R.id.progressToolbar)
         toolbar.setTitle(R.string.app_name)
-        bttmFragment = EditBottomSheetFragment(service, null)
+        bttmFragment = EditBottomSheetFragment().newInstance(service, null)
 
         toolbar.title = context?.getString(R.string.item_feeds)
 
@@ -93,13 +105,18 @@ class FeedsFragment(private val c: Context,
             }
         }
 
-        recyclerView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if (oldScrollY > scrollX) {
-                bttnAdd.show()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            recyclerView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                if (oldScrollY > scrollX) {
+                    bttnAdd.show()
+                }
+                else if (oldScrollY < scrollX) {
+                    bttnAdd.hide()
+                }
             }
-            else if (oldScrollY < scrollX) {
-                bttnAdd.hide()
-            }
+        }
+        else {
+            bttnAdd.show()
         }
 
     }
@@ -203,7 +220,7 @@ class FeedsFragment(private val c: Context,
     fun removeFeeds() {
         val adapter = recyclerView.adapter as FeedsAdapter
         if (adapter.selectedItems.count() > 0) {
-            MaterialAlertDialogBuilder(context)
+            MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.dialog_feed_title)
                 .setMessage(R.string.dialog_feed_message)
                 .setNegativeButton(R.string.dialog_feed_cancel, DialogInterface.OnClickListener { _, _ ->

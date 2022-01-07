@@ -24,10 +24,11 @@
     <string name="label_no_source">No source specified</string>
     <string name="label_no_date">No date specified</string>
     <string name="label_hello">Hello ☀️</string>
-    <string name="label_error_feeds" >Please add an RSS Feed to see and select articles</string>
-    <string name="label_error_feeds_btn" >Add RSS Feed</string>
-    <string name="label_error_article" >There is no article to show</string>
-    <string name="label_error_rss_add" >No RSS feed found.</string>
+    <string name="label_error_feeds">Add more RSS feeds to see and select articles</string>
+
+    <string name="label_error_feeds_btn">Add RSS Feed</string>
+    <string name="label_error_article">There is no article to show</string>
+    <string name="label_error_rss_add">No RSS feed found.</string>
 
     <string name="edit_title">Add a RSS feed</string>
     <string name="edit_url">URL of the RSS feed</string>
@@ -76,4 +77,16 @@
     <string name="dialog_intro_next">Next</string>
     <string name="dialog_intro_close">Close</string>
 
+    <string name="error_no_url">No URL available</string>
+
+    <string name="article_no_title">No title</string>
+
+    <string name="read_url_error">Unable to get the article</string>
+    <string name="read_internet_error">Error : please check your internet connexion</string>
+    <string name="read_menu_open_external">Open in web browser</string>
+    <string name="read_menu_share">Share</string>
+    <string name="read_menu_refresh">Refresh</string>
+
+    <string name="feed_read_error_noarticles">No article to show</string>
+    <string name="feed_read_error_feederror">Error with the RSS Feed</string>
 </resources>

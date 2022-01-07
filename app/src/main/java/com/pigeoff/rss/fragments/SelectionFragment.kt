@@ -19,8 +19,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 
-class SelectionFragment(private val c: Context, private val service: FeedsService) : Fragment() {
+class SelectionFragment() : Fragment() {
 
+    lateinit var c: Context
+    lateinit var service: FeedsService
     lateinit var recyclerView: RecyclerView
     lateinit var toolbar: Toolbar
     lateinit var adapter: ArticlesAdapter
@@ -28,6 +30,12 @@ class SelectionFragment(private val c: Context, private val service: FeedsServic
 
     var actionMode: ActionMode? = null
     var articles = mutableListOf<RSSDbItem>()
+
+    fun newInstance(c: Context, service: FeedsService) : SelectionFragment {
+        this.c = c
+        this.service = service
+        return this
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +52,7 @@ class SelectionFragment(private val c: Context, private val service: FeedsServic
         recyclerView = view.findViewById(R.id.feedsRecycler)
         toolbar = view.findViewById(R.id.toolbarFeeds)
         toolbar.setTitle(R.string.app_name)
-        bttmFragment = EditBottomSheetFragment(service, null)
+        bttmFragment = EditBottomSheetFragment().newInstance(service, null)
 
         adapter = ArticlesAdapter(c, articles, false)
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -181,7 +189,7 @@ class SelectionFragment(private val c: Context, private val service: FeedsServic
     }
 
     private fun showDeleteDialog() {
-        MaterialAlertDialogBuilder(context)
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.dialog_article_title)
             .setMessage(R.string.dialog_article_message)
             .setNegativeButton(R.string.dialog_article_cancel) { _, _ ->

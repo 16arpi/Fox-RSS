@@ -91,9 +91,15 @@ class Util {
         }
 
         fun dateToHumanDate(date: String) : String {
-            val formatIn = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH)
-            val formatOut = SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH)
+            val formatIn = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH)
+            val formatOut = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
             return formatOut.format(formatIn.parse(date))
+        }
+
+        fun humanDateToDate(date: String) : String {
+            val formatIn = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH)
+            val formatOut = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
+            return formatIn.format(formatOut.parse(date))
         }
     }
 

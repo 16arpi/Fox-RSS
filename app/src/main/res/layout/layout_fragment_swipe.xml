@@ -9,26 +9,34 @@
 
 
     <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/bttnReverse" android:gravity="center_horizontal"
-            android:id="@+id/layooutErrorArticle" android:visibility="gone">
+        android:id="@+id/layooutErrorArticle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/bttnReverse"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-                android:text="@string/label_error_feeds"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content" android:id="@+id/txtErrorArticles"
-                android:gravity="center_horizontal"
-                android:alpha="0.7" android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                android:layout_margin="16dp" style="@style/TextAppearance.MaterialComponents.Headline6"
-                android:textSize="20sp"/>
+            android:id="@+id/txtErrorArticles"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:alpha="0.7"
+            android:gravity="center_horizontal"
+            android:text="@string/label_error_feeds"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textSize="20sp" />
+
         <com.google.android.material.button.MaterialButton
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                app:icon="@drawable/ic_add"
-                android:text="@string/label_error_feeds_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/btnErrorArticle"/>
+            android:id="@+id/btnErrorArticle"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_error_feeds_btn"
+            app:icon="@drawable/ic_add" />
     </LinearLayout>
     <TextView
             android:text="@string/label_hello"
@@ -40,22 +48,25 @@
             android:layout_marginStart="16dp"
             android:textSize="40dp"
             android:textColor="@color/textSemiColorBlack"/>
+
     <ProgressBar
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/progressBarSwipe"
-            android:indeterminate="true"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="@+id/cardStackView"
-            app:layout_constraintEnd_toEndOf="@+id/cardStackView"
-            app:layout_constraintStart_toStartOf="@+id/cardStackView" android:visibility="gone"/>
-    <com.yuyakaido.android.cardstackview.CardStackView
+        android:id="@+id/progressBarSwipe"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/cardStackView"
+        app:layout_constraintEnd_toEndOf="@+id/cardStackView"
+        app:layout_constraintStart_toStartOf="@+id/cardStackView"
+        app:layout_constraintTop_toTopOf="parent" />
+    <com.pigeoff.rss.cardstackview.CardStackView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:id="@+id/cardStackView" app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
-    </com.yuyakaido.android.cardstackview.CardStackView>
+    </com.pigeoff.rss.cardstackview.CardStackView>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/bttnReverse"
             app:backgroundTint="@color/colorAccent"
@@ -67,7 +78,38 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp"
+            app:fabSize="mini" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/bttnNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_margin="16dp"
+        android:layout_marginBottom="16dp"
+        app:backgroundTint="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/bttnReverse"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_close" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/bttnYes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_margin="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:backgroundTint="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/bttnReverse"
+        app:srcCompat="@drawable/ic_check" />
+
     <ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"

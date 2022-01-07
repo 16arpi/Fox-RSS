@@ -15,9 +15,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pigeoff.rss.R
 import com.pigeoff.rss.activities.MainActivity
 import com.pigeoff.rss.adapters.IntroPagerAdapter
+import com.pigeoff.rss.services.FeedsService
 import com.pigeoff.rss.util.Util
 
 class IntroFragment(val c: Context) : Fragment() {
+
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.layout_intro, null)

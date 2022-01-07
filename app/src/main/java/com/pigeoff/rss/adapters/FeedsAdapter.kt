@@ -1,6 +1,7 @@
 package com.pigeoff.rss.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.pigeoff.rss.R
+import com.pigeoff.rss.activities.FeedArticlesActivity
 import com.pigeoff.rss.db.RSSDbFeed
 import com.pigeoff.rss.db.RSSDbItem
 import com.pigeoff.rss.util.Util
@@ -23,6 +25,7 @@ class FeedsAdapter(val context: Context,
     lateinit var holderFeeds: ViewHolder
     var mOnCheckBoxClickListener: OnCheckBoxClickListener? = null
     var selectedItems = mutableListOf<RSSDbFeed>()
+    val INTENT_FEED_ID = "intentfeedid"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         holderFeeds = ViewHolder(LayoutInflater.from(context).inflate(R.layout.adapter_feeds, parent, false))
@@ -79,7 +82,10 @@ class FeedsAdapter(val context: Context,
                 selectCard(it, art, false)
             }
             else {
-                selectCard(it, art, true)
+                //selectCard(it, art, true)
+                val readIntent = Intent(context, FeedArticlesActivity::class.java)
+                readIntent.putExtra(INTENT_FEED_ID, art.id)
+                context.startActivity(readIntent)
             }
         }
 

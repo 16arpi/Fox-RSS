@@ -24,7 +24,7 @@
     <string name="label_no_source">Aucun source indiquée</string>
     <string name="label_no_date">Aucune date indiquée</string>
     <string name="label_hello">Bonjour ☀️</string>
-    <string name="label_error_feeds" >Merci d\'ajouter un flux RSS pour voir et sélectionner des articles.</string>
+    <string name="label_error_feeds" >Ajoutez plus de flux RSS pour voir et sélectionner des articles.</string>
     <string name="label_error_feeds_btn" >Ajouter un flux RSS</string>
     <string name="label_error_article" >Il n\'y a aucun article à afficher</string>
     <string name="label_error_rss_add" >Aucun flux RSS trouvé.</string>
@@ -75,5 +75,20 @@
 
     <string name="dialog_intro_next">Next</string>
     <string name="dialog_intro_close">Close</string>
+
+    <string name="error_no_url">Aucun URL disponible</string>
+
+    <string name="article_no_title">Sans titre</string>
+
+    <string name="read_url_error">Impossible de récupérer l\'article</string>
+
+    <string name="read_menu_open_external">Ouvrir dans le navigateur</string>
+    <string name="read_internet_error">Erreur : merci de vérifier votre connexion internet</string>
+
+    <string name="read_menu_share">Partager</string>
+    <string name="read_menu_refresh">Rafraîchir</string>
+
+    <string name="feed_read_error_noarticles">Aucun article à afficher</string>
+    <string name="feed_read_error_feederror">Erreur liée au flux RSS</string>
 
 </resources>

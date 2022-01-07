@@ -23,6 +23,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
             notices.addNotice(Notice("RSS Parser", "https://github.com/prof18/RSS-Parser", "Copyright 2016-2020 Marco Gomiero", ApacheSoftwareLicense20()))
             notices.addNotice(Notice("CardStackView", "https://github.com/yuyakaido/CardStackView", "Copyright 2018 yuyakaido", ApacheSoftwareLicense20()))
             notices.addNotice(Notice("Picasso", "https://square.github.io/picasso/", "Copyright 2013 Square, Inc.", ApacheSoftwareLicense20()))
+            notices.addNotice(Notice("Readability4J", "https://github.com/dankito/Readability4J", "Copyright 2017 dankito", ApacheSoftwareLicense20()))
+
 
             LicensesDialog.Builder(requireActivity())
                     .setTitle(R.string.item_libraries)

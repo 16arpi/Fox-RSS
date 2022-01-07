@@ -57,13 +57,13 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.itemArticles ->
                     if (it.itemId != actualTab)
-                        updateFragment(SwipeFragment(this, feedService))
+                        updateFragment(SwipeFragment().newInstance(this, feedService))
                 R.id.itemSelections ->
                     if (it.itemId != actualTab)
-                        updateFragment(SelectionFragment(this, feedService))
+                        updateFragment(SelectionFragment().newInstance(this, feedService))
                 R.id.itemFeeds ->
                     if (it.itemId != actualTab)
-                        updateFragment(FeedsFragment(this, feedService, null))
+                        updateFragment(FeedsFragment().newInstance(this, feedService, null))
             }
             actualTab = it.itemId
             true
@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
 
         //Start SwipeFragment
         CoroutineScope(Dispatchers.IO).launch {
-            updateFragment(SwipeFragment(this@MainActivity, feedService))
+            updateFragment(SwipeFragment().newInstance(this@MainActivity, feedService))
         }
 
     }
@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity() {
             if (action == Intent.ACTION_SEND && !content.isNullOrEmpty()) {
                 if (content != extraIntent) {
                     extraIntent = content
-                    updateFragment(FeedsFragment(this@MainActivity, feedService, extraIntent))
+                    updateFragment(FeedsFragment().newInstance(this@MainActivity, feedService, extraIntent))
                     actualTab = R.id.itemFeeds
 
                     withContext(Dispatchers.Main) {

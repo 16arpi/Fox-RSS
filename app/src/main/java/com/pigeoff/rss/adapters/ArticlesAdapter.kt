@@ -19,6 +19,7 @@ import java.util.*
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.pigeoff.rss.activities.ReadActivity
 import com.pigeoff.rss.util.Util
 
 
@@ -29,6 +30,7 @@ class ArticlesAdapter(val context: Context,
     var service = (context.applicationContext as RSSApp).getClient()
     var selectedItems = mutableListOf<RSSDbItem>()
     var selectedCards = mutableListOf<View>()
+    val URL_EXTRA: String = "urlextra"
 
     private val VIEW_NORMAL = 0
     private val VIEW_FEATURED = 1
@@ -166,7 +168,7 @@ class ArticlesAdapter(val context: Context,
     }
 
     private fun openUrl(url: String) {
-        if (url.isNotEmpty()) {
+        /*if (url.isNotEmpty()) {
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 val builder = CustomTabsIntent.Builder()
                 val customTab = builder.build()
@@ -177,7 +179,12 @@ class ArticlesAdapter(val context: Context,
                 intent.data = Uri.parse(url)
                 context.startActivity(intent)
             }
-        }
+        }*/
+
+        val intent = Intent(context, ReadActivity::class.java);
+        intent.putExtra(URL_EXTRA, url)
+        context.startActivity(intent)
+
     }
 
     private fun onItemClicked(holder: ViewHolder, item: RSSDbItem) {

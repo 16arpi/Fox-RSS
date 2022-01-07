@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "793224680890",
+    "project_id": "fox-rss",
+    "storage_bucket": "fox-rss.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:793224680890:android:64b727457de24bc4c9f983",
+        "android_client_info": {
+          "package_name": "com.pigeoff.rss"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "793224680890-vhacnkkfvelg8piblsrprepkigikavsc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUOlngCJltP5MjZv_-ThpDs5CIP609428"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "793224680890-vhacnkkfvelg8piblsrprepkigikavsc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

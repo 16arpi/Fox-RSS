@@ -1,39 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.pigeoff.rss">
+    package="com.pigeoff.rss">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-            android:name=".RSSApp"
-            android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher_rss_square"
-            android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_rss_circle"
-            android:supportsRtl="true"
-            android:theme="@style/AppTheme"
-            android:usesCleartextTraffic="true"
-    >
-        <activity android:configChanges="orientation|screenSize|keyboard" android:name=".activities.MainActivity">
+        android:name=".RSSApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".activities.FeedArticlesActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.ReadActivity"
+            android:configChanges="orientation|screenSize|keyboard"
+            android:exported="true" />
+        <activity
+            android:name=".activities.MainActivity"
+            android:configChanges="orientation|screenSize|keyboard">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.SEND"/>
+                <action android:name="android.intent.action.SEND" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="text/plain"/>
+                <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
         <activity
-                android:configChanges="orientation|screenSize|keyboard"
-                android:name=".activities.SettingsActivity"
-                android:theme="@style/AppThemBar"
-                android:label="@string/menu_home_settings">
-        </activity>
+            android:name=".activities.SettingsActivity"
+            android:configChanges="orientation|screenSize|keyboard"
+            android:label="@string/menu_home_settings"
+            android:theme="@style/AppThemBar" />
+        <activity
+            android:name=".activities.StartupActivity"
+            android:theme="@style/Theme.Intro" />
     </application>
 
 </manifest>

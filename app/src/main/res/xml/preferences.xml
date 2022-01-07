@@ -8,10 +8,11 @@
 
         <ListPreference
                 android:inputType="number"
-                android:defaultValue="true"
+                android:defaultValue="1"
                 app:singleLine="true"
                 app:title="@string/settings_read_days_label"
                 app:key="@string/key_expiration_read_article"
+                app:defaultValue="3"
                 android:entries="@array/setting_expiration_date"
                 android:entryValues="@array/setting_expiration_date_values"
                 app:summary="@string/settings_read_days_message"/>

@@ -11,12 +11,12 @@
     </string-array>
 
     <string-array name="setting_expiration_date">
-        <item value="1" >One day</item>
-        <item value="3" >Three days</item>
-        <item value="7" >One week</item>
-        <item value="30" >One month</item>
-        <item value="60" >Two month</item>
-        <item value="365" >One year</item>
+        <item value="1" >1 day</item>
+        <item value="3" >3 days</item>
+        <item value="7" >7 days</item>
+        <item value="30" >30 days</item>
+        <item value="60" >60 days</item>
+        <item value="365" >365 days</item>
         <item value="40000000000" >Never</item>
     </string-array>
 

@@ -7,7 +7,7 @@ import com.prof.rssparser.Channel
 
 class UtilItem {
     companion object {
-        fun toRSSItem(art: ArticleExtended) : RSSDbItem {
+        fun toRSSItem(art: ArticleExtended): RSSDbItem {
             val article = art.article
             val channel = art.channel
             val item = RSSDbItem()
@@ -55,7 +55,7 @@ class UtilItem {
                 item.publishDate = article.pubDate!!
             }
             if (!article.categories.isNullOrEmpty() && article.categories.count() > 0) {
-                item.categories = article.categories.joinToString(",","","")
+                item.categories = article.categories.joinToString(",", "", "")
             }
             if (!article.audio.isNullOrEmpty()) {
                 item.audio = article.audio!!
@@ -70,7 +70,7 @@ class UtilItem {
             return item
         }
 
-        fun toRSSFeed(url: String, feed: Channel) : RSSDbFeed {
+        fun toRSSFeed(url: String, feed: Channel): RSSDbFeed {
             val item = RSSDbFeed()
 
             if (!url.isNullOrEmpty()) {

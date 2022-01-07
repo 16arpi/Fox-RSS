@@ -23,15 +23,26 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class EditBottomSheetFragment(var service: FeedsService, var feed: RSSDbFeed?) : BottomSheetDialogFragment() {
+class EditBottomSheetFragment() : BottomSheetDialogFragment() {
+
+
 
     private var mOnFeedAddedListener: OnFeedAddedListener? = null
     var TAG = "editbottomsheetfragment"
     var initText = ""
+
+    var feed: RSSDbFeed? = null
+    lateinit var service: FeedsService
     lateinit var progress: ProgressBar
     lateinit var edit: TextInputEditText
     lateinit var editLayout: TextInputLayout
     lateinit var ok: Button
+
+    fun newInstance(service: FeedsService, feed: RSSDbFeed?) : EditBottomSheetFragment {
+        this.service = service
+        this.feed = feed
+        return this
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
