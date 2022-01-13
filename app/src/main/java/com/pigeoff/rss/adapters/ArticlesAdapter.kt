@@ -77,11 +77,11 @@ class ArticlesAdapter(val context: Context,
             holder.favicon.setImageDrawable(context.getDrawable(R.drawable.ic_link))
 
             if (post.consulted) {
-                holder.title.setTextColor(context.getColor(R.color.consultedTextColor))
-                holder.meta.setTextColor(context.getColor(R.color.consultedTextColor))
+                holder.title.setTextColor(ContextCompat.getColor(context,R.color.consultedTextColor))
+                holder.meta.setTextColor(ContextCompat.getColor(context,R.color.consultedTextColor))
             } else {
-                holder.meta.setTextColor(context.getColor(R.color.textColorBlack))
-                holder.title.setTextColor(context.getColor(R.color.textColorBlack))
+                holder.meta.setTextColor(ContextCompat.getColor(context,R.color.textColorBlack))
+                holder.title.setTextColor(ContextCompat.getColor(context,R.color.textColorBlack))
             }
 
             loadImage(post, holder)

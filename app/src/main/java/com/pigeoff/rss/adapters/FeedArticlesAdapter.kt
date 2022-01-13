@@ -20,6 +20,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.pigeoff.rss.activities.ReadActivity
 import com.pigeoff.rss.util.ArticleExtended
 import com.pigeoff.rss.util.Util
@@ -48,8 +49,8 @@ class FeedArticlesAdapter(val context: Context,
         holder.source.text = post.channel.title
 
 
-        holder.meta.setTextColor(context.getColor(R.color.textColorBlack))
-        holder.title.setTextColor(context.getColor(R.color.textColorBlack))
+        holder.meta.setTextColor(ContextCompat.getColor(context, R.color.textColorBlack))
+        holder.title.setTextColor(ContextCompat.getColor(context,R.color.textColorBlack))
 
         holder.favicon.setImageDrawable(context.getDrawable(R.drawable.ic_link))
         if (favicon.isNotEmpty()) Picasso.get().load(favicon).into(holder.favicon)
