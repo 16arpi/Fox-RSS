@@ -27,6 +27,7 @@ If you want, you can have access to all the articles of a specific rss feed by c
 ## Bibliotèques de codes utilisées
 
 * [Google Material Components](https://github.com/material-components/material-components-android)
+* [RSS Parser](https://github.com/prof18/RSS-Parser)
 * [JSoup](https://github.com/jhy/jsoup/)
 * [Picasso](https://github.com/square/picasso)
 * [Licences Dialog](https://github.com/PSDev/LicensesDialog)
