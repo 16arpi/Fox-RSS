@@ -1,5 +1,6 @@
 package com.pigeoff.rss.fragments
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -77,26 +78,33 @@ class EditBottomSheetFragment() : BottomSheetDialogFragment() {
     }
 
     suspend fun addFeedFromURL(url: String) {
-        try {
-            val channel = service.parser.getChannel(url)
-            System.out.println(channel)
-            val generatedFeed = UtilItem.toRSSFeed(url, channel)
-            generatedFeed.faviconUrl = Util.getFaviconUrl(channel.link.toString())
-            generatedFeed.imageUrl = Util.getFaviconUrl(channel.link.toString())
-            service.db.feedDao().insertFeeds(generatedFeed)
-            val newFeed = service.db.feedDao().getLastFeed()
-
-            //End
+        if (url.isEmpty() || !url.contains("http")) {
             withContext(Dispatchers.Main) {
-                mOnFeedAddedListener?.onFeedAddedListener(newFeed)
-                dismiss()
-            }
-        }
-        catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                Log.e("ERROR", e.message.toString())
                 progress.visibility = View.GONE
-                editLayout.error = context?.getString(R.string.edit_error)
+                editLayout.error = context?.getString(R.string.edit_error_url)
+            }
+        } else {
+            try {
+                val channel = service.parser.getChannel(url)
+                System.out.println(channel)
+                val generatedFeed = UtilItem.toRSSFeed(url, channel)
+                generatedFeed.faviconUrl = Util.getFaviconUrl(channel.link.toString())
+                generatedFeed.imageUrl = Util.getFaviconUrl(channel.link.toString())
+                service.db.feedDao().insertFeeds(generatedFeed)
+                val newFeed = service.db.feedDao().getLastFeed()
+
+                //End
+                withContext(Dispatchers.Main) {
+                    mOnFeedAddedListener?.onFeedAddedListener(newFeed)
+                    dismiss()
+                }
+            }
+            catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Log.e("ERROR", e.message.toString())
+                    progress.visibility = View.GONE
+                    editLayout.error = context?.getString(R.string.edit_error)
+                }
             }
         }
     }

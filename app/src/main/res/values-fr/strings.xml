@@ -16,6 +16,9 @@
     <string name="menu_home_check">Refraîchir les nouveaux articles</string>
     <string name="menu_home_reset">Recharger tous les articles ignorés</string>
 
+    <string name="menu_selection_done">Enlever les articles lus</string>
+
+
     <string name="dialog_reset_title">Êtes vous certain·e ?</string>
     <string name="dialog_reset_message">Votre sélection d\'articles sera vide ensuite.</string>
     <string name="dialog_reset_cancel">@string/dialog_feed_cancel</string>
@@ -33,6 +36,7 @@
     <string name="edit_title">Ajouter un flux RSS</string>
     <string name="edit_url">URL du flux RSS</string>
     <string name="edit_error">Erreur. Ça ne marche pas...</string>
+    <string name="edit_error_url">Erreur. Vous devez inscrire une URL valide</string>
     <string name="edit_bttn">Ajouter un flux RSS</string>
 
     <string name="dialog_add_title">Choisissez un flux RSS</string>
@@ -54,7 +58,12 @@
     </string>
     <string name="settings_subtitle2">Informations</string>
     <string name="settings_about_label">À propos du développeur</string>
+    <string name="settings_mail_label">Contacter le développeur</string>
     <string name="settings_libraries_label">Bibliothèques utilisées dans cette application</string>
+    <string name="settings_subtitle3">Affichage</string>
+    <string name="settings_customfont_title">Type de police d\'écriture</string>
+    <string name="settings_customfont_description">Pour le mode lecture, vous pouvez choisir soit une police d\'écriture avec empattement, soit une sans empattement.
+    </string>
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
@@ -72,6 +81,7 @@
     <string name="key_expiration_read_article">expirationdatereadarticle</string>
     <string name="key_app_pref">apppref</string>
     <string name="key_first_launch">firstlaunch</string>
+    <string name="key_customfontstyle">customfontstyle</string>
 
     <string name="dialog_intro_next">Next</string>
     <string name="dialog_intro_close">Close</string>
@@ -90,5 +100,10 @@
 
     <string name="feed_read_error_noarticles">Aucun article à afficher</string>
     <string name="feed_read_error_feederror">Erreur liée au flux RSS</string>
+
+    <string name="empty_no_selection_t" >Sélection vide</string>
+    <string name="empty_no_rssfeed_t" >Aucun flux RSS</string>
+
+    <string name="intro_rss_url">https://pigeoff.pw/fox/help/fr/rss.xml</string>
 
 </resources>

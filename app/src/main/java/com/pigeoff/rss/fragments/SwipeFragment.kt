@@ -9,12 +9,17 @@ import android.view.animation.AccelerateInterpolator
 import android.widget.*
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pigeoff.rss.R
+import com.pigeoff.rss.RSSApp
 import com.pigeoff.rss.activities.MainActivity
 import com.pigeoff.rss.activities.SettingsActivity
+import com.pigeoff.rss.adapters.FeedsAdapter
 import com.pigeoff.rss.adapters.SwipeAdapter
+import com.pigeoff.rss.adapters.SwipeFeedsAdapter
 import com.pigeoff.rss.db.RSSDbItem
 import com.pigeoff.rss.services.FeedsService
 import com.pigeoff.rss.util.ArticleExtended
@@ -30,7 +35,7 @@ import java.util.*
 
 class SwipeFragment() : Fragment() {
 
-    lateinit var c: Context
+    lateinit var mcontext: Context
     lateinit var service: FeedsService
     lateinit var cardStackView: CardStackView
     lateinit var btnReverse: FloatingActionButton
@@ -44,13 +49,10 @@ class SwipeFragment() : Fragment() {
     lateinit var btnErrorArticles: MaterialButton
     lateinit var layoutErrorArticles: LinearLayout
 
-    var articles = mutableListOf<RSSDbItem>()
+    // Existing feeds
+    lateinit var recyclerViewSwipeFeeds: RecyclerView
 
-    fun newInstance(c: Context, service: FeedsService) : SwipeFragment {
-        this.c = c
-        this.service = service
-        return this
-    }
+    var articles = mutableListOf<RSSDbItem>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.layout_fragment_swipe, null)
@@ -58,6 +60,11 @@ class SwipeFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val app = requireActivity().application as RSSApp
+        service = app.getClient()
+        mcontext = requireContext()
+
         //Binding
         cardStackView = view.findViewById(R.id.cardStackView)
         btnReverse = view.findViewById(R.id.bttnReverse)
@@ -67,8 +74,29 @@ class SwipeFragment() : Fragment() {
         progressBarSwipe = view.findViewById(R.id.progressBarSwipe)
         txtErrorArticles = view.findViewById(R.id.txtErrorArticles)
         btnErrorArticles = view.findViewById(R.id.btnErrorArticle)
-        layoutErrorArticles = view.findViewById(R.id.layooutErrorArticle)
+        recyclerViewSwipeFeeds = view.findViewById(R.id.recyclerViewSwipeFeeds)
+        layoutErrorArticles = view.findViewById(R.id.layoutErrorArticle)
 
+        // Handling popup
+        val popup = PopupMenu(mcontext, btnOptions, Gravity.END)
+        popup.menuInflater.inflate(R.menu.menu_home, popup.menu)
+        popup.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when (menuItem.itemId) {
+                R.id.itemSettings -> {
+                    val intent = Intent(context, SettingsActivity::class.java)
+                    startActivity(intent)
+                }
+                R.id.itemReload -> {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        initRSSArticles(true)
+                    }
+                }
+                R.id.itemReset -> {
+                    resetItems()
+                }
+            }
+            true
+        }
 
 
         val listener = mOnDragListener(cardStackView, articles, service)
@@ -77,7 +105,7 @@ class SwipeFragment() : Fragment() {
 
         btnErrorArticles.setOnClickListener {
             val a = requireActivity() as MainActivity
-            a.setFragmentFromExterior(R.id.itemFeeds, FeedsFragment().newInstance(requireActivity(), service, null))
+            a.setFragmentFromExterior(R.id.itemFeeds)
         }
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -97,35 +125,27 @@ class SwipeFragment() : Fragment() {
         }
 
         btnOptions.setOnClickListener {
-            val popup = PopupMenu(requireContext(), it, Gravity.END)
-            popup.menuInflater.inflate(R.menu.menu_home, popup.menu)
-
-            popup.setOnMenuItemClickListener { menuItem: MenuItem ->
-                when (menuItem.itemId) {
-                    R.id.itemSettings -> {
-                        val intent = Intent(context, SettingsActivity::class.java)
-                        startActivity(intent)
-                    }
-                    R.id.itemReload -> {
-                        CoroutineScope(Dispatchers.Main).launch {
-                            initRSSArticles(true)
-                        }
-                    }
-                    R.id.itemReset -> {
-                        resetItems()
-                    }
-                }
-                true
-            }
-            // Show the popup menu.
             popup.show()
         }
-
 
     }
 
     override fun onResume() {
         super.onResume()
+
+        // Show rss feeds when user finish his/her selection
+        val rssFeeds = service.db.feedDao().getAllFeeds()
+        val gridLayoutManager = GridLayoutManager(requireContext(), 3);
+        val adapter = SwipeFeedsAdapter(requireContext(), rssFeeds)
+        recyclerViewSwipeFeeds.layoutManager = gridLayoutManager
+        recyclerViewSwipeFeeds.adapter = adapter
+
+        adapter.setOnAddFeedClickListener(object : SwipeFeedsAdapter.OnAddFeedClickListener {
+            override fun onAddFeedClickListener() {
+                val a = requireActivity() as MainActivity
+                a.setFragmentFromExterior(R.id.itemFeeds)
+            }
+        })
     }
 
     override fun onStop() {
@@ -168,7 +188,7 @@ class SwipeFragment() : Fragment() {
                 val listener = mOnDragListener(cardStackView, articles, service)
                 showProgress(false)
                 cardStackView.layoutManager = layoutManager
-                cardStackView.adapter = SwipeAdapter(c, articles)
+                cardStackView.adapter = SwipeAdapter(mcontext, articles)
                 cardStackView.layoutManager = CardStackLayoutManager(context, listener)
 
                 if (articles.count() > 0) {
@@ -219,7 +239,7 @@ class SwipeFragment() : Fragment() {
 
         override fun onCardSwiped(direction: Direction?) {
             CoroutineScope(Dispatchers.IO).launch {
-                val article = articles[(v.layoutManager as CardStackLayoutManager).topPosition-1]
+                val article = articles[(v.layoutManager as CardStackLayoutManager).topPosition - 1]
                 Log.i("Article", "Swiped!")
 
                 //Metadatas
@@ -280,11 +300,11 @@ class SwipeFragment() : Fragment() {
         withContext(Dispatchers.Main) {
             if (show) {
                 progressBarSwipe.visibility = View.VISIBLE
-                layoutErrorArticles.visibility = View.GONE
+                recyclerViewSwipeFeeds.visibility = View.GONE
             }
             else {
                 progressBarSwipe.visibility = View.GONE
-                layoutErrorArticles.visibility = View.VISIBLE
+                recyclerViewSwipeFeeds.visibility = View.VISIBLE
             }
         }
     }

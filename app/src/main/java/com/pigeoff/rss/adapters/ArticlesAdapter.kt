@@ -19,8 +19,10 @@ import java.util.*
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.pigeoff.rss.activities.ReadActivity
 import com.pigeoff.rss.util.Util
+import kotlinx.android.synthetic.main.adapter_empty.view.*
 
 
 class ArticlesAdapter(val context: Context,
@@ -29,104 +31,102 @@ class ArticlesAdapter(val context: Context,
 
     var service = (context.applicationContext as RSSApp).getClient()
     var selectedItems = mutableListOf<RSSDbItem>()
-    var selectedCards = mutableListOf<View>()
     val URL_EXTRA: String = "urlextra"
 
     private val VIEW_NORMAL = 0
-    private val VIEW_FEATURED = 1
+    private val VIEW_EMPTY = 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            VIEW_FEATURED -> {
-                ViewHolder(LayoutInflater.from(context).inflate(R.layout.adapter_post_featured, parent, false))
-            }
-            else -> {
-                ViewHolder(LayoutInflater.from(context).inflate(R.layout.adapter_post, parent, false))
-            }
+        if (viewType == VIEW_NORMAL) {
+            return ViewHolder(LayoutInflater.from(context).inflate(R.layout.adapter_post, parent, false))
+        } else {
+            return EmptyViewHolder(LayoutInflater.from(context).inflate(R.layout.adapter_empty, parent, false))
         }
     }
 
     override fun getItemCount(): Int {
-        return posts.count()
+        return if (posts.count() > 0) {
+            posts.count()
+        } else {
+            1
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (feature) {
-            if (position == 0) {
-                VIEW_FEATURED
-            } else {
-                val reste = position % 5
-                if (reste == 0) {
-                    VIEW_FEATURED
-                } else {
-                    VIEW_NORMAL
-                }
-            }
-        } else {
+        return if (posts.count() > 0) {
             VIEW_NORMAL
+        } else {
+            VIEW_EMPTY
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        holder as ViewHolder
-        val post = posts[position]
+        if (getItemViewType(position) == VIEW_NORMAL) {
+            holder as ViewHolder
+            val post = posts[position]
 
-        if (selectedItems.contains(post)) {
-            selectCard(holder.cardItem, null, true)
-        }
-        else {
-            selectCard(holder.cardItem, null, false)
-        }
-
-        holder.title.text = post.title
-        holder.source.text = post.channelTitle
-        holder.favicon.setImageDrawable(context.getDrawable(R.drawable.ic_link))
-
-        if (post.consulted) {
-            holder.title.setTextColor(context.getColor(R.color.consultedTextColor))
-            holder.meta.setTextColor(context.getColor(R.color.consultedTextColor))
-        } else {
-            holder.meta.setTextColor(context.getColor(R.color.textColorBlack))
-            holder.title.setTextColor(context.getColor(R.color.textColorBlack))
-        }
-
-        loadImage(post, holder)
-
-        try {
-            holder.meta.text = Util.dateToHumanDate(post.publishDate)
-        }
-        catch (e: Exception) {
-            if (post.publishDate.isNotEmpty()) {
-                holder.meta.text = post.publishDate
+            if (selectedItems.contains(post)) {
+                selectCard(holder.cardItem, null, true)
             }
             else {
-                holder.meta.text = context.getString(R.string.label_no_date)
+                selectCard(holder.cardItem, null, false)
             }
-        }
 
-        //CardItem Selection
-        holder.cardItem.setOnClickListener {
-            if (it.isSelected) {
-                selectCard(it, post, false)
+            holder.title.text = post.title
+            holder.source.text = post.channelTitle
+            holder.favicon.setImageDrawable(context.getDrawable(R.drawable.ic_link))
+
+            if (post.consulted) {
+                holder.title.setTextColor(context.getColor(R.color.consultedTextColor))
+                holder.meta.setTextColor(context.getColor(R.color.consultedTextColor))
+            } else {
+                holder.meta.setTextColor(context.getColor(R.color.textColorBlack))
+                holder.title.setTextColor(context.getColor(R.color.textColorBlack))
             }
-            else {
-                if (selectedItems.count() > 0) {
-                    selectCard(it, post, true)
+
+            loadImage(post, holder)
+
+            try {
+                holder.meta.text = Util.dateToHumanDate(post.publishDate)
+            }
+            catch (e: Exception) {
+                if (post.publishDate.isNotEmpty()) {
+                    holder.meta.text = post.publishDate
                 }
                 else {
-                    //When ITEM opens
-                    openUrl(post.link)
-                    onItemClicked(holder, post)
+                    holder.meta.text = context.getString(R.string.label_no_date)
                 }
             }
+
+            //CardItem Selection
+            holder.cardItem.setOnClickListener {
+                if (it.isSelected) {
+                    selectCard(it, post, false)
+                }
+                else {
+                    if (selectedItems.count() > 0) {
+                        selectCard(it, post, true)
+                    }
+                    else {
+                        //When ITEM opens
+                        openUrl(post.link)
+                        onItemClicked(holder, post)
+                    }
+                }
+            }
+
+            holder.cardItem.setOnLongClickListener {
+                if (!it.isSelected) {
+                    selectCard(it, post, true)
+                }
+                true
+            }
+        } else {
+            holder as EmptyViewHolder
+            holder.emptyIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_inbox))
+            holder.emptyTitle.text = context.getString(R.string.empty_no_selection_t)
         }
 
-        holder.cardItem.setOnLongClickListener {
-            if (!it.isSelected) {
-                selectCard(it, post, true)
-            }
-            true
-        }
     }
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
@@ -135,6 +135,11 @@ class ArticlesAdapter(val context: Context,
         val title: TextView = v.txtTitle
         val meta: TextView = v.txtMeta
         val favicon: ImageView = v.feedFavicon
+    }
+
+    class EmptyViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+        val emptyIcon: ImageView = v.emptyIcon
+        val emptyTitle: TextView = v.emptyTitle
     }
 
     private fun loadImage(post: RSSDbItem, holder: ViewHolder) {
@@ -168,18 +173,6 @@ class ArticlesAdapter(val context: Context,
     }
 
     private fun openUrl(url: String) {
-        /*if (url.isNotEmpty()) {
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                val builder = CustomTabsIntent.Builder()
-                val customTab = builder.build()
-                builder.setStartAnimations(context, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                customTab.launchUrl(context, Uri.parse(url))
-            } else {
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.data = Uri.parse(url)
-                context.startActivity(intent)
-            }
-        }*/
 
         val intent = Intent(context, ReadActivity::class.java);
         intent.putExtra(URL_EXTRA, url)

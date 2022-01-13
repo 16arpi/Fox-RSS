@@ -1,5 +1,6 @@
 package com.pigeoff.rss.util
 
+import android.util.Base64
 import com.pigeoff.rss.db.RSSDbFeed
 import com.pigeoff.rss.db.RSSDbItem
 import com.prof.rssparser.Article

@@ -13,6 +13,8 @@ import kotlin.collections.ArrayList
 class Util {
     companion object {
 
+        val BUNDLE_INTENT_EXTRA = "bundleintentextra"
+
         fun getFaviconUrl(url: String) : String {
             var str = ""
             try {

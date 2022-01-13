@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.pigeoff.rss.R
 import com.pigeoff.rss.activities.FeedArticlesActivity
@@ -20,85 +21,102 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class FeedsAdapter(val context: Context,
-                   var feeds: MutableList<RSSDbFeed>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                   var feeds: MutableList<RSSDbFeed>,
+                   val editMode: Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     lateinit var holderFeeds: ViewHolder
     var mOnCheckBoxClickListener: OnCheckBoxClickListener? = null
     var selectedItems = mutableListOf<RSSDbFeed>()
+    val VIEW_NORMAL = 0
+    val VIEW_EMPTY = 1
     val INTENT_FEED_ID = "intentfeedid"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        holderFeeds = ViewHolder(LayoutInflater.from(context).inflate(R.layout.adapter_feeds, parent, false))
-        return holderFeeds
+        return if (viewType == VIEW_NORMAL) {
+            ViewHolder(
+                LayoutInflater.from(context).inflate(R.layout.adapter_feeds, parent, false)
+            )
+        } else {
+            ArticlesAdapter.EmptyViewHolder(
+                LayoutInflater.from(context).inflate(R.layout.adapter_empty, parent, false)
+            )
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        holder as ViewHolder
-        val art = feeds.get(position)
+        if (getItemViewType(position) == VIEW_NORMAL) {
+            holder as ViewHolder
+            val art = feeds[position]
 
-        System.out.println(art)
-
-        holder.title.text = art.title
-        holder.url.text = art.url
-
-        //Image
-        holder.favicon.setImageDrawable(context.getDrawable(R.drawable.ic_feeds))
-        CoroutineScope(Dispatchers.IO).launch {
-            if (!art.faviconUrl.isEmpty()) {
-                withContext(Dispatchers.Main) {
-                    Picasso.get().load(art.imageUrl).into(holder.favicon)
-                }
+            if (selectedItems.contains(art)) {
+                selectCard(holder.linear, null, true)
             }
             else {
-                withContext(Dispatchers.Main) {
-                    holder.favicon.setImageDrawable(context.getDrawable(R.drawable.ic_feeds))
+                selectCard(holder.linear, null, false)
+            }
+
+            holder.title.text = art.title
+            holder.url.text = art.link
+
+            //Image
+            holder.favicon.setImageDrawable(context.getDrawable(R.drawable.ic_feeds))
+            CoroutineScope(Dispatchers.IO).launch {
+                if (!art.faviconUrl.isEmpty()) {
+                    withContext(Dispatchers.Main) {
+                        Picasso.get().load(art.imageUrl).into(holder.favicon)
+                    }
+                }
+                else {
+                    withContext(Dispatchers.Main) {
+                        holder.favicon.setImageDrawable(context.getDrawable(R.drawable.ic_feeds))
+                    }
                 }
             }
-        }
-        /* ADD PICASSO HERE */
 
-        /*holder.checkBox.isChecked = false
 
-        holder.checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                selectedItems.add(art)
-                Log.i("Pos", selectedItems.toString())
-                mOnCheckBoxClickListener?.onCheckBoxClickListener(selectedItems)
-            } else {
-                selectedItems.remove(art)
-                mOnCheckBoxClickListener?.onCheckBoxClickListener(selectedItems)
+            holder.linear.setOnClickListener {
+                if (it.isSelected) {
+                    selectCard(it, art, false)
+                }
+                else {
+                    if (selectedItems.count() > 0) {
+                        selectCard(it, art, true)
+                    }
+                    else {
+                        val readIntent = Intent(context, FeedArticlesActivity::class.java)
+                        readIntent.putExtra(INTENT_FEED_ID, art.id)
+                        context.startActivity(readIntent)
+                    }
+                }
             }
-        }*/
 
-        if (selectedItems.contains(art)) {
-            selectCard(holder.linear, null, true)
-        }
-        else {
-            selectCard(holder.linear, null, false)
-        }
-
-        holder.linear.setOnClickListener {
-            if (it.isSelected) {
-                selectCard(it, art, false)
+            holder.linear.setOnLongClickListener {
+                if (!it.isSelected) {
+                    selectCard(it, art, true)
+                }
+                true
             }
-            else {
-                //selectCard(it, art, true)
-                val readIntent = Intent(context, FeedArticlesActivity::class.java)
-                readIntent.putExtra(INTENT_FEED_ID, art.id)
-                context.startActivity(readIntent)
-            }
-        }
-
-        holder.linear.setOnLongClickListener {
-            if (!it.isSelected) {
-                selectCard(it, art, true)
-            }
-            true
+        } else {
+            holder as ArticlesAdapter.EmptyViewHolder
+            holder.emptyIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_feeds))
+            holder.emptyTitle.text = context.getString(R.string.empty_no_rssfeed_t)
         }
     }
 
     override fun getItemCount(): Int {
-        return feeds.count()
+        return if (feeds.count() > 0) {
+            feeds.count()
+        } else {
+            1
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (feeds.count() > 0) {
+            VIEW_NORMAL
+        } else {
+            VIEW_EMPTY
+        }
     }
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
@@ -128,12 +146,19 @@ class FeedsAdapter(val context: Context,
     }
 
     fun addOneFeed(newFeed: RSSDbFeed) {
-        val newFeeds = mutableListOf<RSSDbFeed>()
-        newFeeds.add(newFeed)
-        newFeeds.addAll(feeds)
-        feeds = newFeeds
-
-        notifyItemInserted(0)
+        if (getItemViewType(0) == VIEW_EMPTY) {
+            val newFeeds = mutableListOf<RSSDbFeed>()
+            newFeeds.add(newFeed)
+            newFeeds.addAll(feeds)
+            feeds = newFeeds
+            notifyDataSetChanged()
+        } else {
+            val newFeeds = mutableListOf<RSSDbFeed>()
+            newFeeds.add(newFeed)
+            newFeeds.addAll(feeds)
+            feeds = newFeeds
+            notifyItemInserted(0)
+        }
     }
 
     //Public functions

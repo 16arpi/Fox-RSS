@@ -21,12 +21,14 @@
             app:collapsedTitleTextAppearance="@style/TextAppearance.App.CollapsingToolbar.Collapsed"
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            app:maxLines="3"
             >
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/topAppBarFeedArticles"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                app:menu="@menu/menu_articles_feed"
                 style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 app:titleTextColor="@android:color/white"
                 app:layout_collapseMode="pin"

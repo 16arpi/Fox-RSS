@@ -29,4 +29,14 @@
         <item value="365" >365</item>
         <item value="40000000000" >40000000000</item>
     </string-array>
+
+    <string-array name="setting_custom_font">
+        <item value="0">With serif</item>
+        <item value="1">Without serif</item>
+    </string-array>
+
+    <string-array name="setting_custom_font_values">
+        <item value="0">Georgia,Times New Roman,Times,serif</item>
+        <item value="1">Helvetica Neue,Helvetica,Arial,sans-serif</item>
+    </string-array>
 </resources>

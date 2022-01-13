@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.text.Html
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -128,16 +129,6 @@ class SwipeAdapter(
 
     private fun openUrl(url: String?) {
         if (!url.isNullOrEmpty()) {
-            /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                val builder = CustomTabsIntent.Builder()
-                val customTab = builder.build()
-                builder.setStartAnimations(context, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                customTab.launchUrl(context, Uri.parse(url))
-            } else {
-                /*val intent = Intent(Intent.ACTION_VIEW)
-                intent.data = Uri.parse(url)
-                context.startActivity(intent)*/
-            }*/
             val intent = Intent(context.applicationContext, ReadActivity::class.java);
             intent.putExtra(URL_EXTRA, url)
             context.startActivity(intent)

@@ -8,8 +8,18 @@
                                                    android:orientation="vertical">
 
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewSwipeFeeds"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bttnNo"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
     <LinearLayout
-        android:id="@+id/layooutErrorArticle"
+        android:id="@+id/layoutErrorArticle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
@@ -18,13 +28,20 @@
         app:layout_constraintBottom_toTopOf="@+id/bttnReverse"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
+            android:alpha="0.6"
+            app:srcCompat="@drawable/ic_swip" />
+
         <TextView
             android:id="@+id/txtErrorArticles"
             style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:alpha="0.7"
+            android:alpha="0.6"
             android:gravity="center_horizontal"
             android:text="@string/label_error_feeds"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"

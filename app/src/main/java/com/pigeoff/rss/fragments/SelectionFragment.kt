@@ -5,12 +5,15 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pigeoff.rss.R
+import com.pigeoff.rss.RSSApp
 import com.pigeoff.rss.adapters.ArticlesAdapter
 import com.pigeoff.rss.callbacks.CustomActionMode
+import com.pigeoff.rss.callbacks.LeftRightDragCallback
 import com.pigeoff.rss.db.RSSDbItem
 import com.pigeoff.rss.services.FeedsService
 import kotlinx.coroutines.CoroutineScope
@@ -21,7 +24,7 @@ import java.util.*
 
 class SelectionFragment() : Fragment() {
 
-    lateinit var c: Context
+    lateinit var mcontext: Context
     lateinit var service: FeedsService
     lateinit var recyclerView: RecyclerView
     lateinit var toolbar: Toolbar
@@ -30,12 +33,6 @@ class SelectionFragment() : Fragment() {
 
     var actionMode: ActionMode? = null
     var articles = mutableListOf<RSSDbItem>()
-
-    fun newInstance(c: Context, service: FeedsService) : SelectionFragment {
-        this.c = c
-        this.service = service
-        return this
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,17 +45,26 @@ class SelectionFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Handling service
+        val app = requireActivity().application as RSSApp
+        service = app.getClient()
+        mcontext = requireContext()
+
         //Binding
         recyclerView = view.findViewById(R.id.feedsRecycler)
         toolbar = view.findViewById(R.id.toolbarFeeds)
         toolbar.setTitle(R.string.app_name)
         bttmFragment = EditBottomSheetFragment().newInstance(service, null)
 
-        adapter = ArticlesAdapter(c, articles, false)
+        adapter = ArticlesAdapter(mcontext, articles, false)
+        val touchHelper = ItemTouchHelper(LeftRightDragCallback(requireContext()))
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
+        //touchHelper.attachToRecyclerView(recyclerView)
 
         toolbar.title = context?.getString(R.string.item_inbox)
+        
     }
 
     override fun onResume() {
@@ -156,6 +162,10 @@ class SelectionFragment() : Fragment() {
                 actionMode = null
             }
         })
+    }
+
+    fun markArticleAsUnread(position: Int) {
+
     }
 
     private fun removeArticles() {

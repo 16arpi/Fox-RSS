@@ -24,13 +24,17 @@
                 android:layout_width="match_parent"
                 app:errorEnabled="true"
                 android:layout_height="wrap_content"
+                app:helperTextEnabled="true"
+                app:helperText="http://"
         >
 
             <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editFeed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/edit_url"/>
+                    android:inputType="textUri"
+                    android:hint="@string/edit_url"
+                    />
         </com.google.android.material.textfield.TextInputLayout>
         <Button
                 style="@style/Widget.MaterialComponents.Button.TextButton"

@@ -14,6 +14,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ProgressBar
 import androidx.appcompat.widget.Toolbar
+import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
 import com.pigeoff.rss.R
 import kotlinx.coroutines.CoroutineScope
@@ -35,20 +36,26 @@ class ReadActivity : AppCompatActivity() {
     var url: String = ""
     var title: String = ""
 
-    val css = "*,:after,:before{box-sizing:border-box;max-width:100% !important;}body{color:#444;font:16px/1.6 Georgia,Times New Roman,Times,serif;margin:40px auto;max-width:760px;padding:0 20px}img{max-width:100%;height:auto!important;}h1,h2,h3,h4,h5{font-family:Helvetica Neue,Helvetica,Arial,sans-serif;line-height:1.2}h1{display:block;padding-top:0;margin-top:0;}a{color:#07c;text-decoration:none}a:hover{color:#059;text-decoration:underline}hr{border:0;margin:25px 0}table{border-collapse:collapse;border-spacing:0;padding-bottom:25px;text-align:left}hr,td,th{border-bottom:1px solid #ddd}button,select{background:#ddd;border:0;font-size:14px;padding:9px 20px}input,table{font-size:1pc}blockquote{margin-left:0;margin-right:0;padding-left:1em;border-left:2px solid #444;}input,td,th{padding:5px;vertical-align:bottom}button:hover,code,pre{background:#eee}pre{padding:8px;white-space:pre-wrap}textarea{border-color:#ccc}.row{display:block;min-height:1px;width:auto}.row:after{clear:both;content:\"\";display:table}.row .c{float:left}.g2,.g3,.g3-2,.m2,.m3,.m3-2,table{width:100%}@media(min-width:8in){.g2{width:50%}.m2{margin-left:50%}.g3{width:33.33%}.g3-2{width:66.66%}.m3{margin-left:33.33%}.m3-2{margin-left:66.66%}}"
+    var fontType = "Helvetica Neue,Helvetica,Arial,sans-serif"
+    val css = "*,:after,:before{box-sizing:border-box;max-width:100% !important;}body{color:#444;font:16px/1.6 ${fontType};margin:40px auto;max-width:760px;padding:0 20px}img{max-width:100%;height:auto!important;}h1,h2,h3,h4,h5{font-family:Helvetica Neue,Helvetica,Arial,sans-serif;line-height:1.2}h1{display:block;padding-top:0;margin-top:0;}a{color:#bf771d;text-decoration:none}a:hover{color:#af670d;text-decoration:underline}hr{border:0;margin:25px 0}table{border-collapse:collapse;border-spacing:0;padding-bottom:25px;text-align:left}hr,td,th{border-bottom:1px solid #ddd}button,select{background:#ddd;border:0;font-size:14px;padding:9px 20px}input,table{font-size:1pc}blockquote{margin-left:0;margin-right:0;padding-left:1em;border-left:2px solid #444;}input,td,th{padding:5px;vertical-align:bottom}button:hover,code,pre{background:#eee}pre{padding:8px;white-space:pre-wrap}textarea{border-color:#ccc}.row{display:block;min-height:1px;width:auto}.row:after{clear:both;content:\"\";display:table}.row .c{float:left}.g2,.g3,.g3-2,.m2,.m3,.m3-2,table{width:100%}@media(min-width:8in){.g2{width:50%}.m2{margin-left:50%}.g3{width:33.33%}.g3-2{width:66.66%}.m3{margin-left:33.33%}.m3-2{margin-left:66.66%}}figure{padding-left:0;padding-right:0;margin-left:0;margin-right:0}figcaption{font-size:10pt;opacity:0.8;}"
     val head: String = "<style>${css}</style><meta charset=\"utf-8\" > <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">"
+
     val URL_EXTRA: String = "urlextra"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_read)
 
+        // Recupération paramètres
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        fontType = prefs.getString(getString(R.string.key_customfontstyle), "Georgia,Times New Roman,Times,serif").toString()
+
         // Binding
         appBar = findViewById(R.id.toolbar)
         progressBar = findViewById(R.id.progressBar)
         webView = findViewById(R.id.webView)
 
-        //ACTION BAR
+        // ACTION BAR
         setSupportActionBar(appBar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = ""
@@ -118,6 +125,7 @@ class ReadActivity : AppCompatActivity() {
                     withContext(Dispatchers.Main) {
                         val encodedHtml =
                             Base64.encodeToString(content.toByteArray(), Base64.NO_PADDING)
+                        System.out.println(encodedHtml)
                         webView.loadData(encodedHtml, "text/html; charset=utf-8", "base64")
                     }
                 } catch(e: Exception) {

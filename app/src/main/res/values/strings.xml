@@ -16,6 +16,8 @@
     <string name="menu_home_check">Check for new articles</string>
     <string name="menu_home_reset">Reload all ignored articles</string>
 
+    <string name="menu_selection_done">Remove opened articles</string>
+
     <string name="dialog_reset_title">Are you sure ?</string>
     <string name="dialog_reset_message">You\'re selection of articles will be empty after.</string>
     <string name="dialog_reset_cancel">@string/dialog_feed_cancel</string>
@@ -33,6 +35,7 @@
     <string name="edit_title">Add a RSS feed</string>
     <string name="edit_url">URL of the RSS feed</string>
     <string name="edit_error">Error. It doesn\'t work...</string>
+    <string name="edit_error_url">Error. You must add an valid URL</string>
     <string name="edit_bttn">Add a RSS feed</string>
 
     <string name="dialog_add_title">Choose a RSS Feed</string>
@@ -55,7 +58,13 @@
     </string>
     <string name="settings_subtitle2">Informations</string>
     <string name="settings_about_label">About the developer</string>
+    <string name="settings_mail_label">Contact the developer</string>
     <string name="settings_libraries_label">Libraries used in this app</string>
+
+    <string name="settings_subtitle3">View</string>
+    <string name="settings_customfont_title">Font type</string>
+    <string name="settings_customfont_description">For the reader view, you can either choose a font with serif or a font without.
+    </string>
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
@@ -73,6 +82,7 @@
     <string name="key_expiration_read_article">expirationdatereadarticle</string>
     <string name="key_app_pref">apppref</string>
     <string name="key_first_launch">firstlaunch</string>
+    <string name="key_customfontstyle">customfontstyle</string>
 
     <string name="dialog_intro_next">Next</string>
     <string name="dialog_intro_close">Close</string>
@@ -89,4 +99,10 @@
 
     <string name="feed_read_error_noarticles">No article to show</string>
     <string name="feed_read_error_feederror">Error with the RSS Feed</string>
+
+    <string name="empty_no_selection_t" >Selection empty</string>
+    <string name="empty_no_rssfeed_t" >No RSS feed</string>
+
+    <string name="intro_rss_url">https://pigeoff.pw/fox/help/en/rss.xml</string>
+
 </resources>

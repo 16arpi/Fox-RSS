@@ -11,6 +11,7 @@ import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.pigeoff.rss.R
 import com.pigeoff.rss.RSSApp
 import com.pigeoff.rss.fragments.FeedsFragment
@@ -18,10 +19,13 @@ import com.pigeoff.rss.fragments.IntroFragment
 import com.pigeoff.rss.fragments.SelectionFragment
 import com.pigeoff.rss.fragments.SwipeFragment
 import com.pigeoff.rss.services.FeedsService
+import com.pigeoff.rss.util.Util
+import com.pigeoff.rss.util.UtilItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
     private lateinit var feedService: FeedsService
@@ -46,6 +50,9 @@ class MainActivity : AppCompatActivity() {
         bttmNav = findViewById(R.id.bttmNav)
         toolBar = findViewById(R.id.mainToolbar)
 
+        // Setting up preferences
+        pref = getSharedPreferences(getString(R.string.key_first_launch), Context.MODE_PRIVATE)
+
         //Toolbar
         setupToolbar()
 
@@ -54,24 +61,40 @@ class MainActivity : AppCompatActivity() {
         feedService = app.getClient()
 
         bttmNav.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.itemArticles ->
-                    if (it.itemId != actualTab)
-                        updateFragment(SwipeFragment().newInstance(this, feedService))
-                R.id.itemSelections ->
-                    if (it.itemId != actualTab)
-                        updateFragment(SelectionFragment().newInstance(this, feedService))
-                R.id.itemFeeds ->
-                    if (it.itemId != actualTab)
-                        updateFragment(FeedsFragment().newInstance(this, feedService, null))
-            }
-            actualTab = it.itemId
+            updateTab(it.itemId)
             true
         }
 
+        // If first launch
+
+
         //Start SwipeFragment
         CoroutineScope(Dispatchers.IO).launch {
-            updateFragment(SwipeFragment().newInstance(this@MainActivity, feedService))
+            if (isFirstLaunch()) {
+                try {
+                    val url = getString(R.string.intro_rss_url)
+                    val channel = feedService.parser.getChannel(url)
+                    val generatedFeed = UtilItem.toRSSFeed(url, channel)
+                    generatedFeed.faviconUrl = Util.getFaviconUrl(channel.link.toString())
+                    generatedFeed.imageUrl = Util.getFaviconUrl(channel.link.toString())
+                    feedService.db.feedDao().insertFeeds(generatedFeed)
+
+                    pref.edit().putBoolean(getString(R.string.key_first_launch), false).apply()
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Snackbar
+                            .make(findViewById(android.R.id.content), R.string.read_internet_error, Snackbar.LENGTH_LONG)
+                            .show()
+                    }
+                }
+            }
+
+            val fragment = SwipeFragment()
+            supportFragmentManager
+                .beginTransaction()
+                .setCustomAnimations(R.anim.fragment_open_enter, R.anim.fragment_open_exit)
+                .replace(R.id.framLayout, fragment)
+                .commit()
         }
 
     }
@@ -86,16 +109,40 @@ class MainActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    fun updateFragment(fragment: Fragment) {
-        supportFragmentManager
-            .beginTransaction()
-            .setCustomAnimations(R.anim.fragment_open_enter, R.anim.fragment_open_exit)
-            .replace(R.id.framLayout, fragment)
-            .commit()
+    fun updateTab(id: Int) {
+        when (id) {
+            R.id.itemArticles ->
+                if (id != actualTab) {
+                    val fragment = SwipeFragment()
+                    supportFragmentManager
+                        .beginTransaction()
+                        .setCustomAnimations(R.anim.fragment_open_enter, R.anim.fragment_open_exit)
+                        .replace(R.id.framLayout, fragment)
+                        .commit()
+                }
+            R.id.itemSelections ->
+                if (id != actualTab) {
+                    val fragment = SelectionFragment()
+                    supportFragmentManager
+                        .beginTransaction()
+                        .setCustomAnimations(R.anim.fragment_open_enter, R.anim.fragment_open_exit)
+                        .replace(R.id.framLayout, fragment)
+                        .commit()
+                }
+            R.id.itemFeeds ->
+                if (id != actualTab) {
+                    val fragment = FeedsFragment()
+                    supportFragmentManager
+                        .beginTransaction()
+                        .setCustomAnimations(R.anim.fragment_open_enter, R.anim.fragment_open_exit)
+                        .replace(R.id.framLayout, fragment)
+                        .commit()
+                }
+        }
+        actualTab = id
     }
 
     fun isFirstLaunch() : Boolean {
-        pref = this.getSharedPreferences(getString(R.string.key_first_launch), Context.MODE_PRIVATE)
         return pref.getBoolean(getString(R.string.key_first_launch), true)
     }
 
@@ -106,11 +153,10 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    fun setFragmentFromExterior(tab: Int, fragment: Fragment) {
+    fun setFragmentFromExterior(tab: Int) {
         bttmNav.menu.findItem(tab).isChecked = true
         CoroutineScope(Dispatchers.IO).launch {
-            actualTab = R.id.itemFeeds
-            updateFragment(fragment)
+            updateTab(tab)
         }
     }
 
@@ -128,7 +174,17 @@ class MainActivity : AppCompatActivity() {
             if (action == Intent.ACTION_SEND && !content.isNullOrEmpty()) {
                 if (content != extraIntent) {
                     extraIntent = content
-                    updateFragment(FeedsFragment().newInstance(this@MainActivity, feedService, extraIntent))
+
+                    val fragment = FeedsFragment()
+                    val bundle = Bundle()
+                    bundle.putString(Util.BUNDLE_INTENT_EXTRA, extraIntent)
+                    fragment.arguments = bundle
+
+                    supportFragmentManager
+                        .beginTransaction()
+                        .setCustomAnimations(R.anim.fragment_open_enter, R.anim.fragment_open_exit)
+                        .replace(R.id.framLayout, fragment)
+                        .commit()
                     actualTab = R.id.itemFeeds
 
                     withContext(Dispatchers.Main) {

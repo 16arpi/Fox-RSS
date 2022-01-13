@@ -8,7 +8,6 @@
 
         <ListPreference
                 android:inputType="number"
-                android:defaultValue="1"
                 app:singleLine="true"
                 app:title="@string/settings_read_days_label"
                 app:key="@string/key_expiration_read_article"
@@ -17,6 +16,19 @@
                 android:entryValues="@array/setting_expiration_date_values"
                 app:summary="@string/settings_read_days_message"/>
     </PreferenceCategory>
+    <!--<PreferenceCategory
+        app:title="@string/settings_subtitle3">
+
+        <ListPreference
+            android:inputType="text"
+            android:defaultValue="0"
+            app:singleLine="true"
+            app:title="@string/settings_customfont_title"
+            app:key="@string/key_customfontstyle"
+            android:entries="@array/setting_custom_font"
+            android:entryValues="@array/setting_custom_font_values"
+            app:summary="@string/settings_customfont_description"/>
+    </PreferenceCategory>-->
     <PreferenceCategory
             app:title="@string/settings_subtitle2">
             <Preference
@@ -24,6 +36,12 @@
                 <intent
                         android:action="android.intent.action.VIEW"
                         android:data="http://pigeoff.pw" />
+            </Preference>
+            <Preference
+                app:title="@string/settings_mail_label" >
+                <intent
+                    android:action="android.intent.action.VIEW"
+                    android:data="mailto:contact@pigeoff.pw" />
             </Preference>
         <Preference
                 app:key="libraries"

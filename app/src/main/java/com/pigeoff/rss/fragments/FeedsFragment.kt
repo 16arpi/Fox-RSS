@@ -19,6 +19,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.pigeoff.rss.R
+import com.pigeoff.rss.RSSApp
 import com.pigeoff.rss.activities.MainActivity
 import com.pigeoff.rss.adapters.FeedsAdapter
 import com.pigeoff.rss.adapters.SwipeAdapter
@@ -42,9 +43,8 @@ import java.util.*
 
 class FeedsFragment() : Fragment() {
 
-    lateinit var c: Context
+    lateinit var mcontext: Context
     lateinit var service: FeedsService
-
     lateinit var recyclerView: RecyclerView
     lateinit var toolbar: Toolbar
     lateinit var bttnAdd: FloatingActionButton
@@ -55,19 +55,18 @@ class FeedsFragment() : Fragment() {
 
     var actionMode: ActionMode? = null
 
-    fun newInstance(c: Context, service: FeedsService, intentExtra: String?) : FeedsFragment {
-        this.c = c
-        this.service = service
-        this.intentExtra = intentExtra
-        return this
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.layout_fragment_feeds, null)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Bundle handling
+        val app = requireActivity().application as RSSApp
+        intentExtra = arguments?.getString(Util.BUNDLE_INTENT_EXTRA, "")
+        service = app.getClient()
+        mcontext = requireContext()
+
         //Binding
         recyclerView = view.findViewById(R.id.feedsRecycler)
         toolbar = view.findViewById(R.id.toolbarFeeds)
@@ -125,7 +124,7 @@ class FeedsFragment() : Fragment() {
         super.onResume()
         val allFeeds = service.db.feedDao().getAllFeeds()
         allFeeds.reverse()
-        val adapter = FeedsAdapter(c, allFeeds)
+        val adapter = FeedsAdapter(mcontext, allFeeds, true)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
 
@@ -146,13 +145,8 @@ class FeedsFragment() : Fragment() {
                 for (i in selectedFeeds) {
                     toBeDeleted.add(i)
                 }
-                if (selectedFeeds.count() > 0) {
-                    showContextualBar(selectedFeeds)
-                }
 
-                else {
-                    showContextualBar(selectedFeeds)
-                }
+                showContextualBar(selectedFeeds)
             }
         })
 

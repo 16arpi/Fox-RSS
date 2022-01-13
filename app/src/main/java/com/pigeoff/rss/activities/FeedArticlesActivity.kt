@@ -1,7 +1,10 @@
 package com.pigeoff.rss.activities
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
@@ -22,6 +25,7 @@ import kotlinx.coroutines.withContext
 class FeedArticlesActivity : AppCompatActivity() {
 
     val INTENT_FEED_ID = "intentfeedid"
+    var feed_base_url = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +54,8 @@ class FeedArticlesActivity : AppCompatActivity() {
                     withContext(Dispatchers.Main) {
                         supportActionBar?.title = feed.title
                     }
+
+                    feed_base_url = feed.link
 
                     val articles = client.getArticlesFromFeed(feed)
 
@@ -85,10 +91,23 @@ class FeedArticlesActivity : AppCompatActivity() {
         }
     }
 
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_articles_feed, menu)
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home,-> {
                 this.finish()
+            }
+            R.id.itemReadOpen -> {
+                if (feed_base_url.isNotEmpty()) {
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.data = Uri.parse(feed_base_url)
+                    startActivity(intent)
+                }
             }
         }
         return super.onOptionsItemSelected(item)

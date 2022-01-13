@@ -41,9 +41,6 @@
             android:configChanges="orientation|screenSize|keyboard"
             android:label="@string/menu_home_settings"
             android:theme="@style/AppThemBar" />
-        <activity
-            android:name=".activities.StartupActivity"
-            android:theme="@style/Theme.Intro" />
     </application>
 
 </manifest>
