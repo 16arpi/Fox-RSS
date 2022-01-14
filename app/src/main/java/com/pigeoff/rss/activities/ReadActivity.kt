@@ -34,6 +34,7 @@ class ReadActivity : AppCompatActivity() {
     lateinit var webView: WebView
 
     var url: String = ""
+    var audio: String = ""
     var title: String = ""
 
     var fontType = "Helvetica Neue,Helvetica,Arial,sans-serif"
@@ -41,6 +42,7 @@ class ReadActivity : AppCompatActivity() {
     val head: String = "<style>${css}</style><meta charset=\"utf-8\" > <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">"
 
     val URL_EXTRA: String = "urlextra"
+    val AUDIO_EXTRA: String = "audioextra"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +66,12 @@ class ReadActivity : AppCompatActivity() {
         if (!intent.getStringExtra(URL_EXTRA).isNullOrEmpty()) {
             url = intent.getStringExtra(URL_EXTRA)!!
         }
+
+        if (!intent.getStringExtra(AUDIO_EXTRA).isNullOrEmpty()) {
+            audio = intent.getStringExtra(AUDIO_EXTRA)!!
+        }
+
+        Log.i("AUDIO", audio)
 
         loadWebView()
 

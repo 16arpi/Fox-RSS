@@ -10,7 +10,6 @@ class RSSApp : Application() {
     override fun onCreate() {
         super.onCreate()
         feedClient = FeedsService(this)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
     }
 
     fun getClient() : FeedsService {

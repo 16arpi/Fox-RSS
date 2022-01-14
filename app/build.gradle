@@ -66,6 +66,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'de.psdev.licensesdialog:licensesdialog:2.1.0'
     implementation 'net.dankito.readability4j:readability4j:1.0.8'
+    implementation 'com.google.android.exoplayer:exoplayer:2.16.1'
 
 
     implementation platform('com.google.firebase:firebase-bom:28.4.0')

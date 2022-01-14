@@ -31,6 +31,7 @@ class FeedArticlesAdapter(val context: Context,
                           var favicon: String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val URL_EXTRA: String = "urlextra"
+    val AUDIO_EXTRA: String = "audioextra"
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -69,7 +70,7 @@ class FeedArticlesAdapter(val context: Context,
 
         //CardItem Selection
         holder.cardItem.setOnClickListener {
-            openUrl(post.article.link.toString())
+            openUrl(post)
         }
     }
 
@@ -87,11 +88,11 @@ class FeedArticlesAdapter(val context: Context,
         val favicon: ImageView = v.feedFavicon
     }
 
-    private fun openUrl(url: String) {
-
-        if (url.isNotEmpty()) {
+    private fun openUrl(art: ArticleExtended) {
+        if (!art.article.link.isNullOrEmpty()) {
             val intent = Intent(context.applicationContext, ReadActivity::class.java);
-            intent.putExtra(URL_EXTRA, url)
+            intent.putExtra(URL_EXTRA, art.article.link)
+            intent.putExtra(AUDIO_EXTRA, art.article.audio)
             context.startActivity(intent)
         }
         else {

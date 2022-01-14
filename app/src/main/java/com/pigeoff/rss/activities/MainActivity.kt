@@ -83,19 +83,23 @@ class MainActivity : AppCompatActivity() {
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
                         Snackbar
-                            .make(findViewById(android.R.id.content), R.string.read_internet_error, Snackbar.LENGTH_LONG)
+                            .make(
+                                findViewById(android.R.id.content),
+                                R.string.read_internet_error,
+                                Snackbar.LENGTH_LONG
+                            )
                             .show()
                     }
                 }
             }
-
-            val fragment = SwipeFragment()
-            supportFragmentManager
-                .beginTransaction()
-                .setCustomAnimations(R.anim.fragment_open_enter, R.anim.fragment_open_exit)
-                .replace(R.id.framLayout, fragment)
-                .commit()
         }
+
+        val fragment = SwipeFragment()
+        supportFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(R.anim.fragment_open_enter, R.anim.fragment_open_exit)
+            .replace(R.id.framLayout, fragment)
+            .commit()
 
     }
 

@@ -32,6 +32,7 @@ class ArticlesAdapter(val context: Context,
     var service = (context.applicationContext as RSSApp).getClient()
     var selectedItems = mutableListOf<RSSDbItem>()
     val URL_EXTRA: String = "urlextra"
+    val AUDIO_EXTRA: String = "audioextra"
 
     private val VIEW_NORMAL = 0
     private val VIEW_EMPTY = 1
@@ -109,7 +110,7 @@ class ArticlesAdapter(val context: Context,
                     }
                     else {
                         //When ITEM opens
-                        openUrl(post.link)
+                        openUrl(post)
                         onItemClicked(holder, post)
                     }
                 }
@@ -172,10 +173,11 @@ class ArticlesAdapter(val context: Context,
         }
     }
 
-    private fun openUrl(url: String) {
+    private fun openUrl(item: RSSDbItem) {
 
         val intent = Intent(context, ReadActivity::class.java);
-        intent.putExtra(URL_EXTRA, url)
+        intent.putExtra(URL_EXTRA, item.link)
+        intent.putExtra(AUDIO_EXTRA, item.audio)
         context.startActivity(intent)
 
     }

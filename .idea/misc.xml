@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/drawable/ic_launch_light.xml" value="0.2085" />
         <entry key="app/src/main/res/layout/activity_feed_articles.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/activity_read.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/adapter_swipe_feeds.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/layout_empty.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/layout_fragment_swipe.xml" value="0.3098958333333333" />
