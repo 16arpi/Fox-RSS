@@ -18,7 +18,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.pigeoff.rss.R
 import com.pigeoff.rss.RSSApp
 import com.pigeoff.rss.fragments.FeedsFragment
-import com.pigeoff.rss.fragments.IntroFragment
 import com.pigeoff.rss.fragments.SelectionFragment
 import com.pigeoff.rss.fragments.SwipeFragment
 import com.pigeoff.rss.services.FeedsService

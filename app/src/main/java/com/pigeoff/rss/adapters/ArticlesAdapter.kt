@@ -3,9 +3,6 @@ package com.pigeoff.rss.adapters
 import com.pigeoff.rss.RSSApp
 import android.content.Context
 import android.content.Intent
-import androidx.browser.customtabs.CustomTabsIntent
-import android.net.Uri
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -222,8 +219,8 @@ class ArticlesAdapter(val context: Context,
                 service.db.itemDao().updateItem(item)
 
                 withContext(Dispatchers.Main) {
-                    holder.meta.setTextColor(R.color.consultedTextColor)
-                    holder.title.setTextColor(R.color.consultedTextColor)
+                    holder.meta.setTextColor(ContextCompat.getColor(context, R.color.consultedTextColor))
+                    holder.title.setTextColor(ContextCompat.getColor(context, R.color.consultedTextColor))
                 }
             }
         }

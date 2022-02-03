@@ -1,20 +1,15 @@
 package com.pigeoff.rss.fragments
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.ProgressBar
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -22,24 +17,15 @@ import com.pigeoff.rss.R
 import com.pigeoff.rss.RSSApp
 import com.pigeoff.rss.activities.MainActivity
 import com.pigeoff.rss.adapters.FeedsAdapter
-import com.pigeoff.rss.adapters.SwipeAdapter
 import com.pigeoff.rss.callbacks.CustomActionMode
 import com.pigeoff.rss.db.RSSDbFeed
-import com.pigeoff.rss.db.RSSDbItem
 import com.pigeoff.rss.services.FeedsService
 import com.pigeoff.rss.util.Util
-import com.pigeoff.rss.util.UtilItem
-import com.prof.rssparser.Article
-import com.pigeoff.rss.cardstackview.CardStackLayoutManager
-import com.pigeoff.rss.cardstackview.CardStackListener
-import com.pigeoff.rss.cardstackview.CardStackView
-import com.pigeoff.rss.cardstackview.Direction
 import kotlinx.android.synthetic.main.layout_fragment_feeds.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.*
 
 class FeedsFragment() : Fragment() {
 

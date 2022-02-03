@@ -2,12 +2,9 @@ package com.pigeoff.rss.activities
 
 import android.content.Context
 import android.content.Intent
-import android.media.Image
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Base64
 import android.util.Log
 import android.view.Menu
@@ -18,17 +15,9 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC
-import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ui.PlayerNotificationManager
-import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.material.snackbar.Snackbar
 import com.pigeoff.rss.R
-import com.pigeoff.rss.adapters.PodcastNotificationAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,7 +28,6 @@ import net.dankito.readability4j.extended.Readability4JExtended
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import kotlin.math.max
-import kotlin.math.min
 
 class ReadActivity : AppCompatActivity() {
 
@@ -138,18 +126,18 @@ class ReadActivity : AppCompatActivity() {
     private fun loadWebView() {
         if (url.isEmpty()) {
             Snackbar.make(findViewById(android.R.id.content), R.string.read_url_error, Snackbar.LENGTH_SHORT).show()
-            progressBar.visibility = View.GONE;
+            progressBar.visibility = View.GONE
         } else {
-            progressBar.visibility = View.VISIBLE;
+            progressBar.visibility = View.VISIBLE
 
             CoroutineScope(Dispatchers.IO).launch {
 
                 try {
-                    val doc: Document = Jsoup.connect(url).get();
+                    val doc: Document = Jsoup.connect(url).get()
                     val html = doc.outerHtml()
 
-                    val readability4J: Readability4J = Readability4JExtended(url, html);
-                    val article: Article = readability4J.parse();
+                    val readability4J: Readability4J = Readability4JExtended(url, html)
+                    val article: Article = readability4J.parse()
                     var content = String()
 
                     content += head
@@ -174,21 +162,20 @@ class ReadActivity : AppCompatActivity() {
                     withContext(Dispatchers.Main) {
                         val encodedHtml =
                             Base64.encodeToString(content.toByteArray(), Base64.NO_PADDING)
-                        System.out.println(encodedHtml)
                         webView.loadData(encodedHtml, "text/html; charset=utf-8", "base64")
                     }
                 } catch(e: Exception) {
                     withContext(Dispatchers.Main) {
-                        progressBar.visibility = View.GONE;
+                        progressBar.visibility = View.GONE
                         Snackbar
                             .make(
                                 findViewById(android.R.id.content),
                                 R.string.read_internet_error,
                                 Snackbar.LENGTH_INDEFINITE
                             )
-                            .setAction(R.string.read_menu_refresh, View.OnClickListener {
+                            .setAction(R.string.read_menu_refresh) {
                                 loadWebView()
-                            })
+                            }
                             .show()
                     }
                 }
@@ -228,16 +215,5 @@ class ReadActivity : AppCompatActivity() {
             }
         }
         return true
-    }
-
-    private fun longToTimeString(c: Long, m: Long) : String {
-        val current = max(0, c)
-        val max = max(0, m)
-        val currentMinutes = current / 1000 / 60
-        val currentSeconds = current / 1000 % 60
-        val maxMinutes = max / 1000 / 60
-        val maxSeconds = max / 1000 % 60
-
-        return "${String.format("%02d", currentMinutes)}:${String.format("%02d", currentSeconds)} / ${String.format("%02d", maxMinutes)}:${String.format("%02d", maxSeconds)}"
     }
 }

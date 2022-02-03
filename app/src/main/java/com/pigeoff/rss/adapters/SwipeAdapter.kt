@@ -2,10 +2,8 @@ package com.pigeoff.rss.adapters
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.text.Html
-import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,26 +11,20 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.pigeoff.rss.R
 import com.pigeoff.rss.activities.PodcastActivity
 import com.pigeoff.rss.activities.ReadActivity
 import com.pigeoff.rss.db.RSSDbItem
-import com.pigeoff.rss.util.ArticleExtended
 import com.pigeoff.rss.util.Util
-import com.prof.rssparser.Article
-import com.prof.rssparser.Image
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.Exception
-import kotlin.reflect.typeOf
 
 class SwipeAdapter(
     private val context: Context,

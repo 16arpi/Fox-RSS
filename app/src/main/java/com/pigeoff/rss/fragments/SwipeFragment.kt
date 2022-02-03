@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.view.animation.AccelerateInterpolator
 import android.widget.*
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
@@ -21,15 +20,12 @@ import com.pigeoff.rss.R
 import com.pigeoff.rss.RSSApp
 import com.pigeoff.rss.activities.MainActivity
 import com.pigeoff.rss.activities.SettingsActivity
-import com.pigeoff.rss.adapters.FeedsAdapter
 import com.pigeoff.rss.adapters.SwipeAdapter
 import com.pigeoff.rss.adapters.SwipeFeedsAdapter
 import com.pigeoff.rss.db.RSSDbItem
 import com.pigeoff.rss.services.FeedsService
 import com.pigeoff.rss.util.ArticleExtended
-import com.pigeoff.rss.util.Util
 import com.pigeoff.rss.util.UtilItem
-import com.prof.rssparser.Article
 import com.pigeoff.rss.cardstackview.*
 import kotlinx.coroutines.*
 import java.util.*
@@ -135,9 +131,9 @@ class SwipeFragment() : Fragment() {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.swipe_all_right_t)
                 .setMessage(R.string.swipe_all_right_p)
-                .setPositiveButton(R.string.swipe_all_ok, DialogInterface.OnClickListener { _, _ ->
+                .setPositiveButton(R.string.swipe_all_ok) { _, _ ->
                     swipeALl(Direction.Right)
-                })
+                }
                 .setNegativeButton(R.string.swipe_all_cancel, null)
                 .show()
             true
@@ -151,12 +147,12 @@ class SwipeFragment() : Fragment() {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.swipe_all_left_t)
                 .setMessage(R.string.swipe_all_left_p)
-                .setPositiveButton(R.string.swipe_all_ok, DialogInterface.OnClickListener { _, _ ->
+                .setPositiveButton(R.string.swipe_all_ok) { _, _ ->
                     swipeALl(Direction.Left)
-                })
-                .setNegativeButton(R.string.swipe_all_cancel, DialogInterface.OnClickListener { _, _ ->
+                }
+                .setNegativeButton(R.string.swipe_all_cancel) { _, _ ->
 
-                })
+                }
                 .show()
             true
         }
@@ -172,7 +168,7 @@ class SwipeFragment() : Fragment() {
 
         // Show rss feeds when user finish his/her selection
         val rssFeeds = service.db.feedDao().getAllFeeds()
-        val gridLayoutManager = GridLayoutManager(requireContext(), 3);
+        val gridLayoutManager = GridLayoutManager(requireContext(), 3)
         val adapter = SwipeFeedsAdapter(requireContext(), rssFeeds)
         recyclerViewSwipeFeeds.layoutManager = gridLayoutManager
         recyclerViewSwipeFeeds.adapter = adapter
@@ -324,7 +320,7 @@ class SwipeFragment() : Fragment() {
                     if (!i.interesting) {
                         service.db.itemDao().deleteItem(i)
                     }
-                    else if (i.consultedTime + service.timeLimitConsultedItem.toLong() <= Calendar.getInstance().timeInMillis) {
+                    else if (i.consultedTime + service.timeLimitConsultedItem <= Calendar.getInstance().timeInMillis) {
                         if (i.consulted) {
                             service.db.itemDao().deleteItem(i)
                         }

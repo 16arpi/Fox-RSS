@@ -2,7 +2,6 @@ package com.pigeoff.rss.adapters
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pigeoff.rss.R
 import com.pigeoff.rss.activities.FeedArticlesActivity
 import com.pigeoff.rss.db.RSSDbFeed
-import com.pigeoff.rss.db.RSSDbItem
-import com.pigeoff.rss.util.Util
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,9 +33,9 @@ class SwipeFeedsAdapter(val context: Context,
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder as ViewHolder
         if (position < feeds.count()) {
-            val art = feeds.get(position)
+            val art = feeds[position]
 
-            System.out.println(art)
+            println(art)
 
             holder.title.text = art.title
 
@@ -76,9 +73,9 @@ class SwipeFeedsAdapter(val context: Context,
     }
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        val linear = v.findViewById<LinearLayout>(R.id.feedLinear)
-        val title = v.findViewById<TextView>(R.id.feedTitle)
-        val favicon = v.findViewById<ImageView>(R.id.feedFavicon)
+        val linear: LinearLayout = v.findViewById(R.id.feedLinear)
+        val title: TextView = v.findViewById(R.id.feedTitle)
+        val favicon: ImageView = v.findViewById(R.id.feedFavicon)
     }
 
 

@@ -1,6 +1,5 @@
 package com.pigeoff.rss.fragments
 
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -86,10 +84,8 @@ class EditBottomSheetFragment() : BottomSheetDialogFragment() {
         } else {
             try {
                 val channel = service.parser.getChannel(url)
-                System.out.println(channel)
                 val generatedFeed = UtilItem.toRSSFeed(url, channel)
                 generatedFeed.faviconUrl = Util.getFaviconUrl(channel.link.toString())
-
                 generatedFeed.imageUrl = if (channel.itunesChannelData?.image.toString().isNotEmpty()) {
                     channel.itunesChannelData?.image.toString()
                 } else {

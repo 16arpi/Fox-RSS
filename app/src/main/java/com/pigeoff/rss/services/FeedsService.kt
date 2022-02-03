@@ -16,7 +16,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 class FeedsService(context: Context) {
-    val mutliplicator = 1000*3600*12
+    private val mutliplicator = 1000*3600*12
 
     val db: RSSDb = Room.databaseBuilder(
         context.applicationContext,
@@ -43,7 +43,7 @@ class FeedsService(context: Context) {
         }
     }
 
-    suspend fun getFeedById(id: Int) : RSSDbFeed? {
+    fun getFeedById(id: Int) : RSSDbFeed? {
         val feeds = db.feedDao().getFeedById(id)
         return if (feeds.count() > 0) {
             feeds[0]
@@ -82,7 +82,6 @@ class FeedsService(context: Context) {
 
         val format = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH)
 
-        var i = 0
         for (a in articles) {
             val strDate = a.article?.pubDate
 
@@ -93,20 +92,13 @@ class FeedsService(context: Context) {
                         goodDateArticles.add(a)
                     }
                 } else {
-                    val today = Date(System.currentTimeMillis() - i*24*60*60*1000)
-                    val format = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH)
-                    //a.article.pubDate = format.format(today)
                     badDateArticles.add(a)
                 }
             }
             catch (e: Exception) {
-                val today = Date(System.currentTimeMillis() - i*24*60*60*1000)
-                val format = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH)
-                //a.article.pubDate = format.format(today)
                 badDateArticles.add(a)
             }
 
-            i++
         }
 
         badDateArticles.sortBy {
@@ -162,16 +154,10 @@ class FeedsService(context: Context) {
                         goodDateArticles.add(a)
                     }
                 } else {
-                    val today = Date(System.currentTimeMillis() - i*24*60*60*1000)
-                    val format = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH)
-                    //a.article.pubDate = format.format(today)
                     badDateArticles.add(a)
                 }
             }
             catch (e: Exception) {
-                val today = Date(System.currentTimeMillis() - i*24*60*60*1000)
-                val format = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH)
-                //a.article.pubDate = format.format(today)
                 badDateArticles.add(a)
             }
 
@@ -194,10 +180,6 @@ class FeedsService(context: Context) {
         finalArticles.reverse()
 
         return finalArticles
-    }
-
-    fun getAllFeedsURL(db: RSSDb) : MutableList<RSSDbFeed> {
-        return db.feedDao().getAllFeeds()
     }
 
     fun ifFeedsEmpty() : Boolean {

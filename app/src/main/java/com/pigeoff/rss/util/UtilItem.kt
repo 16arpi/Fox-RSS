@@ -83,7 +83,7 @@ class UtilItem {
         fun toRSSFeed(url: String, feed: Channel): RSSDbFeed {
             val item = RSSDbFeed()
 
-            if (!url.isNullOrEmpty()) {
+            if (url.isNotEmpty()) {
                 item.url = url
             }
             if (!feed.title.isNullOrEmpty()) {

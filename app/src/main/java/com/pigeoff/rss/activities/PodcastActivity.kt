@@ -1,25 +1,29 @@
 package com.pigeoff.rss.activities
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Html
-import android.util.Base64
+import android.util.AttributeSet
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.webkit.WebView
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.pigeoff.rss.R
 import com.pigeoff.rss.adapters.PodcastNotificationAdapter
 import com.squareup.picasso.Picasso
@@ -35,8 +39,12 @@ class PodcastActivity : AppCompatActivity() {
     val CHANNEL_IMG_EXTRA: String = "channelimgextra"
 
     lateinit var context: Context
+    lateinit var coordinatorPodcast: CoordinatorLayout
     lateinit var appBar: Toolbar
+    lateinit var linearPodcastMain: LinearLayout
+    lateinit var bottomSheet: FrameLayout
     lateinit var imgPodcast: ImageView
+    lateinit var sourcePodcast: TextView
     lateinit var titlePodcast: TextView
     lateinit var descriptionPodcast: TextView
     lateinit var audioPlayPauseBttn: ImageButton
@@ -70,8 +78,12 @@ class PodcastActivity : AppCompatActivity() {
         setContentView(R.layout.activity_read_podcast)
 
         context = this
+        coordinatorPodcast = findViewById(R.id.coordinatorPodcast)
         appBar = findViewById(R.id.toolbarPodcast)
+        linearPodcastMain = findViewById(R.id.linearPodcastMain)
+        bottomSheet = findViewById(R.id.bottomSheetInfos)
         imgPodcast = findViewById(R.id.imagePodcast)
+        sourcePodcast = findViewById(R.id.textPodcastSource)
         titlePodcast = findViewById(R.id.textPodcastTitle)
         descriptionPodcast = findViewById(R.id.textPodcastDescription)
         audioPlayPauseBttn = findViewById(R.id.bttnPodcastPlay)
@@ -112,16 +124,19 @@ class PodcastActivity : AppCompatActivity() {
         }
 
         titlePodcast.text = title
-        descriptionPodcast.text = channelTitle
-        /*descriptionPodcast.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        sourcePodcast.text = channelTitle
+        descriptionPodcast.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.fromHtml(description, Html.FROM_HTML_MODE_COMPACT)
         } else {
             Html.fromHtml(description)
-        }*/
+        }
 
 
-        Log.i("COVER", channelImg)
-
+        val bottomSheetBeh = BottomSheetBehavior.from(bottomSheet)
+        // Setting up bottom sheet behaviour
+        linearPodcastMain.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+            bottomSheetBeh.peekHeight = coordinatorPodcast.height - linearPodcastMain.height
+        }
 
         audioNotificationManager =
             PlayerNotificationManager.Builder(
@@ -286,9 +301,16 @@ class PodcastActivity : AppCompatActivity() {
         }
     }
 
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        return super.onCreateOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            this.finish()
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -315,5 +337,14 @@ class PodcastActivity : AppCompatActivity() {
         val maxSeconds = max / 1000 % 60
 
         return "${String.format("%02d", maxMinutes)}:${String.format("%02d", maxSeconds)}"
+    }
+
+    private fun alert(something: Any) {
+        try {
+            val str = something.toString()
+            Toast.makeText(this, str, Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+
+        }
     }
 }

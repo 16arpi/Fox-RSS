@@ -40,7 +40,7 @@ class Util {
             return str
         }
 
-        fun getURLFromString(text: String): List<String>? {
+        private fun getURLFromString(text: String): List<String> {
             val containedUrls: MutableList<String> = ArrayList()
             val urlRegex = "((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)"
             val pattern = Pattern.compile(urlRegex, Pattern.CASE_INSENSITIVE)

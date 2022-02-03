@@ -15,7 +15,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.pigeoff.rss.R
 import com.pigeoff.rss.RSSApp
 import com.pigeoff.rss.adapters.FeedArticlesAdapter
-import com.pigeoff.rss.db.RSSDbFeed
 import com.pigeoff.rss.util.Util
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

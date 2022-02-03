@@ -1,21 +1,14 @@
 package com.pigeoff.rss.adapters
 
-import com.pigeoff.rss.RSSApp
 import android.content.Context
 import android.content.Intent
-import androidx.browser.customtabs.CustomTabsIntent
-import android.net.Uri
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.pigeoff.rss.R
-import com.pigeoff.rss.db.RSSDbItem
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.adapter_post.view.*
-import kotlinx.coroutines.*
-import java.util.*
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView

@@ -2,7 +2,6 @@ package com.pigeoff.rss.adapters
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pigeoff.rss.R
 import com.pigeoff.rss.activities.FeedArticlesActivity
 import com.pigeoff.rss.db.RSSDbFeed
-import com.pigeoff.rss.db.RSSDbItem
 import com.pigeoff.rss.util.Util
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
@@ -58,7 +56,7 @@ class FeedsAdapter(val context: Context,
             holder.url.text = art.link
 
             //Image
-            holder.favicon.setImageDrawable(context.getDrawable(R.drawable.ic_feeds))
+            holder.favicon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_feeds))
             CoroutineScope(Dispatchers.IO).launch {
                 if (!art.faviconUrl.isEmpty()) {
                     withContext(Dispatchers.Main) {
@@ -128,7 +126,7 @@ class FeedsAdapter(val context: Context,
     private fun selectCard(v: View, post: RSSDbFeed?, select: Boolean) {
         if (select) {
             v.isSelected = true
-            v.background = context.getDrawable(R.color.bgLightDark)
+            v.background = ContextCompat.getDrawable(context, R.color.bgLightDark)
             if (post != null) {
                 selectedItems.add(post)
                 mOnCheckBoxClickListener?.onCheckBoxClickListener(selectedItems)
@@ -136,7 +134,7 @@ class FeedsAdapter(val context: Context,
         }
         else {
             v.isSelected = false
-            v.background = context.getDrawable(Util.getAttrValue(context))
+            v.background = ContextCompat.getDrawable(context, Util.getAttrValue(context))
             if (post != null) {
                 selectedItems.remove(post)
                 mOnCheckBoxClickListener?.onCheckBoxClickListener(selectedItems)
@@ -180,21 +178,12 @@ class FeedsAdapter(val context: Context,
         }
     }
 
-    /*fun removeFeeds(toBeRemoved: MutableList<RSSDbFeed>) {
-        for (elmnt in toBeRemoved) {
-            val pos = feeds.indexOf(elmnt)
-            feeds.removeAt(pos)
-            notifyItemRemoved(pos)
-        }
-        //selectedItems = mutableListOf()
-    }*/
-
 
     interface OnCheckBoxClickListener {
-        abstract fun onCheckBoxClickListener(selectedFeeds: MutableList<RSSDbFeed>)
+        fun onCheckBoxClickListener(selectedFeeds: MutableList<RSSDbFeed>)
     }
 
-    public fun setOnCheckBoxClickListener(listener: OnCheckBoxClickListener) {
+    fun setOnCheckBoxClickListener(listener: OnCheckBoxClickListener) {
         this.mOnCheckBoxClickListener = listener
     }
 

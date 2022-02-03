@@ -19,8 +19,8 @@ class LeftRightDragCallback(private val context: Context) : ItemTouchHelper.Call
         this.recyclerView = recyclerView
         this.adapter = recyclerView.adapter as ArticlesAdapter
 
-        val swipFlags = ItemTouchHelper.LEFT;
-        return makeMovementFlags(0, swipFlags)
+        val swipeFlags = ItemTouchHelper.LEFT;
+        return makeMovementFlags(0, swipeFlags)
     }
 
     override fun onMove(
