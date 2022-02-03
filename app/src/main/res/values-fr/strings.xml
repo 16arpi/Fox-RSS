@@ -16,6 +16,8 @@
     <string name="menu_home_check">Refraîchir les nouveaux articles</string>
     <string name="menu_home_reset">Recharger tous les articles ignorés</string>
 
+    <string name="snack_articles_loading">Chargement de la selection</string>
+
     <string name="menu_selection_done">Enlever les articles lus</string>
 
 
@@ -105,5 +107,17 @@
     <string name="empty_no_rssfeed_t" >Aucun flux RSS</string>
 
     <string name="intro_rss_url">https://pigeoff.pw/fox/help/fr/rss.xml</string>
+
+    <string name="notif_channel_t">Podcasts</string>
+    <string name="notif_channel_p">Contrôler les podcasts dans les notifications</string>
+
+    <string name="podcast">Podcast</string>
+
+    <string name="swipe_all_left_t" >Se débarasser du reste</string>
+    <string name="swipe_all_left_p" >Tous les articles restants seront oubliés</string>
+    <string name="swipe_all_right_t" >Garder tout le reste</string>
+    <string name="swipe_all_right_p" >Tous les articles restants seront placés dans votrs sélection</string>
+    <string name="swipe_all_ok" >Confirmer</string>
+    <string name="swipe_all_cancel" >Annuler</string>
 
 </resources>

@@ -20,6 +20,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.pigeoff.rss.activities.PodcastActivity
 import com.pigeoff.rss.activities.ReadActivity
 import com.pigeoff.rss.util.Util
 import kotlinx.android.synthetic.main.adapter_empty.view.*
@@ -31,8 +32,13 @@ class ArticlesAdapter(val context: Context,
 
     var service = (context.applicationContext as RSSApp).getClient()
     var selectedItems = mutableListOf<RSSDbItem>()
+
     val URL_EXTRA: String = "urlextra"
     val AUDIO_EXTRA: String = "audioextra"
+    val TITLE_EXTRA: String = "titleextra"
+    val CHANNEL_EXTRA: String = "channelextra"
+    val DESCRIPTION_EXTRA: String = "descriptionextra"
+    val CHANNEL_IMG_EXTRA: String = "channelimgextra"
 
     private val VIEW_NORMAL = 0
     private val VIEW_EMPTY = 1
@@ -75,7 +81,18 @@ class ArticlesAdapter(val context: Context,
 
             holder.title.text = post.title
             holder.source.text = post.channelTitle
-            holder.favicon.setImageDrawable(context.getDrawable(R.drawable.ic_link))
+
+            if (post.audio.isNotEmpty()) {
+                holder.favicon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_podcast_b))
+            } else {
+                holder.favicon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_link))
+            }
+
+            if (post.audio.isNotEmpty()) {
+                holder.podcast.visibility = View.VISIBLE
+            } else {
+                holder.podcast.visibility = View.GONE
+            }
 
             if (post.consulted) {
                 holder.title.setTextColor(ContextCompat.getColor(context,R.color.consultedTextColor))
@@ -99,12 +116,20 @@ class ArticlesAdapter(val context: Context,
                 }
             }
 
+            /*val str_audio = "${context.getString(R.string.podcast)} - ${holder.meta.text}"
+            if (post.audio.isNotEmpty()) {
+                holder.meta.text = str_audio
+            } else {
+                holder.meta.text = holder.meta.text
+            }*/
+
             //CardItem Selection
             holder.cardItem.setOnClickListener {
                 if (it.isSelected) {
                     selectCard(it, post, false)
                 }
                 else {
+
                     if (selectedItems.count() > 0) {
                         selectCard(it, post, true)
                     }
@@ -114,6 +139,10 @@ class ArticlesAdapter(val context: Context,
                         onItemClicked(holder, post)
                     }
                 }
+            }
+
+            holder.favicon.setOnClickListener {
+                selectCard(holder.cardItem, post, !holder.cardItem.isSelected)
             }
 
             holder.cardItem.setOnLongClickListener {
@@ -136,6 +165,7 @@ class ArticlesAdapter(val context: Context,
         val title: TextView = v.txtTitle
         val meta: TextView = v.txtMeta
         val favicon: ImageView = v.feedFavicon
+        val podcast: TextView = v.txtPodcast
     }
 
     class EmptyViewHolder(v: View) : RecyclerView.ViewHolder(v) {
@@ -145,29 +175,23 @@ class ArticlesAdapter(val context: Context,
 
     private fun loadImage(post: RSSDbItem, holder: ViewHolder) {
         CoroutineScope(Dispatchers.IO).launch {
-            if (post.channelImageUrl.isEmpty()) {
-                try {
-                    val url = Util.getFaviconUrl(post.link)
+            try {
+                val url = Util.getFaviconUrl(post.link)
 
+                withContext(Dispatchers.Main) {
                     withContext(Dispatchers.Main) {
-                        post.mainImg = url
-                        withContext(Dispatchers.Main) {
-                            Picasso.get().load(url).into(holder.favicon)
-                        }
+                        Picasso.get().load(url).into(holder.favicon)
                     }
-                }
-                catch (e: Exception) {
-                    println(e)
                 }
             }
-            else {
-                try {
-                    withContext(Dispatchers.Main) {
-                        Picasso.get().load(post.channelImageUrl).into(holder.favicon)
+            catch (e: Exception) {
+                println(e)
+                withContext(Dispatchers.Main) {
+                    if (post.audio.isNotEmpty()) {
+                        holder.favicon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_podcast_b))
+                    } else {
+                        holder.favicon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_link))
                     }
-                }
-                catch (e: Exception) {
-                    println(e)
                 }
             }
         }
@@ -175,9 +199,17 @@ class ArticlesAdapter(val context: Context,
 
     private fun openUrl(item: RSSDbItem) {
 
-        val intent = Intent(context, ReadActivity::class.java);
+        val intent = if (item.audio.isNotEmpty()) {
+            Intent(context.applicationContext, PodcastActivity::class.java);
+        } else {
+            Intent(context.applicationContext, ReadActivity::class.java);
+        }
         intent.putExtra(URL_EXTRA, item.link)
         intent.putExtra(AUDIO_EXTRA, item.audio)
+        intent.putExtra(TITLE_EXTRA, item.title)
+        intent.putExtra(CHANNEL_EXTRA, item.channelTitle)
+        intent.putExtra(DESCRIPTION_EXTRA, item.description)
+        intent.putExtra(CHANNEL_IMG_EXTRA, item.mainImg)
         context.startActivity(intent)
 
     }

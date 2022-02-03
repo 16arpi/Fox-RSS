@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.pigeoff.rss.R
+import com.pigeoff.rss.activities.PodcastActivity
 import com.pigeoff.rss.activities.ReadActivity
 import com.pigeoff.rss.db.RSSDbItem
 import com.pigeoff.rss.util.ArticleExtended
@@ -38,6 +39,11 @@ class SwipeAdapter(
     private val articles: MutableList<RSSDbItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val URL_EXTRA: String = "urlextra"
+    val AUDIO_EXTRA: String = "audioextra"
+    val TITLE_EXTRA: String = "titleextra"
+    val CHANNEL_EXTRA: String = "channelextra"
+    val CHANNEL_IMG_EXTRA: String = "channelimgextra"
+    val DESCRIPTION_EXTRA: String = "descriptionextra"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.adapter_swipe, parent, false))
@@ -52,18 +58,11 @@ class SwipeAdapter(
 
             Log.i("IMG Cover", art.mainImg)
 
-            holder.imgCover.setImageDrawable(context.getDrawable(R.drawable.bg))
-            CoroutineScope(Dispatchers.IO).launch {
-                if (art.mainImg.isNotEmpty()) {
-                    try {
-                        withContext(Dispatchers.Main) {
-                            Picasso.get().load(art.mainImg).into(holder.imgCover)
-                        }
-                    }
-                    catch (e: Exception) {
-
-                    }
-                }
+            holder.imgCover.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bg))
+            if (art.mainImg.isNotEmpty()) {
+                Picasso.get().load(art.mainImg).into(holder.imgCover)
+            } else {
+                holder.imgCover.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bg))
             }
 
             holder.favicon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_feeds_white))
@@ -71,14 +70,28 @@ class SwipeAdapter(
                 if (art.link.isNotEmpty()) {
                     try {
                         val url = Util.getFaviconUrl(art.link)
+
                         withContext(Dispatchers.Main) {
                             articles[position].channelImageUrl = url
                             Picasso.get().load(url).into(holder.favicon)
                         }
 
                     }
-                    catch (e: Exception) {}
+                    catch (e: Exception) {
+                        holder.favicon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_feeds_white))
+                    }
+                } else {
+                    holder.favicon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_feeds_white))
                 }
+            }
+
+            if (art.audio.isNotEmpty()) {
+                holder.podcast.visibility = View.VISIBLE
+                holder.podcast.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_podcast))
+
+            } else {
+                holder.podcast.visibility = View.GONE
+                holder.podcast.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_podcast))
             }
 
             if (art.title.isNotEmpty()) {
@@ -108,7 +121,7 @@ class SwipeAdapter(
 
             /* CARD ACTION */
             holder.cardView.setOnClickListener {
-                openUrl(art.link)
+                openUrl(art)
             }
         }
 
@@ -120,6 +133,7 @@ class SwipeAdapter(
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val favicon = v.findViewById<ImageView>(R.id.feedFavicon)
+        val podcast = v.findViewById<ImageView>(R.id.feedFaviconPodcast)
         val imgCover = v.findViewById<ImageView>(R.id.imageView)
         val title = v.findViewById<TextView>(R.id.cdTitle)
         val source = v.findViewById<TextView>(R.id.cdSource)
@@ -127,10 +141,19 @@ class SwipeAdapter(
         val cardView = v.findViewById<CardView>(R.id.cardView)
     }
 
-    private fun openUrl(url: String?) {
-        if (!url.isNullOrEmpty()) {
-            val intent = Intent(context.applicationContext, ReadActivity::class.java);
-            intent.putExtra(URL_EXTRA, url)
+    private fun openUrl(item: RSSDbItem) {
+        if (item.link.isNotEmpty()) {
+            val intent = if (item.audio.isNotEmpty()) {
+                Intent(context.applicationContext, PodcastActivity::class.java);
+            } else {
+                Intent(context.applicationContext, ReadActivity::class.java);
+            }
+            intent.putExtra(URL_EXTRA, item.link)
+            intent.putExtra(AUDIO_EXTRA, item.audio)
+            intent.putExtra(TITLE_EXTRA, item.title)
+            intent.putExtra(CHANNEL_EXTRA, item.channelTitle)
+            intent.putExtra(DESCRIPTION_EXTRA, item.description)
+            intent.putExtra(CHANNEL_IMG_EXTRA, item.mainImg)
             context.startActivity(intent)
         }
         else {

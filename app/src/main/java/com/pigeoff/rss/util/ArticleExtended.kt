@@ -6,5 +6,5 @@ import com.prof.rssparser.Channel
 
 data class ArticleExtended (
     var channel: RSSDbFeed = RSSDbFeed(),
-    var article: Article = Article()
+    var article: Article? = null
 )

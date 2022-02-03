@@ -17,20 +17,30 @@
                 android:src="@drawable/ic_link"
                 android:id="@+id/feedFavicon"
                 android:padding="8dp"
+                android:elevation="0dp"
                 android:layout_marginEnd="16dp" android:background="@drawable/round_grey_bg"
                 android:layout_margin="8dp"/>
         <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:padding="8dp">
-            <TextView
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtSource"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:ellipsize="end"
                     android:singleLine="true"
                     android:text="@string/label_no_source"
-                    android:ellipsize="end"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/txtSource"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
-                    android:layout_marginBottom="4dp"/>
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
+            </LinearLayout>
+
             <TextView
                     android:text="TextView"
                     android:layout_width="match_parent"
@@ -39,12 +49,36 @@
                     android:textSize="16sp"
                     android:ellipsize="end"
                     android:maxLines="3"/>
-            <TextView
-                    android:text="@string/label_no_date"
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="4dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/txtPodcast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/ic_cheep_normal"
+                    android:paddingStart="4dp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4dp"
+                    android:paddingBottom="2dp"
+                    android:text="@string/podcast"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtMeta"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/txtMeta"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                    android:layout_marginTop="4dp"/>
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_no_date"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
     <View

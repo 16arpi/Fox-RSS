@@ -12,10 +12,10 @@
         android:id="@+id/recyclerViewSwipeFeeds"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/bttnNo"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="16dp"
-        android:visibility="gone"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/bttnNo"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <LinearLayout
@@ -66,17 +66,6 @@
             android:textSize="40dp"
             android:textColor="@color/textSemiColorBlack"/>
 
-    <ProgressBar
-        android:id="@+id/progressBarSwipe"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/cardStackView"
-        app:layout_constraintEnd_toEndOf="@+id/cardStackView"
-        app:layout_constraintStart_toStartOf="@+id/cardStackView"
-        app:layout_constraintTop_toTopOf="parent" />
     <com.pigeoff.rss.cardstackview.CardStackView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -126,6 +115,21 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/bttnReverse"
         app:srcCompat="@drawable/ic_check" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressBarSwipe"
+        style="@style/Widget.Material3.CircularProgressIndicator.ExtraSmall"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="28dp"
+        android:indeterminate="true"
+        android:padding="8dp"
+        android:visibility="visible"
+        app:indicatorColor="@color/colorAccent"
+        app:layout_constraintEnd_toStartOf="@+id/bttnOptions"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:trackThickness="12dp" />
 
     <ImageButton
             android:layout_width="40dp"

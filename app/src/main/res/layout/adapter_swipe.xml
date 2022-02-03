@@ -41,6 +41,19 @@
                     app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="16dp"
                     android:layout_marginStart="16dp"/>
 
+            <ImageView
+                android:id="@+id/feedFaviconPodcast"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/round_primary_bg"
+                android:padding="8dp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@drawable/ic_podcast" />
+
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

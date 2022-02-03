@@ -16,6 +16,8 @@
     <string name="menu_home_check">Check for new articles</string>
     <string name="menu_home_reset">Reload all ignored articles</string>
 
+    <string name="snack_articles_loading">Loading of the selection</string>
+
     <string name="menu_selection_done">Remove opened articles</string>
 
     <string name="dialog_reset_title">Are you sure ?</string>
@@ -104,5 +106,17 @@
     <string name="empty_no_rssfeed_t" >No RSS feed</string>
 
     <string name="intro_rss_url">https://pigeoff.pw/fox/help/en/rss.xml</string>
+
+    <string name="notif_channel_t">Podcasts</string>
+    <string name="notif_channel_p">Show media player for podcast</string>
+
+    <string name="podcast">Podcast</string>
+
+    <string name="swipe_all_left_t" >Discard everything</string>
+    <string name="swipe_all_left_p" >All remaining items will be discarded</string>
+    <string name="swipe_all_right_t" >Keep everything</string>
+    <string name="swipe_all_right_p" >All remaining items will be kept for your selection</string>
+    <string name="swipe_all_ok" >Confirm</string>
+    <string name="swipe_all_cancel" >Cancel</string>
 
 </resources>

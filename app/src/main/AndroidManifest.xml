@@ -19,6 +19,12 @@
         <activity
             android:name=".activities.ReadActivity"
             android:configChanges="orientation|screenSize|keyboard"
+            android:launchMode="singleTop"
+            android:exported="true" />
+        <activity
+            android:name=".activities.PodcastActivity"
+            android:configChanges="orientation|screenSize|keyboard"
+            android:launchMode="singleTop"
             android:exported="true" />
         <activity
             android:name=".activities.MainActivity"

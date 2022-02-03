@@ -60,7 +60,7 @@ class FeedArticlesActivity : AppCompatActivity() {
                     val articles = client.getArticlesFromFeed(feed)
 
                     if (articles.count() > 0) {
-                        val favicon = Util.getFaviconUrl(articles[0].article.link.toString())
+                        val favicon = Util.getFaviconUrl(articles[0].article?.link.toString())
                         withContext(Dispatchers.Main) {
                             progressBar.visibility = View.GONE
                             feedArticlesAdapter.updateArticles(articles, favicon)

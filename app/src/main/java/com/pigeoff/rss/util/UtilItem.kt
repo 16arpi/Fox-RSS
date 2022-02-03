@@ -34,38 +34,47 @@ class UtilItem {
 
 
             //Item
-            if (!article.title.isNullOrEmpty()) {
-                item.title = article.title!!
+            if (!article?.title.isNullOrEmpty()) {
+                item.title = article?.title!!
             }
-            if (!article.author.isNullOrEmpty()) {
-                item.author = article.author!!
+            if (!article?.author.isNullOrEmpty()) {
+                item.author = article?.author!!
             }
-            if (!article.description.isNullOrEmpty()) {
-                item.description = article.description!!
+            if (!article?.description.isNullOrEmpty()) {
+                item.description = article?.description!!
             }
-            if (!article.content.isNullOrEmpty()) {
-                item.content = article.content!!
+            if (!article?.content.isNullOrEmpty()) {
+                item.content = article?.content!!
             }
-            if (!article.image.isNullOrEmpty()) {
-                item.mainImg = article.image!!
+
+            // Setting cover for podcast
+            if (!article?.audio.isNullOrEmpty()) {
+                if (channel.imageUrl.isNotEmpty()) {
+                    item.mainImg = channel.imageUrl
+                }
             }
-            if (!article.link.isNullOrEmpty()) {
-                item.link = article.link!!
+
+            if (!article?.image.isNullOrEmpty()) {
+                item.mainImg = article?.image!!
             }
-            if (!article.pubDate.isNullOrEmpty()) {
-                item.publishDate = article.pubDate!!
+
+            if (!article?.link.isNullOrEmpty()) {
+                item.link = article?.link!!
             }
-            if (!article.categories.isNullOrEmpty() && article.categories.count() > 0) {
+            if (!article?.pubDate.isNullOrEmpty()) {
+                item.publishDate = article?.pubDate!!
+            }
+            if (!article?.categories.isNullOrEmpty() && article?.categories != null && article.categories.count() > 0) {
                 item.categories = article.categories.joinToString(",", "", "")
             }
-            if (!article.audio.isNullOrEmpty()) {
-                item.audio = article.audio!!
+            if (!article?.audio.isNullOrEmpty()) {
+                item.audio = article?.audio!!
             }
-            if (!article.sourceName.isNullOrEmpty()) {
-                item.srcName = article.sourceName!!
+            if (!article?.sourceName.isNullOrEmpty()) {
+                item.srcName = article?.sourceName!!
             }
-            if (!article.sourceUrl.isNullOrEmpty()) {
-                item.srcLink = article.sourceUrl!!
+            if (!article?.sourceUrl.isNullOrEmpty()) {
+                item.srcLink = article?.sourceUrl!!
             }
 
             return item

@@ -43,16 +43,16 @@ class SwipeFeedsAdapter(val context: Context,
             holder.title.text = art.title
 
             //Image
-            holder.favicon.setImageDrawable(context.getDrawable(R.drawable.ic_feeds))
+            holder.favicon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_feeds))
             CoroutineScope(Dispatchers.IO).launch {
                 if (!art.faviconUrl.isEmpty()) {
                     withContext(Dispatchers.Main) {
-                        Picasso.get().load(art.imageUrl).into(holder.favicon)
+                        Picasso.get().load(art.faviconUrl).into(holder.favicon)
                     }
                 }
                 else {
                     withContext(Dispatchers.Main) {
-                        holder.favicon.setImageDrawable(context.getDrawable(R.drawable.ic_feeds))
+                        holder.favicon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_feeds))
                     }
                 }
             }

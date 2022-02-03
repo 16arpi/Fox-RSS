@@ -24,7 +24,6 @@ class FeedsAdapter(val context: Context,
                    var feeds: MutableList<RSSDbFeed>,
                    val editMode: Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    lateinit var holderFeeds: ViewHolder
     var mOnCheckBoxClickListener: OnCheckBoxClickListener? = null
     var selectedItems = mutableListOf<RSSDbFeed>()
     val VIEW_NORMAL = 0
@@ -63,7 +62,7 @@ class FeedsAdapter(val context: Context,
             CoroutineScope(Dispatchers.IO).launch {
                 if (!art.faviconUrl.isEmpty()) {
                     withContext(Dispatchers.Main) {
-                        Picasso.get().load(art.imageUrl).into(holder.favicon)
+                        Picasso.get().load(art.faviconUrl).into(holder.favicon)
                     }
                 }
                 else {

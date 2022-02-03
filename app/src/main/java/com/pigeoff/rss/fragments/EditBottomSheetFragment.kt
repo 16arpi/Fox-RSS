@@ -89,7 +89,12 @@ class EditBottomSheetFragment() : BottomSheetDialogFragment() {
                 System.out.println(channel)
                 val generatedFeed = UtilItem.toRSSFeed(url, channel)
                 generatedFeed.faviconUrl = Util.getFaviconUrl(channel.link.toString())
-                generatedFeed.imageUrl = Util.getFaviconUrl(channel.link.toString())
+
+                generatedFeed.imageUrl = if (channel.itunesChannelData?.image.toString().isNotEmpty()) {
+                    channel.itunesChannelData?.image.toString()
+                } else {
+                    Util.getFaviconUrl(channel.link.toString())
+                }
                 service.db.feedDao().insertFeeds(generatedFeed)
                 val newFeed = service.db.feedDao().getLastFeed()
 

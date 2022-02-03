@@ -162,20 +162,6 @@ class FeedsFragment() : Fragment() {
 
     }
 
-
-    /*fun showContextualBar(show: Boolean) {
-        if (show) {
-            toolbar.title = ""
-            toolbar.menu.findItem(R.id.itemDelete).isVisible = true
-            toolbar.background = ColorDrawable(context!!.getColor(R.color.colorAccent))
-        }
-        else {
-            toolbar.title = context?.getString(R.string.item_feeds)
-            toolbar.menu.findItem(R.id.itemDelete).isVisible = false
-            toolbar.background = ColorDrawable(context!!.getColor(R.color.bgLight))
-        }
-    }*/
-
     fun showContextualBar(articles: MutableList<RSSDbFeed>?) {
         val adapter = recyclerView.adapter as FeedsAdapter
         val callback = CustomActionMode(requireContext(), R.menu.menu_feeds)

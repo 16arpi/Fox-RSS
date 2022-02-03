@@ -1,6 +1,7 @@
 package com.pigeoff.rss.fragments
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -12,7 +13,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.progressindicator.CircularProgressIndicator
+import com.google.android.material.snackbar.Snackbar
 import com.pigeoff.rss.R
 import com.pigeoff.rss.RSSApp
 import com.pigeoff.rss.activities.MainActivity
@@ -27,10 +31,7 @@ import com.pigeoff.rss.util.Util
 import com.pigeoff.rss.util.UtilItem
 import com.prof.rssparser.Article
 import com.pigeoff.rss.cardstackview.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.util.*
 
 class SwipeFragment() : Fragment() {
@@ -42,7 +43,9 @@ class SwipeFragment() : Fragment() {
     lateinit var btnNo: FloatingActionButton
     lateinit var btnYes: FloatingActionButton
     lateinit var btnOptions: ImageButton
-    lateinit var progressBarSwipe: ProgressBar
+    lateinit var progressBarSwipe: CircularProgressIndicator
+
+    lateinit var snackBarLoading: Snackbar
 
     //Error
     lateinit var txtErrorArticles: TextView
@@ -57,6 +60,8 @@ class SwipeFragment() : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.layout_fragment_swipe, null)
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -76,6 +81,12 @@ class SwipeFragment() : Fragment() {
         btnErrorArticles = view.findViewById(R.id.btnErrorArticle)
         recyclerViewSwipeFeeds = view.findViewById(R.id.recyclerViewSwipeFeeds)
         layoutErrorArticles = view.findViewById(R.id.layoutErrorArticle)
+
+        // Loading snackbar
+        snackBarLoading = Snackbar
+            .make(btnYes, R.string.snack_articles_loading, Snackbar.LENGTH_INDEFINITE)
+            .setAnchorView(btnYes)
+        cardStackView.visibility = View.GONE
 
         // Handling popup
         val popup = PopupMenu(mcontext, btnOptions, Gravity.END)
@@ -120,8 +131,34 @@ class SwipeFragment() : Fragment() {
             cardStackView.swipe(Direction.Right)
         }
 
+        btnYes.setOnLongClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.swipe_all_right_t)
+                .setMessage(R.string.swipe_all_right_p)
+                .setPositiveButton(R.string.swipe_all_ok, DialogInterface.OnClickListener { _, _ ->
+                    swipeALl(Direction.Right)
+                })
+                .setNegativeButton(R.string.swipe_all_cancel, null)
+                .show()
+            true
+        }
+
         btnNo.setOnClickListener {
             cardStackView.swipe(Direction.Left)
+        }
+
+        btnNo.setOnLongClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.swipe_all_left_t)
+                .setMessage(R.string.swipe_all_left_p)
+                .setPositiveButton(R.string.swipe_all_ok, DialogInterface.OnClickListener { _, _ ->
+                    swipeALl(Direction.Left)
+                })
+                .setNegativeButton(R.string.swipe_all_cancel, DialogInterface.OnClickListener { _, _ ->
+
+                })
+                .show()
+            true
         }
 
         btnOptions.setOnClickListener {
@@ -146,6 +183,7 @@ class SwipeFragment() : Fragment() {
                 a.setFragmentFromExterior(R.id.itemFeeds)
             }
         })
+
     }
 
     override fun onStop() {
@@ -157,6 +195,7 @@ class SwipeFragment() : Fragment() {
             withContext(Dispatchers.Main) {
                 layoutErrorArticles.visibility = View.VISIBLE
                 cardStackView.visibility = View.GONE
+                recyclerViewSwipeFeeds.visibility = View.GONE
             }
         }
         else {
@@ -296,15 +335,37 @@ class SwipeFragment() : Fragment() {
         }
     }
 
+    fun swipeALl(direction: Direction) {
+        val adapter = cardStackView.adapter
+        if (adapter != null && adapter.itemCount > 0) {
+            adapter as SwipeAdapter
+            var top = (cardStackView.layoutManager as CardStackLayoutManager).topPosition
+            var max = adapter.itemCount
+
+            CoroutineScope(Dispatchers.IO).launch {
+                while (top < max) {
+                    withContext(Dispatchers.Main) {
+                        cardStackView.swipe(direction)
+                    }
+
+                    top = (cardStackView.layoutManager as CardStackLayoutManager).topPosition
+                    max = adapter.itemCount
+                }
+            }
+        }
+    }
+
     suspend fun showProgress(show: Boolean) {
         withContext(Dispatchers.Main) {
             if (show) {
                 progressBarSwipe.visibility = View.VISIBLE
-                recyclerViewSwipeFeeds.visibility = View.GONE
+                //recyclerViewSwipeFeeds.visibility = View.GONE
+                //snackBarLoading.show()
             }
             else {
                 progressBarSwipe.visibility = View.GONE
-                recyclerViewSwipeFeeds.visibility = View.VISIBLE
+                //recyclerViewSwipeFeeds.visibility = View.VISIBLE
+                //snackBarLoading.dismiss()
             }
         }
     }

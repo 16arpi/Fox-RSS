@@ -40,7 +40,7 @@ android {
 
 dependencies {
     def room_version = "2.2.6"
-    def rss_version = "3.1.3"
+    def rss_version = "4.0.1"
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.32.3.3'
