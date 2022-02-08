@@ -1,1 +1,5 @@
-Like on Tinder but with your own RSS feeds, select the articles you would like to read later. Swipe left the articles you don't like, swipe right the ones you would like to keep. Finally, take your time to read your selection of articles !
+Like on Tinder but with your own RSS feeds, select the articles and podcast you would like to read or listen later. Swipe left the articles you don't like, swipe right the ones you would like to keep. Finally, take your time to read your selection of articles ! 
+
+Fox RSS is a simple rss reader and quit nice to use. Free, open source and without ads.
+
+The source code is available on my Github.
