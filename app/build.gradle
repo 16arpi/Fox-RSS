@@ -3,11 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
-
-
 android {
+
     compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
@@ -15,7 +12,7 @@ android {
         applicationId "com.pigeoff.rss"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 7
+        versionCode 8
         versionName "1.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -41,6 +38,7 @@ android {
 dependencies {
     def room_version = "2.2.6"
     def rss_version = "4.0.1"
+    def acraVersion = "5.7.0"
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.32.3.3'
@@ -68,10 +66,8 @@ dependencies {
     implementation 'net.dankito.readability4j:readability4j:1.0.8'
     implementation 'com.google.android.exoplayer:exoplayer:2.16.1'
 
-
-    implementation platform('com.google.firebase:firebase-bom:28.4.0')
-    implementation 'com.google.firebase:firebase-crashlytics'
-    implementation 'com.google.firebase:firebase-analytics'
+    implementation "ch.acra:acra-http:$acraVersion"
+    implementation "ch.acra:acra-toast:$acraVersion"
 
 
 }

@@ -28,6 +28,7 @@ import com.pigeoff.rss.util.ArticleExtended
 import com.pigeoff.rss.util.UtilItem
 import com.pigeoff.rss.cardstackview.*
 import kotlinx.coroutines.*
+import java.lang.Exception
 import java.util.*
 
 class SwipeFragment() : Fragment() {
@@ -311,7 +312,7 @@ class SwipeFragment() : Fragment() {
     }
 
     fun resetItems() {
-        
+
         CoroutineScope(Dispatchers.IO).launch {
             val items = service.db.itemDao().getAllItems()
 

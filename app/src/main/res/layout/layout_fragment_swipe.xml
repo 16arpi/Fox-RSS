@@ -73,6 +73,7 @@
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
     </com.pigeoff.rss.cardstackview.CardStackView>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/bttnReverse"
             app:backgroundTint="@color/colorAccent"

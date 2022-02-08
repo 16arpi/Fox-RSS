@@ -75,8 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/colorAccent"
-                    android:clickable="true"
+                    app:backgroundTint="@color/colorAccent"
                     android:elevation="0dp"
                     app:fabSize="mini"
                     app:srcCompat="@drawable/ic_replay_10" />
@@ -87,9 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/colorAccent"
-                    android:clickable="true"
-                    android:elevation="0dp"
+                    app:backgroundTint="@color/colorAccent"
                     app:srcCompat="@drawable/ic_play" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -97,12 +94,10 @@
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/colorAccent"
-                    android:clickable="true"
-                    android:elevation="0dp"
-                    app:fabSize="mini"
-                    app:srcCompat="@drawable/ic_foward_10" />
+
+                    app:backgroundTint="@color/colorAccent"
+                    app:srcCompat="@drawable/ic_foward_10"
+                    app:fabSize="mini"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -114,8 +109,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_gradient"
         android:minHeight="?attr/actionBarSize"
-        style="@style/Widget.MaterialComponents.Light.ActionBar.Solid"
-        android:foregroundTint="@color/bgWhite"
+        android:theme="?attr/actionBarTheme"
          />
 
     <FrameLayout

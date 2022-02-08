@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Fox RSS</string>
-    <string name="title_selection">Selection</string>
+    <string name="title_selection">Reading list</string>
     <string name="title_feeds">Feeds</string>
 
     <string name="item_swip">Articles</string>
-    <string name="item_inbox">Selection</string>
+    <string name="item_inbox">Reading list</string>
     <string name="item_feeds">RSS feeds</string>
     <string name="item_favs">Favoris</string>
     <string name="item_add">Add</string>
@@ -21,7 +21,7 @@
     <string name="menu_selection_done">Remove opened articles</string>
 
     <string name="dialog_reset_title">Are you sure ?</string>
-    <string name="dialog_reset_message">You\'re selection of articles will be empty after.</string>
+    <string name="dialog_reset_message">You\'re reading list will be empty after.</string>
     <string name="dialog_reset_cancel">@string/dialog_feed_cancel</string>
     <string name="dialog_reset_ok">@string/dialog_feed_ok</string>
 
@@ -36,7 +36,7 @@
 
     <string name="edit_title">Add a RSS feed</string>
     <string name="edit_url">URL of the RSS feed</string>
-    <string name="edit_error">Error. It doesn\'t work...</string>
+    <string name="edit_error">Error. It doesn\'t work…</string>
     <string name="edit_error_url">Error. You must add an valid URL</string>
     <string name="edit_bttn">Add a RSS feed</string>
 
@@ -55,39 +55,21 @@
     <string name="settings_title">Settings</string>
     <string name="settings_subtitle1">RSS Feeds</string>
     <string name="settings_read_days_label">Expiration date of read articles</string>
-    <string name="settings_read_days_message">Number of days after which read articles are removed from the selection
-        list
-    </string>
+    <string name="settings_read_days_message">Number of days after which read articles are removed from the reading list</string>
     <string name="settings_subtitle2">Informations</string>
     <string name="settings_about_label">About the developer</string>
     <string name="settings_mail_label">Contact the developer</string>
     <string name="settings_libraries_label">Libraries used in this app</string>
-
-    <string name="settings_subtitle3">View</string>
-    <string name="settings_customfont_title">Font type</string>
-    <string name="settings_customfont_description">For the reader view, you can either choose a font with serif or a font without.
-    </string>
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
     <string name="key_expiration_read_article">expirationdatereadarticle</string>
     <string name="key_app_pref">apppref</string>
     <string name="key_first_launch">firstlaunch</string>
     <string name="key_customfontstyle">customfontstyle</string>
 
-    <string name="dialog_intro_next">Next</string>
-    <string name="dialog_intro_close">Close</string>
+    <string name="settings_subtitle3">View</string>
+    <string name="settings_customfont_title">Font type</string>
+    <string name="settings_customfont_description">For the reader view, you can either choose a font with serif or a font without.
+    </string>
 
     <string name="error_no_url">No URL available</string>
 
@@ -115,8 +97,10 @@
     <string name="swipe_all_left_t" >Discard everything</string>
     <string name="swipe_all_left_p" >All remaining items will be discarded</string>
     <string name="swipe_all_right_t" >Keep everything</string>
-    <string name="swipe_all_right_p" >All remaining items will be kept for your selection</string>
+    <string name="swipe_all_right_p" >All remaining items will be kept for your reading list</string>
     <string name="swipe_all_ok" >Confirm</string>
     <string name="swipe_all_cancel" >Cancel</string>
+
+    <string name="crash_message">Sorry, the app crashed. A report will be sent to the developer.</string>
 
 </resources>
