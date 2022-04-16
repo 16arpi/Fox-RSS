@@ -5,8 +5,6 @@ import android.content.Context
 import com.pigeoff.rss.services.FeedsService
 import org.acra.*
 import org.acra.annotation.*
-import org.acra.config.CoreConfigurationBuilder
-import org.acra.config.ToastConfigurationBuilder
 import org.acra.data.StringFormat
 import org.acra.sender.HttpSender
 
