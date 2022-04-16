@@ -70,10 +70,24 @@ class SwipeAdapter(
 
                     }
                     catch (e: Exception) {
-                        holder.favicon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_feeds_white))
+                        withContext(Dispatchers.Main) {
+                            holder.favicon.setImageDrawable(
+                                ContextCompat.getDrawable(
+                                    context,
+                                    R.drawable.ic_feeds_white
+                                )
+                            )
+                        }
                     }
                 } else {
-                    holder.favicon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_feeds_white))
+                    withContext(Dispatchers.Main) {
+                        holder.favicon.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                context,
+                                R.drawable.ic_feeds_white
+                            )
+                        )
+                    }
                 }
             }
 
