@@ -83,6 +83,8 @@
 
     <string name="feed_read_error_noarticles">No article to show</string>
     <string name="feed_read_error_feederror">Error with the RSS Feed</string>
+    <string name="feed_read_add_selection_label">Add to reading list</string>
+    <string name="feed_read_add_selection">Article added to your reading list 📚</string>
 
     <string name="empty_no_selection_t" >Selection empty</string>
     <string name="empty_no_rssfeed_t" >No RSS feed</string>

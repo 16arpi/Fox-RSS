@@ -86,6 +86,9 @@
 
     <string name="feed_read_error_noarticles">Aucun article à afficher</string>
     <string name="feed_read_error_feederror">Erreur liée au flux RSS</string>
+    <string name="feed_read_add_selection_label">Ajouter à la liste de lecture</string>
+    <string name="feed_read_add_selection">Article ajouté à votre liste de lecture 📚</string>
+
 
     <string name="empty_no_selection_t" >Liste de lecture vide</string>
     <string name="empty_no_rssfeed_t" >Aucun flux RSS</string>

@@ -25,9 +25,12 @@ class UtilItem {
             if (!channel.description.isEmpty()) {
                 item.channelDescription = channel.description
             }
-            if (!channel.imageUrl.isEmpty()) {
-                item.channelImageUrl = channel.imageUrl
+            if (!channel.faviconUrl.isEmpty()) {
+                item.channelImageUrl = channel.faviconUrl
             }
+            /*if (!channel.imageUrl.isEmpty()) {
+                item.channelImageUrl = channel.imageUrl
+            }*/
             if (!channel.link.isEmpty()) {
                 item.channelLink = channel.link
             }

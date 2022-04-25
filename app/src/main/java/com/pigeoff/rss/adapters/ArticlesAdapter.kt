@@ -171,14 +171,12 @@ class ArticlesAdapter(val context: Context,
     }
 
     private fun loadImage(post: RSSDbItem, holder: ViewHolder) {
-        CoroutineScope(Dispatchers.IO).launch {
+        /*CoroutineScope(Dispatchers.IO).launch {
             try {
                 val url = Util.getFaviconUrl(post.link)
 
                 withContext(Dispatchers.Main) {
-                    withContext(Dispatchers.Main) {
-                        Picasso.get().load(url).into(holder.favicon)
-                    }
+                    Picasso.get().load(url).into(holder.favicon)
                 }
             }
             catch (e: Exception) {
@@ -190,6 +188,26 @@ class ArticlesAdapter(val context: Context,
                         holder.favicon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_link))
                     }
                 }
+            }
+        }*/
+
+        if (post.channelImageUrl.isNotEmpty()) {
+            if (post.audio.isNotEmpty()) {
+                Picasso.get().load(post.channelImageUrl)
+                    .placeholder(ContextCompat.getDrawable(context, R.drawable.ic_podcast)!!)
+                    .error(ContextCompat.getDrawable(context, R.drawable.ic_podcast)!!)
+                    .into(holder.favicon)
+            } else {
+                Picasso.get().load(post.channelImageUrl)
+                    .placeholder(ContextCompat.getDrawable(context, R.drawable.ic_link)!!)
+                    .error(ContextCompat.getDrawable(context, R.drawable.ic_link)!!)
+                    .into(holder.favicon)
+            }
+        } else {
+            if (post.audio.isNotEmpty()) {
+                holder.favicon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_podcast_b))
+            } else {
+                holder.favicon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_link))
             }
         }
     }
