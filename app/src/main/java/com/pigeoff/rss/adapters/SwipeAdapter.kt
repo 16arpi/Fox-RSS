@@ -58,7 +58,7 @@ class SwipeAdapter(
             }
 
             holder.favicon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_feeds_white))
-            CoroutineScope(Dispatchers.IO).launch {
+            /*CoroutineScope(Dispatchers.IO).launch {
                 if (art.link.isNotEmpty()) {
                     try {
                         val url = Util.getFaviconUrl(art.link)
@@ -89,6 +89,20 @@ class SwipeAdapter(
                         )
                     }
                 }
+            }*/
+            if (art.channelImageUrl.isNotEmpty()) {
+                Picasso.get()
+                    .load(art.channelImageUrl)
+                    .placeholder(ContextCompat.getDrawable(context, R.drawable.ic_feeds)!!)
+                    .error(ContextCompat.getDrawable(context, R.drawable.ic_feeds)!!)
+                    .into(holder.favicon)
+            } else {
+                holder.favicon.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        context,
+                        R.drawable.ic_feeds_white
+                    )
+                )
             }
 
             if (art.audio.isNotEmpty()) {

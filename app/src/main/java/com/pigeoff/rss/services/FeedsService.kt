@@ -6,10 +6,12 @@ import androidx.room.Room
 import com.pigeoff.rss.R
 import com.pigeoff.rss.db.RSSDb
 import com.pigeoff.rss.db.RSSDbFeed
+import com.pigeoff.rss.db.RSSDbItem
 import com.pigeoff.rss.util.ArticleExtended
 import com.pigeoff.rss.util.Util
 import com.prof.rssparser.Article
 import com.prof.rssparser.Parser
+import kotlinx.coroutines.*
 import java.nio.charset.Charset
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -52,6 +54,7 @@ class FeedsService(context: Context) {
         }
     }
 
+    /*
     suspend fun fetchFeeds(flush: Boolean) : MutableList<ArticleExtended> {
         val feeds = db.feedDao().getAllFeeds()
         val articles = mutableListOf<ArticleExtended>()
@@ -97,6 +100,123 @@ class FeedsService(context: Context) {
             }
             catch (e: Exception) {
                 badDateArticles.add(a)
+            }
+
+        }
+
+        badDateArticles.sortBy {
+            it.article?.pubDate.toString()
+        }
+
+        goodDateArticles.sortBy {
+            format.parse(it.article?.pubDate!!)
+        }
+
+        val finalArticles = mutableListOf<ArticleExtended>()
+        finalArticles.addAll(badDateArticles)
+        finalArticles.addAll(goodDateArticles)
+
+
+        finalArticles.reverse()
+
+        return finalArticles
+    }
+    */
+
+    suspend fun fetchFeeds(flush: Boolean) : MutableList<ArticleExtended> {
+        val feeds = db.feedDao().getAllFeeds()
+        val articles = mutableListOf<ArticleExtended>()
+        var count = 0;
+
+        /*
+        val limit = feeds.size
+        for (f in feeds) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val url = f.url
+                try {
+                    if (flush) {
+                        parser.flushCache(url)
+                    }
+                    val channel = parser.getChannel(url)
+                    val entries = channel.articles
+                    val innerArticles = mutableListOf<ArticleExtended>()
+                    for (e in entries) {
+                        val art = ArticleExtended()
+                        art.channel = f
+                        art.article = e
+
+                        innerArticles.add(art)
+                    }
+
+                    articles.addAll(innerArticles)
+                    count += 1
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    // Handle the exception
+                    count += 1
+                }
+            }
+        }*/
+
+        IntRange(0, feeds.size - 1).map {
+            CoroutineScope(Dispatchers.IO).async {
+                val f = feeds[it]
+                val url = f.url
+                try {
+                    if (flush) {
+                        parser.flushCache(url)
+                    }
+                    val channel = parser.getChannel(url)
+                    val entries = channel.articles
+                    val innerArticles = mutableListOf<ArticleExtended>()
+                    for (e in entries) {
+                        val art = ArticleExtended()
+                        art.channel = f
+                        art.article = e
+
+                        innerArticles.add(art)
+                    }
+
+                    articles.addAll(innerArticles)
+                    count += 1
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    // Handle the exception
+                    count += 1
+                }
+            }
+        }.forEach {
+            it.await()
+        }
+
+        /*while (count < limit) {
+            //System.out.println("${count} / ${limit}")
+        }*/
+
+        val badDateArticles = mutableListOf<ArticleExtended>()
+        val goodDateArticles = mutableListOf<ArticleExtended>()
+
+        val format = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH)
+
+        for (a in articles) {
+            if (a.article != null) {
+                val strDate = a.article?.pubDate
+
+                try {
+                    if (!strDate.isNullOrEmpty()) {
+                        val date = format.parse(strDate)
+                        if (date != null) {
+                            goodDateArticles.add(a)
+                        }
+                    } else {
+                        badDateArticles.add(a)
+                    }
+                }
+                catch (e: Exception) {
+                    badDateArticles.add(a)
+                }
             }
 
         }

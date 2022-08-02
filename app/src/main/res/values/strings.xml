@@ -28,13 +28,17 @@
     <string name="label_no_source">No source specified</string>
     <string name="label_no_date">No date specified</string>
     <string name="label_hello">Hello ☀️</string>
+    <string name="label_hello_night">Hello 🌙</string>
     <string name="label_error_feeds">Add more RSS feeds to see and select articles</string>
 
     <string name="label_error_feeds_btn">Add RSS Feed</string>
     <string name="label_error_article">There is no article to show</string>
     <string name="label_error_rss_add">No RSS feed found.</string>
 
+    <string name="edit">Edit</string>
     <string name="edit_title">Add a RSS feed</string>
+    <string name="edit_rss_title">Title (leave blank for default)</string>
+    <string name="edit_rss_title_hint">(leave blank for default)</string>
     <string name="edit_url">URL of the RSS feed</string>
     <string name="edit_error">Error. It doesn\'t work…</string>
     <string name="edit_error_url">Error. You must add an valid URL</string>
@@ -83,6 +87,8 @@
 
     <string name="feed_read_error_noarticles">No article to show</string>
     <string name="feed_read_error_feederror">Error with the RSS Feed</string>
+    <string name="feed_read_add_selection_label">Add to reading list</string>
+    <string name="feed_read_add_selection">Article added to your reading list 📚</string>
 
     <string name="empty_no_selection_t" >Selection empty</string>
     <string name="empty_no_rssfeed_t" >No RSS feed</string>

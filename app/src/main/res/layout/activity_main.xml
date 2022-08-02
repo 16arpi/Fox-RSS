@@ -38,9 +38,9 @@
                 android:id="@+id/framLayout"
                 app:layout_constraintTop_toBottomOf="@+id/appBarLayout"/>
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
+        <!--<com.google.android.material.bottomnavigation.BottomNavigationView
                 style="@style/Widget.MaterialComponents.Toolbar.Primary"
-                android:background="@android:color/white"
+                android:background="?attr/foxColorBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -50,5 +50,23 @@
                 app:menu="@menu/menu_bttn"
                 android:id="@+id/bttmNav"
 
+                app:itemTextColor="?attr/foxColorForground"
+                app:itemIconTint="?attr/foxColorForground"
+            />-->
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            android:background="?attr/foxColorBackground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/framLayout"
+            app:menu="@menu/menu_bttn"
+            android:id="@+id/bttmNav"
+
+            app:itemTextColor="?attr/foxColorForground"
+            app:itemIconTint="?attr/foxColorForground"
             />
 </androidx.constraintlayout.widget.ConstraintLayout>

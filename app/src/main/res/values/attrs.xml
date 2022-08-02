@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="foxColorBackground" format="color" />
+    <attr name="foxColorForground" format="color" />
+    <attr name="foxColorGreyBg" format="color" />
+
+    <attr name="foxConsultedColor" format="color" />
+    <attr name="foxBgSelectedColor" format="color" />
+
+    <attr name="foxPrimaryBackgroundColor" format="color" />
+    <attr name="foxStrokeColor" format="color" />
+</resources>

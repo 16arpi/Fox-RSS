@@ -68,6 +68,7 @@ class FeedsFragment() : Fragment() {
 
             CoroutineScope(Dispatchers.IO).launch {
                 val urls = Util.getRssFromUrl(intentExtra!!)
+
                 withContext(Dispatchers.Main) {
                     progressToolbar.visibility = View.GONE
                     if (urls.count() == 1) {

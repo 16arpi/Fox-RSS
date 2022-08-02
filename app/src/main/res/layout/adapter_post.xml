@@ -3,7 +3,7 @@
               xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
               android:layout_height="wrap_content" xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
-              android:background="@color/bgWhite"
+              android:background="?attr/foxColorBackground"
 >
 
     <LinearLayout
@@ -20,10 +20,13 @@
                 android:elevation="0dp"
                 android:layout_marginEnd="16dp" android:background="@drawable/round_grey_bg"
                 android:layout_margin="8dp"/>
+
         <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:padding="8dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -42,13 +45,14 @@
             </LinearLayout>
 
             <TextView
-                    android:text="TextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/txtTitle"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:textSize="16sp"
-                    android:ellipsize="end"
-                    android:maxLines="3"/>
+                android:id="@+id/txtTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:text="TextView"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -80,6 +84,18 @@
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
             </LinearLayout>
         </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/moreBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:elevation="0dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_more"
+            android:visibility="gone" />
     </LinearLayout>
     <View
             android:id="@+id/divider"

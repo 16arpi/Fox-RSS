@@ -86,9 +86,9 @@ class Util {
             return str.toArray(arrayOf())
         }
 
-        fun getAttrValue(context: Context) : Int {
+        fun getAttrValue(context: Context, attr: Int) : Int {
             val outValue = TypedValue()
-            context.theme.resolveAttribute(android.R.attr.selectableItemBackground, outValue, true)
+            context.theme.resolveAttribute(attr, outValue, true)
             return outValue.resourceId
         }
 

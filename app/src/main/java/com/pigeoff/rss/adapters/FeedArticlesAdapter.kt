@@ -2,22 +2,24 @@ package com.pigeoff.rss.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.pigeoff.rss.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.adapter_post.view.*
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.google.android.material.snackbar.Snackbar
+import com.pigeoff.rss.RSSApp
 import com.pigeoff.rss.activities.PodcastActivity
 import com.pigeoff.rss.activities.ReadActivity
 import com.pigeoff.rss.util.ArticleExtended
 import com.pigeoff.rss.util.Util
+import com.pigeoff.rss.util.UtilItem
+import java.util.*
 
 
 class FeedArticlesAdapter(val context: Context,
@@ -44,17 +46,58 @@ class FeedArticlesAdapter(val context: Context,
         holder as ViewHolder
         val post = posts[position]
 
+        holder.more.visibility = View.VISIBLE
+        holder.more.setOnClickListener {
+
+            val popupMenu = PopupMenu(context, it, Gravity.END)
+            popupMenu.menuInflater.inflate(R.menu.menu_articles_feed_options, popupMenu.menu)
+            popupMenu.show()
+
+            popupMenu.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.itemAddReading -> {
+                        val art = UtilItem.toRSSItem(post)
+                        art.interesting = true
+                        art.swipeTime = Calendar.getInstance().timeInMillis
+                        val app = context.applicationContext as RSSApp
+                        app.getClient().db.itemDao().insertItem(art)
+                        Toast.makeText(
+                            context,
+                            R.string.feed_read_add_selection,
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        true
+                    }
+                    else -> {
+                        false
+                    }
+                }
+            }
+        }
+
         holder.title.text = post.article?.title
         holder.source.text = post.channel.title
 
-
-        holder.meta.setTextColor(ContextCompat.getColor(context, R.color.textColorBlack))
-        holder.title.setTextColor(ContextCompat.getColor(context,R.color.textColorBlack))
-
         holder.favicon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_link))
-        if (favicon.isNotEmpty()) Picasso.get().load(favicon).into(holder.favicon)
+        if (favicon.isNotEmpty()) {
+            val audio = post.article?.audio
+            if (!audio.isNullOrEmpty()) {
+                Picasso.get()
+                    .load(favicon)
+                    .placeholder(ContextCompat.getDrawable(context, R.drawable.ic_podcast)!!)
+                    .error(ContextCompat.getDrawable(context, R.drawable.ic_podcast)!!)
+                    .into(holder.favicon)
+            } else {
+                Picasso.get()
+                    .load(favicon)
+                    .placeholder(ContextCompat.getDrawable(context, R.drawable.ic_link)!!)
+                    .error(ContextCompat.getDrawable(context, R.drawable.ic_link)!!)
+                    .into(holder.favicon)
+            }
+        }
         else {
-            if (post.article?.audio.toString().isNotEmpty()) {
+            if (!post.article?.audio.isNullOrEmpty()) {
                 holder.favicon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_podcast_b))
             } else {
                 holder.favicon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_link))
@@ -99,6 +142,7 @@ class FeedArticlesAdapter(val context: Context,
         val meta: TextView = v.txtMeta
         val favicon: ImageView = v.feedFavicon
         val podcast: TextView = v.txtPodcast
+        val more: ImageButton = v.moreBtn
     }
 
     private fun openUrl(art: ArticleExtended) {

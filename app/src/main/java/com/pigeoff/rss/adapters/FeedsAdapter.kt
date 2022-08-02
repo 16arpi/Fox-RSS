@@ -2,6 +2,7 @@ package com.pigeoff.rss.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,17 +58,16 @@ class FeedsAdapter(val context: Context,
 
             //Image
             holder.favicon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_feeds))
-            CoroutineScope(Dispatchers.IO).launch {
-                if (!art.faviconUrl.isEmpty()) {
-                    withContext(Dispatchers.Main) {
-                        Picasso.get().load(art.faviconUrl).into(holder.favicon)
-                    }
-                }
-                else {
-                    withContext(Dispatchers.Main) {
-                        holder.favicon.setImageDrawable(context.getDrawable(R.drawable.ic_feeds))
-                    }
-                }
+            if (!art.faviconUrl.isEmpty()) {
+                Picasso.get()
+                    .load(art.faviconUrl)
+                    .placeholder(ContextCompat.getDrawable(context, R.drawable.ic_feeds)!!)
+                    .error(ContextCompat.getDrawable(context, R.drawable.ic_feeds)!!)
+                    .into(holder.favicon)
+
+            }
+            else {
+                holder.favicon.setImageDrawable(context.getDrawable(R.drawable.ic_feeds))
             }
 
 
@@ -92,6 +92,24 @@ class FeedsAdapter(val context: Context,
                     selectCard(it, art, true)
                 }
                 true
+            }
+            
+            holder.igmBtnMore.setOnClickListener {
+                val popupMenu = PopupMenu(context, it, Gravity.END)
+                popupMenu.menuInflater.inflate(R.menu.menu_popup_feeds, popupMenu.menu)
+                popupMenu.show()
+                
+                popupMenu.setOnMenuItemClickListener { it ->
+                    when (it.itemId) {
+                        R.id.itemEdit -> {
+                            
+                            true
+                        }
+                        else -> {
+                            false
+                        }
+                    }
+                }
             }
         } else {
             holder as ArticlesAdapter.EmptyViewHolder
@@ -121,12 +139,13 @@ class FeedsAdapter(val context: Context,
         val title = v.findViewById<TextView>(R.id.feedTitle)
         val url = v.findViewById<TextView>(R.id.feedUrl)
         val favicon = v.findViewById<ImageView>(R.id.feedFavicon)
+        val igmBtnMore = v.findViewById<ImageButton>(R.id.imgBtnMore)
     }
 
     private fun selectCard(v: View, post: RSSDbFeed?, select: Boolean) {
         if (select) {
             v.isSelected = true
-            v.background = ContextCompat.getDrawable(context, R.color.bgLightDark)
+            v.background = ContextCompat.getDrawable(context, Util.getAttrValue(context, R.attr.foxBgSelectedColor))
             if (post != null) {
                 selectedItems.add(post)
                 mOnCheckBoxClickListener?.onCheckBoxClickListener(selectedItems)
@@ -134,7 +153,7 @@ class FeedsAdapter(val context: Context,
         }
         else {
             v.isSelected = false
-            v.background = ContextCompat.getDrawable(context, Util.getAttrValue(context))
+            v.background = ContextCompat.getDrawable(context, Util.getAttrValue(context, android.R.attr.selectableItemBackground))
             if (post != null) {
                 selectedItems.remove(post)
                 mOnCheckBoxClickListener?.onCheckBoxClickListener(selectedItems)
