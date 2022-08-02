@@ -29,13 +29,16 @@
     <string name="label_no_source">Aucun source indiquée</string>
     <string name="label_no_date">Aucune date indiquée</string>
     <string name="label_hello">Bonjour ☀️</string>
+    <string name="label_hello_night">Bonsoir 🌙</string>
     <string name="label_error_feeds" >Ajoutez plus de flux RSS pour voir et sélectionner des articles.</string>
     <string name="label_error_feeds_btn" >Ajouter un flux RSS</string>
     <string name="label_error_article" >Il n\'y a aucun article à afficher</string>
     <string name="label_error_rss_add" >Aucun flux RSS trouvé.</string>
 
-
+    <string name="edit">Modifier</string>
     <string name="edit_title">Ajouter un flux RSS</string>
+    <string name="edit_rss_title">Titre personnalisé (laisser vide sinon)</string>
+    <string name="edit_rss_title_hint">(laisser vide pour la valeur par défault)</string>
     <string name="edit_url">URL du flux RSS</string>
     <string name="edit_error">Erreur. Ça ne marche pas…</string>
     <string name="edit_error_url">Erreur. Vous devez inscrire une URL valide</string>

@@ -201,20 +201,22 @@ class FeedsService(context: Context) {
         val format = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzzz", Locale.ENGLISH)
 
         for (a in articles) {
-            val strDate = a.article?.pubDate
+            if (a.article != null) {
+                val strDate = a.article?.pubDate
 
-            try {
-                if (!strDate.isNullOrEmpty()) {
-                    val date = format.parse(strDate)
-                    if (date != null) {
-                        goodDateArticles.add(a)
+                try {
+                    if (!strDate.isNullOrEmpty()) {
+                        val date = format.parse(strDate)
+                        if (date != null) {
+                            goodDateArticles.add(a)
+                        }
+                    } else {
+                        badDateArticles.add(a)
                     }
-                } else {
+                }
+                catch (e: Exception) {
                     badDateArticles.add(a)
                 }
-            }
-            catch (e: Exception) {
-                badDateArticles.add(a)
             }
 
         }

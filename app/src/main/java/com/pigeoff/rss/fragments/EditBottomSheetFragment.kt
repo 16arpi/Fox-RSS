@@ -33,8 +33,10 @@ class EditBottomSheetFragment() : BottomSheetDialogFragment() {
     var feed: RSSDbFeed? = null
     lateinit var service: FeedsService
     lateinit var progress: ProgressBar
-    lateinit var edit: TextInputEditText
-    lateinit var editLayout: TextInputLayout
+    lateinit var editTitle: TextInputEditText
+    lateinit var editLayoutTitle: TextInputLayout
+    lateinit var editUrl: TextInputEditText
+    lateinit var editLayoutUrl: TextInputLayout
     lateinit var ok: Button
 
     fun newInstance(service: FeedsService, feed: RSSDbFeed?) : EditBottomSheetFragment {
@@ -55,11 +57,13 @@ class EditBottomSheetFragment() : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         progress = view.findViewById(R.id.editProgress)
-        edit = view.findViewById(R.id.editFeed)
-        editLayout = view.findViewById(R.id.editLayout)
+        editTitle = view.findViewById(R.id.editFeedTitle)
+        editLayoutTitle = view.findViewById(R.id.editLayoutTitle)
+        editUrl = view.findViewById(R.id.editFeedUrl)
+        editLayoutUrl = view.findViewById(R.id.editLayoutUrl)
         ok = view.findViewById(R.id.okBtn)
 
-        edit.setText(initText)
+        editUrl.setText(initText)
         initText = ""
     }
 
@@ -67,25 +71,27 @@ class EditBottomSheetFragment() : BottomSheetDialogFragment() {
         super.onResume()
 
         okBtn.setOnClickListener {
-            val url = edit.text.toString()
+            val url = editUrl.text.toString()
+            val title = editTitle.text.toString()
             progress.visibility = View.VISIBLE
             CoroutineScope(Dispatchers.IO).launch {
-                addFeedFromURL(url)
+                addFeedFromURL(url, title)
             }
         }
     }
 
-    suspend fun addFeedFromURL(url: String) {
+    suspend fun addFeedFromURL(url: String, title: String) {
         if (url.isEmpty() || !url.contains("http")) {
             withContext(Dispatchers.Main) {
                 progress.visibility = View.GONE
-                editLayout.error = context?.getString(R.string.edit_error_url)
+                editLayoutUrl.error = context?.getString(R.string.edit_error_url)
             }
         } else {
             try {
                 val channel = service.parser.getChannel(url)
                 val generatedFeed = UtilItem.toRSSFeed(url, channel)
                 generatedFeed.faviconUrl = Util.getFaviconUrl(channel.link.toString())
+                if (title.isNotEmpty()) generatedFeed.title = title
                 generatedFeed.imageUrl = if (channel.itunesChannelData?.image.toString().isNotEmpty()) {
                     channel.itunesChannelData?.image.toString()
                 } else {
@@ -104,7 +110,7 @@ class EditBottomSheetFragment() : BottomSheetDialogFragment() {
                 withContext(Dispatchers.Main) {
                     Log.e("ERROR", e.message.toString())
                     progress.visibility = View.GONE
-                    editLayout.error = context?.getString(R.string.edit_error)
+                    editLayoutUrl.error = context?.getString(R.string.edit_error)
                 }
             }
         }
@@ -112,7 +118,8 @@ class EditBottomSheetFragment() : BottomSheetDialogFragment() {
 
     override fun dismiss() {
         super.dismiss()
-        edit.setText("")
+        editTitle.setText("")
+        editUrl.setText("")
     }
 
     interface OnFeedAddedListener {

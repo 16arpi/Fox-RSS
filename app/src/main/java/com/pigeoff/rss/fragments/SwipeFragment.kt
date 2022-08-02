@@ -1,8 +1,8 @@
 package com.pigeoff.rss.fragments
 
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -22,19 +22,19 @@ import com.pigeoff.rss.activities.MainActivity
 import com.pigeoff.rss.activities.SettingsActivity
 import com.pigeoff.rss.adapters.SwipeAdapter
 import com.pigeoff.rss.adapters.SwipeFeedsAdapter
+import com.pigeoff.rss.cardstackview.*
 import com.pigeoff.rss.db.RSSDbItem
 import com.pigeoff.rss.services.FeedsService
 import com.pigeoff.rss.util.ArticleExtended
 import com.pigeoff.rss.util.UtilItem
-import com.pigeoff.rss.cardstackview.*
 import kotlinx.coroutines.*
-import java.lang.Exception
 import java.util.*
 
 class SwipeFragment() : Fragment() {
 
     lateinit var mcontext: Context
     lateinit var service: FeedsService
+    lateinit var textHello: TextView
     lateinit var cardStackView: CardStackView
     lateinit var btnReverse: FloatingActionButton
     lateinit var btnNo: FloatingActionButton
@@ -69,6 +69,7 @@ class SwipeFragment() : Fragment() {
 
         //Binding
         cardStackView = view.findViewById(R.id.cardStackView)
+        textHello = view.findViewById(R.id.textHello)
         btnReverse = view.findViewById(R.id.bttnReverse)
         btnNo = view.findViewById(R.id.bttnNo)
         btnYes = view.findViewById(R.id.bttnYes)
@@ -166,6 +167,19 @@ class SwipeFragment() : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
+        // Change title if night mode
+        when (requireContext().resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                textHello.text = getString(R.string.label_hello_night)
+            }
+            Configuration.UI_MODE_NIGHT_NO -> {
+                textHello.text = getString(R.string.label_hello)
+            }
+            Configuration.UI_MODE_NIGHT_UNDEFINED -> {
+                textHello.text = getString(R.string.label_hello)
+            }
+        }
 
         // Show rss feeds when user finish his/her selection
         val rssFeeds = service.db.feedDao().getAllFeeds()

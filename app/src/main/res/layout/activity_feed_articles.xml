@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,9 +20,11 @@
             app:expandedTitleMarginBottom="28dp"
             app:expandedTitleTextAppearance="@style/TextAppearance.App.CollapsingToolbar.Expanded"
             app:collapsedTitleTextAppearance="@style/TextAppearance.App.CollapsingToolbar.Collapsed"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:maxLines="3"
+
+            style="@style/Widget.App.Toolbar"
             >
 
             <com.google.android.material.appbar.MaterialToolbar
@@ -29,10 +32,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:menu="@menu/menu_articles_feed"
-                style="@style/Widget.MaterialComponents.Toolbar.Primary"
-                app:titleTextColor="@android:color/white"
                 app:layout_collapseMode="pin"
                 android:elevation="0dp"
+                style="@style/Widget.App.Toolbar"
                 />
 
 

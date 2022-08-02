@@ -5,7 +5,7 @@
     android:id="@+id/coordinatorPodcast"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bgSemiLight"
+    android:background="?attr/foxColorGreyBg"
     android:orientation="vertical">
 
     <LinearLayout
@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="00:00"
-                    android:textColor="@android:color/black" />
+                    android:textColor="?attr/foxColorForground" />
 
                 <TextView
                     android:id="@+id/textPodcastMaxTime"
@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:text="00:00"
-                    android:textColor="@android:color/black" />
+                    android:textColor="?attr/foxColorForground" />
             </LinearLayout>
 
             <LinearLayout
@@ -132,7 +132,7 @@
                 android:layout_height="match_parent"
                 android:elevation="1dp"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialCardView.BottomLess"
-                app:strokeColor="@color/bgLightDark"
+                app:strokeColor="?attr/foxStrokeColor"
                 app:strokeWidth="1dp">
 
                 <LinearLayout

@@ -79,10 +79,6 @@ class FeedArticlesAdapter(val context: Context,
         holder.title.text = post.article?.title
         holder.source.text = post.channel.title
 
-
-        holder.meta.setTextColor(ContextCompat.getColor(context, R.color.textColorBlack))
-        holder.title.setTextColor(ContextCompat.getColor(context, R.color.textColorBlack))
-
         holder.favicon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_link))
         if (favicon.isNotEmpty()) {
             val audio = post.article?.audio

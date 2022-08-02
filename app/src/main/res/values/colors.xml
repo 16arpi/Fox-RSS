@@ -7,8 +7,19 @@
     <color name="bgLight">#FFFFFF</color>
     <color name="bgSemiLight">#F2F2F2</color>
     <color name="bgLightDark">#DDDDDD</color>
+    <color name="bgLightDarkNight">#22FFFFFF</color>
     <color name="consultedTextColor">#77000000</color>
+    <color name="consultedTextColorNight">#77FFFFFF</color>
     <color name="textColorBlack">#FF000000</color>
     <color name="textSemiColorBlack">#000000</color>
     <color name="semiTransparent">#77FFFFFF</color>
+
+    <!-- CUSTOM COLORS -->
+    <color name="foxBackgroundColorDay">#FFFFFFFF</color>
+    <color name="foxBackgroundColorNight">#FF222222</color>
+    <color name="foxBackgroundColorNightLight">#FF333333</color>
+    <color name="foxGreyBgDay">#FFEEEEEE</color>
+    <color name="foxGreyBgNight">#FF444444</color>
+    <color name="foxCardStrokeColorDay">#DDDDDD</color>
+    <color name="foxCardStrokeColorNight">#FF222222</color>
 </resources>

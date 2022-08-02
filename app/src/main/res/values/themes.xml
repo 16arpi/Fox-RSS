@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.Fox" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeStyle">@style/Widget.App.ActionMode</item>
+        <item name="actionModeCloseDrawable">@drawable/ic_close</item>
+        <item name="actionBarTheme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
+
+        <!-- CUSTOM COLORS -->
+        <item name="foxColorBackground">@color/foxBackgroundColorDay</item>
+        <item name="foxColorForground">@color/foxBackgroundColorNight</item>
+        <item name="foxColorGreyBg" >@color/foxGreyBgDay</item>
+
+        <item name="foxConsultedColor">@color/consultedTextColor</item>
+        <item name="foxBgSelectedColor">@color/bgLightDark</item>
+
+        <item name="foxPrimaryBackgroundColor">@color/colorPrimary</item>
+
+        <item name="foxStrokeColor">@color/foxCardStrokeColorDay</item>
+
+        <item name="materialAlertDialogTheme" >@style/ThemeOverlay.AppCompat.MaterialDialog</item>
+    </style>
+
+    <style name="ThemeOverlay.AppCompat.MaterialDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog" >
+        <item name="buttonBarPositiveButtonStyle">@style/Alert.Button.Positive</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Alert.Button.Negative</item>
+    </style>
+
+    <style name="Alert.Button.Positive" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="Alert.Button.Negative" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+</resources>

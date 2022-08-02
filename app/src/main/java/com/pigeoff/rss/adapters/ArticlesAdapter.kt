@@ -92,11 +92,11 @@ class ArticlesAdapter(val context: Context,
             }
 
             if (post.consulted) {
-                holder.title.setTextColor(ContextCompat.getColor(context,R.color.consultedTextColor))
-                holder.meta.setTextColor(ContextCompat.getColor(context,R.color.consultedTextColor))
+                holder.title.setTextColor(ContextCompat.getColor(context, Util.getAttrValue(context, R.attr.foxConsultedColor)))
+                holder.meta.setTextColor(ContextCompat.getColor(context, Util.getAttrValue(context, R.attr.foxConsultedColor)))
             } else {
-                holder.meta.setTextColor(ContextCompat.getColor(context,R.color.textColorBlack))
-                holder.title.setTextColor(ContextCompat.getColor(context,R.color.textColorBlack))
+                holder.meta.setTextColor(ContextCompat.getColor(context, Util.getAttrValue(context, R.attr.foxColorForground)))
+                holder.title.setTextColor(ContextCompat.getColor(context, Util.getAttrValue(context, R.attr.foxColorForground)))
             }
 
             loadImage(post, holder)
@@ -237,8 +237,10 @@ class ArticlesAdapter(val context: Context,
                 service.db.itemDao().updateItem(item)
 
                 withContext(Dispatchers.Main) {
-                    holder.meta.setTextColor(ContextCompat.getColor(context, R.color.consultedTextColor))
-                    holder.title.setTextColor(ContextCompat.getColor(context, R.color.consultedTextColor))
+                    //holder.meta.setTextColor(ContextCompat.getColor(context, R.color.consultedTextColor))
+                    //holder.title.setTextColor(ContextCompat.getColor(context, R.color.consultedTextColor))
+                    holder.meta.setTextColor(ContextCompat.getColor(context, Util.getAttrValue(context, R.attr.foxConsultedColor)))
+                    holder.title.setTextColor(ContextCompat.getColor(context, Util.getAttrValue(context, R.attr.foxConsultedColor)))
                 }
             }
         }
@@ -247,7 +249,8 @@ class ArticlesAdapter(val context: Context,
     private fun selectCard(v: View, post: RSSDbItem?, select: Boolean) {
         if (select) {
             v.isSelected = true
-            v.background = context.getDrawable(R.color.bgLightDark)
+            //v.background = context.getDrawable(R.color.bgLightDark)
+            v.background = ContextCompat.getDrawable(context, Util.getAttrValue(context, R.attr.foxBgSelectedColor))
             if (post != null) {
                 selectedItems.add(post)
                 mOnCheckBoxClickListener?.onCheckBoxClickListener(selectedItems)
@@ -255,7 +258,7 @@ class ArticlesAdapter(val context: Context,
         }
         else {
             v.isSelected = false
-            v.background = context.getDrawable(Util.getAttrValue(context))
+            v.background = ContextCompat.getDrawable(context, Util.getAttrValue(context, android.R.attr.selectableItemBackground))
             if (post != null) {
                 selectedItems.remove(post)
                 mOnCheckBoxClickListener?.onCheckBoxClickListener(selectedItems)

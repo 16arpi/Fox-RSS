@@ -8,6 +8,7 @@
         <entry key="app/src/main/res/drawable/bg.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/bg_gradient.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/bg_light.xml" value="0.2085" />
+        <entry key="app/src/main/res/drawable/ic_delete.xml" value="0.224" />
         <entry key="app/src/main/res/drawable/ic_feeds.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/ic_feeds_white.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/ic_foward_10.xml" value="0.2085" />
@@ -22,25 +23,34 @@
         <entry key="app/src/main/res/drawable/ic_podcast.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/ic_podcast_b.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/ic_replay_10.xml" value="0.2085" />
+        <entry key="app/src/main/res/drawable/round_bg.xml" value="0.2085" />
+        <entry key="app/src/main/res/drawable/round_grey_bg.xml" value="0.2085" />
+        <entry key="app/src/main/res/drawable/round_primary_bg.xml" value="0.2085" />
         <entry key="app/src/main/res/layout/activity_feed_articles.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/activity_post.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/activity_read.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/activity_read_podcast.xml" value="0.625" />
+        <entry key="app/src/main/res/layout/activity_read_podcast.xml" value="0.45" />
         <entry key="app/src/main/res/layout/adapter_feeds.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/adapter_intro.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/adapter_post.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/adapter_post_featured.xml" value="0.268018018018018" />
         <entry key="app/src/main/res/layout/adapter_swipe.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/adapter_swipe_feeds.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/layout_empty.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/layout_fragment_feeds.xml" value="0.2554054054054054" />
+        <entry key="app/src/main/res/layout/layout_fragment_selection.xml" value="0.268018018018018" />
         <entry key="app/src/main/res/layout/layout_fragment_swipe.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/layout_intro.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/overlay.xml" value="0.268018018018018" />
         <entry key="app/src/main/res/layout/sheet_edit_sheet.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/menu/manu_selection.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/menu/menu_articles_feed.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/menu/menu_articles_feed_options.xml" value="0.268018018018018" />
         <entry key="app/src/main/res/menu/menu_feeds.xml" value="0.268018018018018" />
+        <entry key="app/src/main/res/menu/menu_home.xml" value="0.20855855855855857" />
+        <entry key="app/src/main/res/menu/menu_popup.feeds.xml" value="0.20855855855855857" />
+        <entry key="app/src/main/res/menu/menu_popup_feeds.xml" value="0.20855855855855857" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2085" />
         <entry key="app/src/main/res/xml/root_preferences.xml" value="0.3098958333333333" />
       </map>
