@@ -36,7 +36,7 @@ I'm currently working alone on this project and because of my studies and my bra
 - [ ] clean the code (I'm still a student, it lacks of order, methodology and algorithm efficency)
 - [ ] anything you consider worth to add !
 
-## Bibliotèques de codes utilisées
+## Android libraries
 
 * [Google Material Components](https://github.com/material-components/material-components-android)
 * [RSS Parser](https://github.com/prof18/RSS-Parser)
