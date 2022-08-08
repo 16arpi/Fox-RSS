@@ -24,6 +24,18 @@ When you click on an article (in the swipe view or the selection view), a reader
 
 If you want, you can have access to all the articles of a specific rss feed by clicking on it in the "RSS Feeds" tab.
 
+## Contribution
+
+I'm currently working alone on this project and because of my studies and my brass band 🎺👨‍🎓, I don't have enough time to fully develop nice new features. So if you like the app and have android development skills, please consider joining the project ! Here some features users already requested :
+
+[x] dark mode
+[ ] more customisation choices (for the reader view and the articles selection)
+[ ] .opml import
+[ ] RSS database explorer
+[ ] import rss feeds from online services (ex: Feedly, the Old Reader etc.)
+[ ] clean the code (I'm still a student, it lacks of order, methodology and algorithm efficency)
+[ ] anything you consider worth to add !
+
 ## Bibliotèques de codes utilisées
 
 * [Google Material Components](https://github.com/material-components/material-components-android)
