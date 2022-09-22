@@ -6,7 +6,7 @@
     <string name="item_swip">Articles</string>
     <string name="item_inbox">Reading list</string>
     <string name="item_feeds">RSS feeds</string>
-    <string name="item_favs">Favoris</string>
+    <string name="item_favs">Favourites</string>
     <string name="item_add">Add</string>
     <string name="item_libraries">Libraries</string>
     <string name="item_delete">Delete</string>
@@ -60,7 +60,7 @@
     <string name="settings_subtitle1">RSS Feeds</string>
     <string name="settings_read_days_label">Expiration date of read articles</string>
     <string name="settings_read_days_message">Number of days after which read articles are removed from the reading list</string>
-    <string name="settings_subtitle2">Informations</string>
+    <string name="settings_subtitle2">Information</string>
     <string name="settings_about_label">About the developer</string>
     <string name="settings_mail_label">Contact the developer</string>
     <string name="settings_libraries_label">Libraries used in this app</string>
@@ -80,7 +80,7 @@
     <string name="article_no_title">No title</string>
 
     <string name="read_url_error">Unable to get the article</string>
-    <string name="read_internet_error">Error : please check your internet connexion</string>
+    <string name="read_internet_error">Error : please check your internet connection</string>
     <string name="read_menu_open_external">Open in web browser</string>
     <string name="read_menu_share">Share</string>
     <string name="read_menu_refresh">Refresh</string>
