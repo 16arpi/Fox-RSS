@@ -3,7 +3,10 @@ package com.pigeoff.rss.services
 import android.content.Context
 import androidx.preference.PreferenceManager
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.pigeoff.rss.R
+import com.pigeoff.rss.db.MIGRATION_1_2
 import com.pigeoff.rss.db.RSSDb
 import com.pigeoff.rss.db.RSSDbFeed
 import com.pigeoff.rss.db.RSSDbItem
@@ -22,8 +25,10 @@ class FeedsService(context: Context) {
 
     val db: RSSDb = Room.databaseBuilder(
         context.applicationContext,
-        RSSDb::class.java, "rssdb"
-    ).allowMainThreadQueries().build()
+        RSSDb::class.java, "rssdb")
+        .allowMainThreadQueries()
+        .addMigrations(MIGRATION_1_2)
+        .build()
 
     var parser: Parser = Parser.Builder()
         .context(context)

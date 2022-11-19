@@ -30,6 +30,7 @@ class ArticlesAdapter(val context: Context,
     var service = (context.applicationContext as RSSApp).getClient()
     var selectedItems = mutableListOf<RSSDbItem>()
 
+    val ITEM_ID_EXTRA: String = "itemidextra"
     val URL_EXTRA: String = "urlextra"
     val AUDIO_EXTRA: String = "audioextra"
     val TITLE_EXTRA: String = "titleextra"
@@ -219,6 +220,7 @@ class ArticlesAdapter(val context: Context,
         } else {
             Intent(context.applicationContext, ReadActivity::class.java);
         }
+        intent.putExtra(ITEM_ID_EXTRA, item.id)
         intent.putExtra(URL_EXTRA, item.link)
         intent.putExtra(AUDIO_EXTRA, item.audio)
         intent.putExtra(TITLE_EXTRA, item.title)

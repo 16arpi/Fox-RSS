@@ -31,5 +31,6 @@ data class RSSDbItem (
     var interesting: Boolean = true,
     var fav: Boolean = false,
     var consulted: Boolean = false,
-    var consultedTime: Long = 0
+    var consultedTime: Long = 0,
+    var lastScrollYPosition: Int = 0
 )

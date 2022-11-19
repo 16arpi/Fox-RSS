@@ -5,7 +5,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
-import android.text.TextUtils
+import android.os.Build
 import android.util.Base64
 import android.util.Log
 import android.view.Menu
@@ -17,9 +17,13 @@ import android.webkit.WebViewClient
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.widget.NestedScrollView
 import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
 import com.pigeoff.rss.R
+import com.pigeoff.rss.RSSApp
+import com.pigeoff.rss.db.RSSDbItem
+import com.pigeoff.rss.services.FeedsService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,11 +35,15 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
 class ReadActivity : AppCompatActivity() {
-
+    lateinit var app: RSSApp
+    lateinit var client: FeedsService
     lateinit var context: Context
     lateinit var appBar: Toolbar
     lateinit var progressBar: ProgressBar
-    lateinit var webView: WebView
+    lateinit var nestedScrollView: NestedScrollView
+    lateinit var webView : WebView
+
+    var item: RSSDbItem? = null
 
     var url: String = ""
     var audio: String = ""
@@ -49,6 +57,7 @@ class ReadActivity : AppCompatActivity() {
     val cssNight = "*,:after,:before{box-sizing:border-box;max-width:100% !important;}body{background:#222;color:#fff;font:16px/1.6 ${fontType};margin:40px auto;max-width:760px;padding:0 20px}img{max-width:100%;height:auto!important;}h1,h2,h3,h4,h5{font-family:Helvetica Neue,Helvetica,Arial,sans-serif;line-height:1.2}h1{display:block;padding-top:0;margin-top:0;}a{color:#bf771d;text-decoration:none}a:hover{color:#af670d;text-decoration:underline}hr{border:0;margin:25px 0}table{border-collapse:collapse;border-spacing:0;padding-bottom:25px;text-align:left}hr,td,th{border-bottom:1px solid #222}button,select{background:#222;border:0;font-size:14px;padding:9px 20px}input,table{font-size:1pc}blockquote{margin-left:0;margin-right:0;padding-left:1em;border-left:2px solid #ccc;}input,td,th{padding:5px;vertical-align:bottom}button:hover,code,pre{background:#111}pre{padding:8px;white-space:pre-wrap}textarea{border-color:#333}.row{display:block;min-height:1px;width:auto}.row:after{clear:both;content:\"\";display:table}.row .c{float:left}.g2,.g3,.g3-2,.m2,.m3,.m3-2,table{width:100%}@media(min-width:8in){.g2{width:50%}.m2{margin-left:50%}.g3{width:33.33%}.g3-2{width:66.66%}.m3{margin-left:33.33%}.m3-2{margin-left:66.66%}}figure{padding-left:0;padding-right:0;margin-left:0;margin-right:0}figcaption{font-size:10pt;opacity:0.8;}"
     var head: String = "<style>{CSS}</style><meta charset=\"utf-8\" > <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">"
 
+    val ITEM_ID_EXTRA: String = "itemidextra"
     val URL_EXTRA: String = "urlextra"
     val AUDIO_EXTRA: String = "audioextra"
     val TITLE_EXTRA: String = "titleextra"
@@ -59,6 +68,9 @@ class ReadActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_read)
+
+        app = application as RSSApp
+        client = app.getClient()
 
         // Recupération paramètres
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
@@ -78,12 +90,18 @@ class ReadActivity : AppCompatActivity() {
         context = this
         appBar = findViewById(R.id.toolbar)
         progressBar = findViewById(R.id.progressBar)
+        nestedScrollView = findViewById(R.id.nestedScrollView)
         webView = findViewById(R.id.webView)
 
         // ACTION BAR
         setSupportActionBar(appBar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = ""
+
+        val itemId = intent.getIntExtra(ITEM_ID_EXTRA, -1)
+        if (itemId >= 0) {
+            item = client.db.itemDao().getItemById(itemId)
+        }
 
         // Recupérer contenu HTML
         if (!intent.getStringExtra(URL_EXTRA).isNullOrEmpty()) {
@@ -110,12 +128,21 @@ class ReadActivity : AppCompatActivity() {
             channelImg = intent.getStringExtra(CHANNEL_IMG_EXTRA)!!
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            nestedScrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                item?.lastScrollYPosition = scrollY
+            }
+        }
+
         loadWebView()
 
         webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
-                progressBar.visibility = View.GONE
+                if (item != null) {
+                    nestedScrollView.smoothScrollBy(0, item!!.lastScrollYPosition, 500)
+                }
+                progressBar.visibility = View.INVISIBLE
             }
 
             override fun shouldOverrideUrlLoading(
@@ -135,10 +162,17 @@ class ReadActivity : AppCompatActivity() {
 
     }
 
+    override fun onPause() {
+        super.onPause()
+        if (item != null) {
+            client.db.itemDao().updateItem(item!!)
+        }
+    }
+
     private fun loadWebView() {
         if (url.isEmpty()) {
             Snackbar.make(findViewById(android.R.id.content), R.string.read_url_error, Snackbar.LENGTH_SHORT).show()
-            progressBar.visibility = View.GONE
+            progressBar.visibility = View.INVISIBLE
         } else {
             progressBar.visibility = View.VISIBLE
 
