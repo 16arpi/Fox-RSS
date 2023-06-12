@@ -1,5 +1,7 @@
 # Fox RSS
 
+> ⚠️ This project isn't maintened for now. I don't turn it into an archive because I still want to improve the app, but I don't know when I'll come back to its development.
+
 Fox RSS is a simple rss reader which allows you to create a selection of articles to read later. The application is available [on the Play Store](https://play.google.com/store/apps/details?id=com.pigeoff.rss) in english and french.
 
 Fox RSS is a free and open source android application.
