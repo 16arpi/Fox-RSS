@@ -4,6 +4,9 @@ import androidx.room.*
 
 @Dao
 interface RSSDbItemDAO {
+    @Query("SELECT * FROM RSSDbItem WHERE id=:id")
+    fun getItemById(id: Int): RSSDbItem
+
     @Query("SELECT * FROM RSSDbItem ORDER BY id DESC")
     fun getAllItems(): MutableList<RSSDbItem>
 

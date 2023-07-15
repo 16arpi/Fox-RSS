@@ -26,6 +26,7 @@ class FeedArticlesAdapter(val context: Context,
                           var posts: MutableList<ArticleExtended>,
                           var favicon: String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    val ITEM_ID_EXTRA: String = "itemidextra"
     val URL_EXTRA: String = "urlextra"
     val AUDIO_EXTRA: String = "audioextra"
     val TITLE_EXTRA: String = "titleextra"
